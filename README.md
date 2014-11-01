@@ -16,4 +16,6 @@ First install grunt-cli: `npm install -g grunt-cli`
 
 Next, install dependencies: `npm install`
 
-To minify CSS files: `grunt cssmin`, or just `grunt`
+To minify CSS files: 
+* `grunt cssmin:members` or `grunt cssmin:public` to minify individual files
+* `grunt cssmin` or just `grunt` to minify all files
