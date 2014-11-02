@@ -176,6 +176,29 @@ a.btn {
   box-shadow: 0 6px #df0051;
 }
 /*
+* Alerts
+*/
+.alert.alert-success {
+  background-color: #dbf7bf;
+  border-color: #c1f192;
+  color: #5ba215;
+}
+.alert.alert-info {
+  background-color: #f1f9fd;
+  border-color: #c6e7f5;
+  color: #2398cc;
+}
+.alert.alert-warning {
+  background-color: #fff0d8;
+  border-color: #ffdca5;
+  color: #ffa00c;
+}
+.alert.alert-danger {
+  background-color: #ffdfeb;
+  border-color: #ffacca;
+  color: #df0051;
+}
+/*
 * Panels
 */
 .panel-default .panel-heading {

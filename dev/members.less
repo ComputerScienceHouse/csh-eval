@@ -222,6 +222,33 @@ a {
 }
 
 /*
+* Alerts
+*/
+
+.alert {
+  &.alert-success {
+    background-color: lighten(@color-success, 50%);
+    border-color: lighten(@color-success, 40%);
+    color: @color-success;
+  }
+  &.alert-info {
+    background-color: lighten(@color-info, 40%);
+    border-color: lighten(@color-info, 30%);
+    color: darken(@color-info, 10%);
+  }
+  &.alert-warning {
+    background-color: lighten(@color-warning, 30%);
+    border-color: lighten(@color-warning, 20%);
+    color: darken(@color-warning, 10%);
+  }
+  &.alert-danger {
+    background-color: lighten(@members-pink, 50%);
+    border-color: lighten(@members-pink, 40%);
+    color: @members-pink;
+  }
+}
+
+/*
 * Panels
 */
 
