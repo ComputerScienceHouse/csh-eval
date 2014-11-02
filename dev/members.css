@@ -217,6 +217,29 @@ a.btn {
   background-color: #df0051;
 }
 /*
+* List Groups
+*/
+.list-group a.list-group-item:link,
+.list-group a.list-group-item:visited {
+  color: #222222;
+}
+.list-group a.list-group-item:hover,
+.list-group a.list-group-item:active {
+  color: #222222;
+}
+.list-group a.list-group-item.active:link,
+.list-group a.list-group-item.active:visited {
+  color: #ffffff;
+  background-color: #8b2c93;
+  border-color: #66206c;
+}
+.list-group a.list-group-item.active:hover,
+.list-group a.list-group-item.active:active {
+  color: #ffffff;
+  background-color: #66206c;
+  border-color: #66206c;
+}
+/*
 * Panels
 */
 .panel-default .panel-heading {

@@ -271,6 +271,33 @@ a {
 }
 
 /*
+* List Groups
+*/
+
+.list-group {
+  a.list-group-item {
+    &:link, &:visited {
+      color: @charcoal;
+    }
+    &:hover, &:active {
+      color: @charcoal;
+    }
+    &.active {
+      &:link, &:visited {
+        color: @white;
+        background-color: @members-purple;
+        border-color: @members-purple-dark;
+      }
+      &:hover, &:active {
+        color: @white;
+        background-color: @members-purple-dark;
+        border-color: @members-purple-dark;
+      }
+    }
+  }
+}
+
+/*
 * Panels
 */
 
