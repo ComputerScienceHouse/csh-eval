@@ -1,30 +1,30 @@
-/*
-* Colors:
-
-Purple: #8b2c93;
-Purple Dark: #66206c;
-Pink: #df0051;
-Charcoal: #222;
-Gray: #bbb;
-
-*/
+// Colors
+@members-purple: #8b2c93;
+@members-purple-dark: darken(@members-purple, 10%);
+@members-puprle-light: lighten(@members-purple, 30%);
+@members-pink: #df0051;
+@charcoal: #222;
+@gray: #bbb;
+@white: #fff;
 
 /*
 * General
 */
 
+// Import and apply the Oxygen font
 @import url(http://fonts.googleapis.com/css?family=Oxygen);
-
 body {
   font-family: 'Oxygen', sans-serif;
 }
 
-a, a:link, a:visited {
-  color: #8b2c93;
-}
-
-a:hover, a:active {
-  color: #66206c;
+// Links
+a {
+  &:link, &:visited {
+    color: @members-purple;
+  }
+  &:hover, &:active {
+    color: @members-purple-dark;
+  }
 }
 
 /*
@@ -40,53 +40,47 @@ a:hover, a:active {
 */
 
 .navbar-inverse {
-  background-color: #8b2c93;
-}
-
-.navbar-inverse .navbar-brand {
-  color: #fff;
-}
-
-.navbar-inverse .navbar-brand:hover {
-  color: #bbb;
-}
-
-.navbar-inverse .navbar-nav > li > a {
-  color: #fff;
-}
-
-.navbar-inverse .navbar-nav > li.active > a {
-  background-color: #66206c;
-}
-
-.navbar-inverse .navbar-nav > li.active > a:hover,
-.navbar-inverse .navbar-nav > li.active > a:active {
-  background-color: #66206c;
-  color: #bbb;
-}
-
-.navbar-inverse .navbar-nav > li > a:hover {
-  color: #bbb;
-}
-
-.navbar-inverse .navbar-toggle {
-  border-color: #66206c;
-}
-
-.navbar-inverse .navbar-toggle:hover {
-  background-color: #66206c;
-}
-
-.navbar-inverse.navbar-fixed-top {
-  border-color: #fff;
-  border-width: 0 0 3px 0;
-  box-shadow: 0 6px #df0051;
+  background-color: @members-purple;
+  .navbar-brand {
+    color: @white;
+    &:hover {
+      color: @members-puprle-light;
+    }
+  }
+  .navbar-nav {
+    li > a {
+      color: @white;
+      &:hover {
+        color: @members-puprle-light;
+      }
+    }
+    li.active > a {
+      background-color: @members-purple-dark;
+      &:hover, &:active, &:focus {
+        background-color: @members-purple-dark;
+        color: @members-puprle-light;
+      }
+    }
+  }
+  .navbar-toggle {
+    border-color: @members-purple-dark;
+    &:hover {
+      background-color: @members-purple-dark;
+    }
+  }
+  &.navbar-fixed-top {
+    border-color: @white;
+    border-width: 0 0 3px 0;
+    box-shadow: 0 6px @members-pink;
+  }
 }
 
 /*
 * Panels
 */
 
-.panel-default .panel-heading {
-  border-bottom: 2px solid #df0051;
+.panel-default {
+  .panel-heading {
+    border-bottom: 2px solid @members-pink;
+  }
 }

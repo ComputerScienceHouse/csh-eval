@@ -1,34 +1,4 @@
 @import url(http://fonts.googleapis.com/css?family=Oxygen);
-/*
-* Colors:
-
-Green: #5ba215;
-Green Dark: #498211;
-Charcoal: #222;
-Gray: #bbb;
-
-*/
-/*
-* General
-*/
-body {
-  font-family: 'Oxygen', sans-serif;
-}
-a,
-a:link,
-a:visited {
-  color: #5ba215;
-}
-a:hover,
-a:active {
-  color: #498211;
-}
-/*
-* Navbar
-*/
-.navbar {
-  background-color: #eee;
-}
 /* 
 * Navbar Inverse
 */
@@ -71,4 +41,68 @@ a:active {
 */
 .panel-default .panel-heading {
   border-bottom: 2px solid #5ba215;
+}
+/*
+* General
+*/
+body {
+  font-family: 'Oxygen', sans-serif;
+}
+a:link,
+a:visited {
+  color: #5ba215;
+}
+a:hover,
+a:active {
+  color: #42750f;
+}
+/*
+* Navbar
+*/
+.navbar {
+  background-color: #eee;
+}
+/* 
+* Navbar Inverse
+*/
+.navbar-inverse {
+  background-color: #5ba215;
+}
+.navbar-inverse .navbar-brand {
+  color: #ffffff;
+}
+.navbar-inverse .navbar-brand:hover {
+  color: #a8eb65;
+}
+.navbar-inverse .navbar-nav li > a {
+  color: #ffffff;
+}
+.navbar-inverse .navbar-nav li > a:hover {
+  color: #a8eb65;
+}
+.navbar-inverse .navbar-nav li.active > a {
+  background-color: #42750f;
+}
+.navbar-inverse .navbar-nav li.active > a:hover,
+.navbar-inverse .navbar-nav li.active > a:active,
+.navbar-inverse .navbar-nav li.active > a:focus {
+  background-color: #42750f;
+  color: #a8eb65;
+}
+.navbar-inverse .navbar-toggle {
+  border-color: #42750f;
+}
+.navbar-inverse .navbar-toggle:hover {
+  background-color: #42750f;
+}
+.navbar-inverse.navbar-fixed-top {
+  border-color: #ffffff;
+  border-width: 0 0 3px 0;
+  box-shadow: 0 6px #a8eb65;
+}
+/*
+* Panels
+*/
+.panel-default .panel-heading {
+  border-bottom: 2px solid #a8eb65;
 }

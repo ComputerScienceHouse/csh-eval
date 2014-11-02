@@ -1,39 +1,3 @@
-/*
-* Colors:
-
-Green: #5ba215;
-Green Dark: #498211;
-Charcoal: #222;
-Gray: #bbb;
-
-*/
-
-/*
-* General
-*/
-
-@import url(http://fonts.googleapis.com/css?family=Oxygen);
-
-body {
-  font-family: 'Oxygen', sans-serif;
-}
-
-a, a:link, a:visited {
-  color: #5ba215;
-}
-
-a:hover, a:active {
-  color: #498211;
-}
-
-/*
-* Navbar
-*/
-
-.navbar {
-  background-color: #eee;
-}
-
 /* 
 * Navbar Inverse
 */
@@ -89,3 +53,91 @@ a:hover, a:active {
 .panel-default .panel-heading {
   border-bottom: 2px solid #5ba215;
 }
+
+
+// Colors
+@public-green: #5ba215;
+@public-green-dark: darken(@public-green, 10%);
+@public-green-light: lighten(@public-green, 30%);
+@charcoal: #222;
+@gray: #bbb;
+@white: #fff;
+
+/*
+* General
+*/
+
+// Import and apply the Oxygen font
+@import url(http://fonts.googleapis.com/css?family=Oxygen);
+body {
+  font-family: 'Oxygen', sans-serif;
+}
+
+// Links
+a {
+  &:link, &:visited {
+    color: @public-green;
+  }
+  &:hover, &:active {
+    color: @public-green-dark;
+  }
+}
+
+/*
+* Navbar
+*/
+
+.navbar {
+  background-color: #eee;
+}
+
+/* 
+* Navbar Inverse
+*/
+
+.navbar-inverse {
+  background-color: @public-green;
+  .navbar-brand {
+    color: @white;
+    &:hover {
+      color: @public-green-light;
+    }
+  }
+  .navbar-nav {
+    li > a {
+      color: @white;
+      &:hover {
+        color: @public-green-light;
+      }
+    }
+    li.active > a {
+      background-color: @public-green-dark;
+      &:hover, &:active, &:focus {
+        background-color: @public-green-dark;
+        color: @public-green-light;
+      }
+    }
+  }
+  .navbar-toggle {
+    border-color: @public-green-dark;
+    &:hover {
+      background-color: @public-green-dark;
+    }
+  }
+  &.navbar-fixed-top {
+    border-color: @white;
+    border-width: 0 0 3px 0;
+    box-shadow: 0 6px @public-green-light;
+  }
+}
+
+/*
+* Panels
+*/
+
+.panel-default {
+  .panel-heading {
+    border-bottom: 2px solid @public-green-light;
+  }
+}
+

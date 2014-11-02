@@ -1,21 +1,10 @@
 @import url(http://fonts.googleapis.com/css?family=Oxygen);
 /*
-* Colors:
-
-Purple: #8b2c93;
-Purple Dark: #66206c;
-Pink: #df0051;
-Charcoal: #222;
-Gray: #bbb;
-
-*/
-/*
 * General
 */
 body {
   font-family: 'Oxygen', sans-serif;
 }
-a,
 a:link,
 a:visited {
   color: #8b2c93;
@@ -37,24 +26,25 @@ a:active {
   background-color: #8b2c93;
 }
 .navbar-inverse .navbar-brand {
-  color: #fff;
+  color: #ffffff;
 }
 .navbar-inverse .navbar-brand:hover {
-  color: #bbb;
+  color: #d27fd9;
 }
-.navbar-inverse .navbar-nav > li > a {
-  color: #fff;
+.navbar-inverse .navbar-nav li > a {
+  color: #ffffff;
 }
-.navbar-inverse .navbar-nav > li.active > a {
+.navbar-inverse .navbar-nav li > a:hover {
+  color: #d27fd9;
+}
+.navbar-inverse .navbar-nav li.active > a {
   background-color: #66206c;
 }
-.navbar-inverse .navbar-nav > li.active > a:hover,
-.navbar-inverse .navbar-nav > li.active > a:active {
+.navbar-inverse .navbar-nav li.active > a:hover,
+.navbar-inverse .navbar-nav li.active > a:active,
+.navbar-inverse .navbar-nav li.active > a:focus {
   background-color: #66206c;
-  color: #bbb;
-}
-.navbar-inverse .navbar-nav > li > a:hover {
-  color: #bbb;
+  color: #d27fd9;
 }
 .navbar-inverse .navbar-toggle {
   border-color: #66206c;
@@ -63,7 +53,7 @@ a:active {
   background-color: #66206c;
 }
 .navbar-inverse.navbar-fixed-top {
-  border-color: #fff;
+  border-color: #ffffff;
   border-width: 0 0 3px 0;
   box-shadow: 0 6px #df0051;
 }
