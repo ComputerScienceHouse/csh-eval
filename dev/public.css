@@ -1,3 +1,4 @@
+@import url(http://fonts.googleapis.com/css?family=Oxygen);
 /*
 * Colors:
 
@@ -7,85 +8,67 @@ Charcoal: #222;
 Gray: #bbb;
 
 */
-
 /*
 * General
 */
-
-@import url(http://fonts.googleapis.com/css?family=Oxygen);
-
 body {
   font-family: 'Oxygen', sans-serif;
 }
-
-a, a:link, a:visited {
+a,
+a:link,
+a:visited {
   color: #5ba215;
 }
-
-a:hover, a:active {
+a:hover,
+a:active {
   color: #498211;
 }
-
 /*
 * Navbar
 */
-
 .navbar {
   background-color: #eee;
 }
-
 /* 
 * Navbar Inverse
 */
-
 .navbar-inverse {
   background-color: #498211;
 }
-
 .navbar-inverse .navbar-brand {
   color: #fff;
 }
-
 .navbar-inverse .navbar-brand:hover {
   color: #bbb;
 }
-
 .navbar-inverse .navbar-nav > li > a {
   color: #fff;
 }
-
 .navbar-inverse .navbar-nav > li.active > a {
   background-color: #5ba215;
 }
-
 .navbar-inverse .navbar-nav > li.active > a:hover,
 .navbar-inverse .navbar-nav > li.active > a:active {
   background-color: #5ba215;
   color: #bbb;
 }
-
 .navbar-inverse .navbar-nav > li > a:hover {
   color: #bbb;
 }
-
 .navbar-inverse .navbar-toggle {
   border-color: #5ba215;
 }
-
 .navbar-inverse .navbar-toggle:hover {
   background-color: #5ba215;
 }
-
 .navbar-inverse.navbar-fixed-top {
   border-color: #fff;
   border-width: 0 0 3px 0;
   box-shadow: 0 6px #5ba215;
 }
-
 /*
 * Panels
 */
-
 .panel-default .panel-heading {
   border-bottom: 2px solid #5ba215;
 }
