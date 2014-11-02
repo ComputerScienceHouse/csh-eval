@@ -41,19 +41,19 @@ a.btn {
   background-color: #4e8b12;
   border-color: #355e0c;
 }
-.btn.btn-info {
+.btn.color-info {
   background-color: #43afdf;
   border-color: #2398cc;
 }
-.btn.btn-info:hover {
+.btn.color-info:hover {
   background-color: #2da6db;
   border-color: #1f88b6;
 }
-.btn.btn-warning {
+.btn.color-warning {
   background-color: #ffb43f;
   border-color: #ffa00c;
 }
-.btn.btn-warning:hover {
+.btn.color-warning:hover {
   background-color: #ffaa25;
   border-color: #f29300;
 }
@@ -94,6 +94,33 @@ a.btn {
   background-color: #bbbbbb;
 }
 /*
+* Dropdowns
+*/
+.dropdown-menu li.active > a {
+  background-color: #8b2c93;
+}
+.dropdown-menu li.active > a:hover {
+  background-color: #66206c;
+}
+/*
+* Navs
+*/
+.nav-tabs li.active > a {
+  color: #8b2c93;
+}
+.nav-tabs li.active > a:hover {
+  color: #66206c;
+}
+.nav-pills li.active > a {
+  background-color: #8b2c93;
+}
+.nav-pills li.active > a .badge {
+  color: #888888;
+}
+.nav-pills li.active > a:hover {
+  background-color: #66206c;
+}
+/*
 * Navbar
 */
 .navbar {
@@ -104,33 +131,43 @@ a.btn {
 */
 .navbar-inverse {
   background-color: #8b2c93;
+  border-color: #66206c;
 }
 .navbar-inverse .navbar-brand {
   color: #ffffff;
 }
 .navbar-inverse .navbar-brand:hover {
-  color: #d27fd9;
+  color: #e0a6e5;
 }
 .navbar-inverse .navbar-nav li > a {
   color: #ffffff;
 }
 .navbar-inverse .navbar-nav li > a:hover {
-  color: #d27fd9;
+  color: #e0a6e5;
 }
 .navbar-inverse .navbar-nav li.active > a {
   background-color: #66206c;
 }
 .navbar-inverse .navbar-nav li.active > a:hover,
-.navbar-inverse .navbar-nav li.active > a:active,
-.navbar-inverse .navbar-nav li.active > a:focus {
+.navbar-inverse .navbar-nav li.active > a:active {
   background-color: #66206c;
-  color: #d27fd9;
+  color: #e0a6e5;
+}
+.navbar-inverse .navbar-nav li.dropdown a:hover,
+.navbar-inverse .navbar-nav li.dropdown a:active {
+  background-color: #66206c;
+}
+.navbar-inverse .navbar-nav li.dropdown .dropdown-menu li > a {
+  color: #222222;
+}
+.navbar-inverse .navbar-nav li.dropdown .dropdown-menu li > a:hover,
+.navbar-inverse .navbar-nav li.dropdown .dropdown-menu li > a:active {
+  background-color: #eee;
 }
 .navbar-inverse .navbar-toggle {
   border-color: #66206c;
 }
-.navbar-inverse .navbar-toggle:hover,
-.navbar-inverse .navbar-toggle:focus {
+.navbar-inverse .navbar-toggle:hover {
   background-color: #66206c;
 }
 .navbar-inverse.navbar-fixed-top {

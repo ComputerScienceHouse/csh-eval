@@ -1,15 +1,15 @@
 // Colors
 @members-purple: #8b2c93;
 @members-purple-dark: darken(@members-purple, 10%);
-@members-puprle-light: lighten(@members-purple, 30%);
+@members-puprle-light: lighten(@members-purple, 40%);
 @members-pink: #df0051;
 @charcoal: #222;
 @gray: #bbb;
 @white: #fff;
 
-@btn-success: #5ba215;
-@btn-info: #43afdf;
-@btn-warning: #ffb43f; //#dfa954;
+@color-success: #5ba215;
+@color-info: #43afdf;
+@color-warning: #ffb43f;
 
 /*
 * General
@@ -54,27 +54,27 @@ a {
     }
   }
   &.btn-success {
-    background-color: @btn-success;
-    border-color: darken(@btn-success, 10%);
+    background-color: @color-success;
+    border-color: darken(@color-success, 10%);
     &:hover {
-      background-color: darken(@btn-success, 5%);
-      border-color: darken(@btn-success, 15%);
+      background-color: darken(@color-success, 5%);
+      border-color: darken(@color-success, 15%);
     }
   }
-  &.btn-info {
-    background-color: @btn-info;
-    border-color: darken(@btn-info, 10%);
+  &.color-info {
+    background-color: @color-info;
+    border-color: darken(@color-info, 10%);
     &:hover {
-      background-color: darken(@btn-info, 5%);
-      border-color: darken(@btn-info, 15%);
+      background-color: darken(@color-info, 5%);
+      border-color: darken(@color-info, 15%);
     }
   }
-  &.btn-warning {
-    background-color: @btn-warning;
-    border-color: darken(@btn-warning, 10%);
+  &.color-warning {
+    background-color: @color-warning;
+    border-color: darken(@color-warning, 10%);
     &:hover {
-      background-color: darken(@btn-warning, 5%);
-      border-color: darken(@btn-warning, 15%);
+      background-color: darken(@color-warning, 5%);
+      border-color: darken(@color-warning, 15%);
     }
   }
   &.btn-danger {
@@ -100,13 +100,13 @@ a {
     background-color: @members-purple;
   }
   &.label-success {
-    background-color: @btn-success;
+    background-color: @color-success;
   }
   &.label-info {
-    background-color: @btn-info;
+    background-color: @color-info;
   }
   &.label-warning {
-    background-color: @btn-warning;
+    background-color: @color-warning;
   }
   &.label-danger {
     background-color: @members-pink;
@@ -119,6 +119,44 @@ a {
 
 .badge {
   background-color: @gray;
+}
+
+/*
+* Dropdowns
+*/
+
+.dropdown-menu {
+  li.active > a {
+    background-color: @members-purple;
+    &:hover {
+      background-color: @members-purple-dark;
+    }
+  }
+}
+
+/*
+* Navs
+*/
+
+.nav-tabs {
+  li.active > a {
+    color: @members-purple;
+    &:hover {
+      color: @members-purple-dark;
+    }
+  }
+}
+
+.nav-pills {
+  li.active > a {
+    background-color: @members-purple;
+    .badge {
+      color: darken(@gray, 20%);
+    }
+    &:hover {
+      background-color: @members-purple-dark;
+    }
+  }
 }
 
 /*
@@ -135,6 +173,7 @@ a {
 
 .navbar-inverse {
   background-color: @members-purple;
+  border-color: @members-purple-dark;
   .navbar-brand {
     color: @white;
     &:hover {
@@ -150,15 +189,28 @@ a {
     }
     li.active > a {
       background-color: @members-purple-dark;
-      &:hover, &:active, &:focus {
+      &:hover, &:active {
         background-color: @members-purple-dark;
         color: @members-puprle-light;
+      }
+    }
+    li.dropdown {
+      a:hover, a:active {
+        background-color: @members-purple-dark;
+      }
+      .dropdown-menu {
+        li > a {
+          color: @charcoal;
+          &:hover, &:active {
+            background-color: #eee;
+          }
+        }
       }
     }
   }
   .navbar-toggle {
     border-color: @members-purple-dark;
-    &:hover, &:focus {
+    &:hover {
       background-color: @members-purple-dark;
     }
   }
