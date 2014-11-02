@@ -89,6 +89,39 @@ a {
 }
 
 /*
+* Labels 
+*/
+
+.label {
+  &.label-default {
+    background-color: @gray;
+  }
+  &.label-primary {
+    background-color: @members-purple;
+  }
+  &.label-success {
+    background-color: @btn-success;
+  }
+  &.label-info {
+    background-color: @btn-info;
+  }
+  &.label-warning {
+    background-color: @btn-warning;
+  }
+  &.label-danger {
+    background-color: @members-pink;
+  }
+}
+
+/*
+* Badges
+*/
+
+.badge {
+  background-color: @gray;
+}
+
+/*
 * Navbar
 */
 
@@ -125,7 +158,7 @@ a {
   }
   .navbar-toggle {
     border-color: @members-purple-dark;
-    &:hover {
+    &:hover, &:focus {
       background-color: @members-purple-dark;
     }
   }

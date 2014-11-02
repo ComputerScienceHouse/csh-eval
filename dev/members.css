@@ -67,10 +67,31 @@ a.btn {
   border-color: #930035;
 }
 /*
-* Tables
+* Labels 
 */
-.table thead tr {
-  border-color: #df0051;
+.label.label-default {
+  background-color: #bbbbbb;
+}
+.label.label-primary {
+  background-color: #8b2c93;
+}
+.label.label-success {
+  background-color: #5ba215;
+}
+.label.label-info {
+  background-color: #43afdf;
+}
+.label.label-warning {
+  background-color: #ffb43f;
+}
+.label.label-danger {
+  background-color: #df0051;
+}
+/*
+* Badges
+*/
+.badge {
+  background-color: #bbbbbb;
 }
 /*
 * Navbar
@@ -108,7 +129,8 @@ a.btn {
 .navbar-inverse .navbar-toggle {
   border-color: #66206c;
 }
-.navbar-inverse .navbar-toggle:hover {
+.navbar-inverse .navbar-toggle:hover,
+.navbar-inverse .navbar-toggle:focus {
   background-color: #66206c;
 }
 .navbar-inverse.navbar-fixed-top {
