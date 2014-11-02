@@ -7,6 +7,10 @@
 @gray: #bbb;
 @white: #fff;
 
+@btn-success: #5ba215;
+@btn-info: #43afdf;
+@btn-warning: #ffb43f; //#dfa954;
+
 /*
 * General
 */
@@ -24,6 +28,63 @@ a {
   }
   &:hover, &:active {
     color: @members-purple-dark;
+  }
+  &.btn {
+    color: @white;
+  }
+}
+
+/*
+* Button
+*/
+
+.btn {
+  &.btn-link {
+    color: @members-purple;
+    &:hover {
+      color: @members-purple-dark;
+    }
+  }
+  &.btn-primary {
+    background-color: @members-purple;
+    border-color: @members-purple-dark;
+    &:hover {
+      background-color: darken(@members-purple, 5%);
+      border-color: darken(@members-purple-dark, 5%);
+    }
+  }
+  &.btn-success {
+    background-color: @btn-success;
+    border-color: darken(@btn-success, 10%);
+    &:hover {
+      background-color: darken(@btn-success, 5%);
+      border-color: darken(@btn-success, 15%);
+    }
+  }
+  &.btn-info {
+    background-color: @btn-info;
+    border-color: darken(@btn-info, 10%);
+    &:hover {
+      background-color: darken(@btn-info, 5%);
+      border-color: darken(@btn-info, 15%);
+    }
+  }
+  &.btn-warning {
+    background-color: @btn-warning;
+    border-color: darken(@btn-warning, 10%);
+    &:hover {
+      background-color: darken(@btn-warning, 5%);
+      border-color: darken(@btn-warning, 15%);
+    }
+  }
+  &.btn-danger {
+    color: @white;
+    background-color: @members-pink;
+    border-color: darken(@members-pink, 10%);
+    &:hover {
+      background-color: darken(@members-pink, 5%);
+      border-color: darken(@members-pink, 15%);
+    }
   }
 }
 

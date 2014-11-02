@@ -13,6 +13,65 @@ a:hover,
 a:active {
   color: #66206c;
 }
+a.btn {
+  color: #ffffff;
+}
+/*
+* Button
+*/
+.btn.btn-link {
+  color: #8b2c93;
+}
+.btn.btn-link:hover {
+  color: #66206c;
+}
+.btn.btn-primary {
+  background-color: #8b2c93;
+  border-color: #66206c;
+}
+.btn.btn-primary:hover {
+  background-color: #78267f;
+  border-color: #531a58;
+}
+.btn.btn-success {
+  background-color: #5ba215;
+  border-color: #42750f;
+}
+.btn.btn-success:hover {
+  background-color: #4e8b12;
+  border-color: #355e0c;
+}
+.btn.btn-info {
+  background-color: #43afdf;
+  border-color: #2398cc;
+}
+.btn.btn-info:hover {
+  background-color: #2da6db;
+  border-color: #1f88b6;
+}
+.btn.btn-warning {
+  background-color: #ffb43f;
+  border-color: #ffa00c;
+}
+.btn.btn-warning:hover {
+  background-color: #ffaa25;
+  border-color: #f29300;
+}
+.btn.btn-danger {
+  color: #ffffff;
+  background-color: #df0051;
+  border-color: #ac003e;
+}
+.btn.btn-danger:hover {
+  background-color: #c60048;
+  border-color: #930035;
+}
+/*
+* Tables
+*/
+.table thead tr {
+  border-color: #df0051;
+}
 /*
 * Navbar
 */
