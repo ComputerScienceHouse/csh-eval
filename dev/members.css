@@ -199,6 +199,24 @@ a.btn {
   color: #df0051;
 }
 /*
+* Progress Bars
+*/
+.progress .progress-bar {
+  background-color: #8b2c93;
+}
+.progress .progress-bar.progress-bar-success {
+  background-color: #5ba215;
+}
+.progress .progress-bar.progress-bar-info {
+  background-color: #43afdf;
+}
+.progress .progress-bar.progress-bar-warning {
+  background-color: #ffb43f;
+}
+.progress .progress-bar.progress-bar-danger {
+  background-color: #df0051;
+}
+/*
 * Panels
 */
 .panel-default .panel-heading {
