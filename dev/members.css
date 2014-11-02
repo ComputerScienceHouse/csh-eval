@@ -42,12 +42,12 @@ a.btn {
   border-color: #355e0c;
 }
 .btn.color-info {
-  background-color: #43afdf;
-  border-color: #2398cc;
+  background-color: #3d9ec9;
+  border-color: #2e80a5;
 }
 .btn.color-info:hover {
-  background-color: #2da6db;
-  border-color: #1f88b6;
+  background-color: #3390b9;
+  border-color: #287191;
 }
 .btn.color-warning {
   background-color: #ffb43f;
@@ -79,7 +79,7 @@ a.btn {
   background-color: #5ba215;
 }
 .label.label-info {
-  background-color: #43afdf;
+  background-color: #3d9ec9;
 }
 .label.label-warning {
   background-color: #ffb43f;
@@ -184,9 +184,9 @@ a.btn {
   color: #5ba215;
 }
 .alert.alert-info {
-  background-color: #f1f9fd;
-  border-color: #c6e7f5;
-  color: #2398cc;
+  background-color: #ddeef5;
+  border-color: #b5daea;
+  color: #2e80a5;
 }
 .alert.alert-warning {
   background-color: #fff0d8;
@@ -208,7 +208,7 @@ a.btn {
   background-color: #5ba215;
 }
 .progress .progress-bar.progress-bar-info {
-  background-color: #43afdf;
+  background-color: #3d9ec9;
 }
 .progress .progress-bar.progress-bar-warning {
   background-color: #ffb43f;
@@ -242,6 +242,52 @@ a.btn {
 /*
 * Panels
 */
-.panel-default .panel-heading {
+.panel.panel-default .panel-heading {
   border-bottom: 2px solid #df0051;
+}
+.panel.panel-primary {
+  border-color: #66206c;
+}
+.panel.panel-primary .panel-heading {
+  background-color: #8b2c93;
+  border-color: #66206c;
+  border-bottom: 2px solid #df0051;
+}
+.panel.panel-success {
+  border-color: #c1f192;
+}
+.panel.panel-success .panel-heading {
+  background-color: #dbf7bf;
+  border-color: #c1f192;
+  color: #5ba215;
+}
+.panel.panel-info {
+  border-color: #b5daea;
+}
+.panel.panel-info .panel-heading {
+  background-color: #ddeef5;
+  border-color: #b5daea;
+  color: #3d9ec9;
+}
+.panel.panel-warning {
+  border-color: #ffdca5;
+}
+.panel.panel-warning .panel-heading {
+  background-color: #fff0d8;
+  border-color: #ffdca5;
+  color: #ffb43f;
+}
+.panel.panel-danger {
+  border-color: #ffacca;
+}
+.panel.panel-danger .panel-heading {
+  background-color: #ffdfeb;
+  border-color: #ffacca;
+  color: #df0051;
+}
+/*
+*
+*/
+.carousel > a.carousel-control {
+  color: #ffffff;
 }

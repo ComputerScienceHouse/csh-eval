@@ -8,7 +8,7 @@
 @white: #fff;
 
 @color-success: #5ba215;
-@color-info: #43afdf;
+@color-info: #3D9EC9; //#43afdf;
 @color-warning: #ffb43f;
 
 /*
@@ -301,8 +301,62 @@ a {
 * Panels
 */
 
-.panel-default {
-  .panel-heading {
-    border-bottom: 2px solid @members-pink;
+.panel {
+  &.panel-default {
+    .panel-heading {
+      border-bottom: 2px solid @members-pink;
+    }
+  }
+  &.panel-primary {
+    border-color: @members-purple-dark;
+    .panel-heading {
+      background-color: @members-purple;
+      border-color: @members-purple-dark;
+      border-bottom: 2px solid @members-pink;
+    }
+  }
+  &.panel-success {
+    border-color: lighten(@color-success, 40%);
+    .panel-heading {
+      background-color: lighten(@color-success, 50%);
+      border-color: lighten(@color-success, 40%);
+      color: @color-success;
+    }
+  }
+  &.panel-info {
+    border-color: lighten(@color-info, 30%);
+    .panel-heading {
+      background-color: lighten(@color-info, 40%);
+      border-color: lighten(@color-info, 30%);
+      color: @color-info;
+    }
+  }
+  &.panel-warning {
+    border-color: lighten(@color-warning, 20%);
+    .panel-heading {
+      background-color: lighten(@color-warning, 30%);
+      border-color: lighten(@color-warning, 20%);
+      color: @color-warning;
+    }
+  }
+  &.panel-danger {
+    border-color: lighten(@members-pink, 40%);
+    .panel-heading {
+      background-color: lighten(@members-pink, 50%);
+      border-color: lighten(@members-pink, 40%);
+      color: @members-pink;
+    }
   }
 }
+
+/*
+*
+*/
+
+.carousel {
+  & > a.carousel-control {
+    color: @white;
+  }
+}
+
+
