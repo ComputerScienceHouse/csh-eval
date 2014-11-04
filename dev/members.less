@@ -126,11 +126,24 @@ a {
 */
 
 .dropdown-menu {
+  li > a {
+    color: @charcoal;
+    &:hover, &:active, &:focus {
+      background-color: #eee;
+      color: @charcoal;
+    } 
+  }
   li.active > a {
     background-color: @members-purple;
     &:hover {
       background-color: @members-purple-dark;
     }
+  }
+  .dropdown-header {
+    color: @gray;
+  }
+  .divider {
+    background-color: lighten(@gray, 20%);
   }
 }
 
@@ -254,6 +267,10 @@ a {
         }
         .divider {
           background-color: @members-purple-dark;
+        }
+        // Rebuild the dropdown for non-mobile
+        @media(min-width: 768px) {
+          .dropdown-menu;
         }
       }
     }

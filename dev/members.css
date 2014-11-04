@@ -96,11 +96,26 @@ a.btn {
 /*
 * Dropdowns
 */
+.dropdown-menu li > a {
+  color: #222222;
+}
+.dropdown-menu li > a:hover,
+.dropdown-menu li > a:active,
+.dropdown-menu li > a:focus {
+  background-color: #eee;
+  color: #222222;
+}
 .dropdown-menu li.active > a {
   background-color: #8b2c93;
 }
 .dropdown-menu li.active > a:hover {
   background-color: #66206c;
+}
+.dropdown-menu .dropdown-header {
+  color: #bbbbbb;
+}
+.dropdown-menu .divider {
+  background-color: #eeeeee;
 }
 /*
 * Navs
@@ -211,6 +226,29 @@ a.btn {
 }
 .navbar-inverse .navbar-nav li.dropdown .dropdown-menu .divider {
   background-color: #66206c;
+}
+@media (min-width: 768px) {
+  .navbar-inverse .navbar-nav li.dropdown .dropdown-menu li > a {
+    color: #222222;
+  }
+  .navbar-inverse .navbar-nav li.dropdown .dropdown-menu li > a:hover,
+  .navbar-inverse .navbar-nav li.dropdown .dropdown-menu li > a:active,
+  .navbar-inverse .navbar-nav li.dropdown .dropdown-menu li > a:focus {
+    background-color: #eee;
+    color: #222222;
+  }
+  .navbar-inverse .navbar-nav li.dropdown .dropdown-menu li.active > a {
+    background-color: #8b2c93;
+  }
+  .navbar-inverse .navbar-nav li.dropdown .dropdown-menu li.active > a:hover {
+    background-color: #66206c;
+  }
+  .navbar-inverse .navbar-nav li.dropdown .dropdown-menu .dropdown-header {
+    color: #bbbbbb;
+  }
+  .navbar-inverse .navbar-nav li.dropdown .dropdown-menu .divider {
+    background-color: #eeeeee;
+  }
 }
 .navbar-inverse .navbar-toggle {
   border-color: #66206c;
