@@ -259,7 +259,7 @@ a.btn {
 .panel.panel-primary .panel-heading {
   background-color: #8b2c93;
   border-color: #66206c;
-  border-bottom: 2px solid #df0051;
+  border-bottom: 2px solid #66206c;
 }
 .panel.panel-success {
   border-color: #c1f192;
@@ -267,6 +267,7 @@ a.btn {
 .panel.panel-success .panel-heading {
   background-color: #dbf7bf;
   border-color: #c1f192;
+  border-bottom: 2px solid #5ba215;
   color: #5ba215;
 }
 .panel.panel-info {
@@ -275,6 +276,7 @@ a.btn {
 .panel.panel-info .panel-heading {
   background-color: #ddeef5;
   border-color: #b5daea;
+  border-bottom: 2px solid #3d9ec9;
   color: #3d9ec9;
 }
 .panel.panel-warning {
@@ -283,6 +285,7 @@ a.btn {
 .panel.panel-warning .panel-heading {
   background-color: #fff0d8;
   border-color: #ffdca5;
+  border-bottom: 2px solid #ffb43f;
   color: #ffb43f;
 }
 .panel.panel-danger {
@@ -291,6 +294,7 @@ a.btn {
 .panel.panel-danger .panel-heading {
   background-color: #ffdfeb;
   border-color: #ffacca;
+  border-bottom: 2px solid #df0051;
   color: #df0051;
 }
 /*
