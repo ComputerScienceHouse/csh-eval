@@ -140,6 +140,9 @@ a.btn {
   background-color: #8b2c93;
   border-color: #66206c;
 }
+.navbar-inverse .navbar-collapse {
+  border-color: #66206c;
+}
 .navbar-inverse .navbar-brand {
   color: #ffffff;
 }
@@ -161,20 +164,33 @@ a.btn {
   background-color: #66206c;
   color: #e0a6e5;
 }
-.navbar-inverse .navbar-nav li.dropdown .open a {
-  background-color: #66206c;
+.navbar-inverse .navbar-nav li.dropdown a.dropdown-toggle {
+  color: #ffffff;
+  background-color: #8b2c93;
 }
-.navbar-inverse .navbar-nav li.dropdown a:hover,
-.navbar-inverse .navbar-nav li.dropdown a:active,
-.navbar-inverse .navbar-nav li.dropdown a:focus {
+.navbar-inverse .navbar-nav li.dropdown a.dropdown-toggle:hover,
+.navbar-inverse .navbar-nav li.dropdown a.dropdown-toggle:active {
+  color: #e0a6e5;
+}
+.navbar-inverse .navbar-nav li.dropdown a.dropdown-toggle[aria-expanded=true] {
   background-color: #66206c;
 }
 .navbar-inverse .navbar-nav li.dropdown .dropdown-menu li > a {
-  color: #222222;
+  color: #ffffff;
 }
 .navbar-inverse .navbar-nav li.dropdown .dropdown-menu li > a:hover,
-.navbar-inverse .navbar-nav li.dropdown .dropdown-menu li > a:active {
-  background-color: #eee;
+.navbar-inverse .navbar-nav li.dropdown .dropdown-menu li > a:active,
+.navbar-inverse .navbar-nav li.dropdown .dropdown-menu li > a:focus {
+  color: #e0a6e5;
+}
+.navbar-inverse .navbar-nav li.dropdown .dropdown-menu li.active > a {
+  background-color: #66206c;
+}
+.navbar-inverse .navbar-nav li.dropdown .dropdown-menu .dropdown-header {
+  color: #e0a6e5;
+}
+.navbar-inverse .navbar-nav li.dropdown .dropdown-menu .divider {
+  background-color: #66206c;
 }
 .navbar-inverse .navbar-toggle {
   border-color: #66206c;
