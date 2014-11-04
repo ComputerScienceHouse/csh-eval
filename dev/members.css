@@ -123,15 +123,30 @@ a.btn {
   background-color: #66206c;
 }
 /*
-* Navbar
+* Navbar Default
 */
-.navbar {
-  background-color: #eee;
+.navbar-default {
+  background-color: #eeeeee;
+  border-color: #d5d5d5;
 }
-.navbar.navbar-fixed-top {
+.navbar-default.navbar-fixed-top {
   border-color: #ffffff;
   border-width: 0 0 3px 0;
-  box-shadow: 0 6px #df0051;
+  box-shadow: 0 6px #8b2c93;
+}
+.navbar-default .navbar-collapse {
+  border-color: #c8c8c8;
+}
+.navbar-default .navbar-nav li.active > a {
+  background-color: #d5d5d5;
+}
+.navbar-default .navbar-nav li.active > a:hover,
+.navbar-default .navbar-nav li.active > a:active,
+.navbar-default .navbar-nav li.active > a:focus {
+  background-color: #d5d5d5;
+}
+.navbar-default .navbar-nav li.dropdown a.dropdown-toggle[aria-expanded=true] {
+  background-color: #d5d5d5;
 }
 /* 
 * Navbar Inverse
@@ -139,6 +154,11 @@ a.btn {
 .navbar-inverse {
   background-color: #8b2c93;
   border-color: #66206c;
+}
+.navbar-inverse.navbar-fixed-top {
+  border-color: #ffffff;
+  border-width: 0 0 3px 0;
+  box-shadow: 0 6px #df0051;
 }
 .navbar-inverse .navbar-collapse {
   border-color: #66206c;

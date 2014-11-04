@@ -160,15 +160,36 @@ a {
 }
 
 /*
-* Navbar
+* Navbar Default
 */
 
-.navbar {
-  background-color: #eee;
+@color-navbar-default: #eee;
+
+.navbar-default {
+  background-color: @color-navbar-default;
+  border-color: darken(@color-navbar-default, 10%);
   &.navbar-fixed-top {
     border-color: @white;
     border-width: 0 0 3px 0;
-    box-shadow: 0 6px @members-pink;
+    box-shadow: 0 6px @members-purple;
+  }
+  .navbar-collapse {
+    border-color: darken(@color-navbar-default, 15%);
+  }
+  .navbar-nav {
+    li.active > a {
+      background-color: darken(@color-navbar-default, 10%);
+      &:hover, &:active, &:focus {
+        background-color: darken(@color-navbar-default, 10%);
+      }
+    }
+    li.dropdown {
+      a.dropdown-toggle {
+        &[aria-expanded=true] {
+          background-color: darken(@color-navbar-default, 10%);
+        }
+      }
+    }
   }
 }
 
@@ -179,6 +200,11 @@ a {
 .navbar-inverse {
   background-color: @members-purple;
   border-color: @members-purple-dark;
+  &.navbar-fixed-top {
+    border-color: @white;
+    border-width: 0 0 3px 0;
+    box-shadow: 0 6px @members-pink;
+  }
   .navbar-collapse {
     border-color: @members-purple-dark;
   }
@@ -203,14 +229,6 @@ a {
       }
     }
     li.dropdown {
-      // &.open {
-      //   a {
-      //     background-color: @members-purple-dark;
-      //   }
-      // }
-      // a:hover, a:active, a:focus {
-      //   background-color: @members-purple-dark;
-      // }
       a.dropdown-toggle {
         color: @white;
         background-color: @members-purple;
