@@ -1,10 +1,15 @@
 // Colors
 @public-green: #5ba215;
-@public-green-dark: darken(@public-green, 10%);
-@public-green-light: lighten(@public-green, 30%);
+@public-green-dark: darken(@public-green, 5%);
+@public-green-light: lighten(@public-green, 40%);
 @charcoal: #222;
 @gray: #bbb;
 @white: #fff;
+
+@color-success: #2A4FD4;
+@color-info: #3d9ec9;
+@color-warning: #ffb43f;
+@color-danger: #CC201D;
 
 /*
 * General
@@ -24,14 +29,181 @@ a {
   &:hover, &:active {
     color: @public-green-dark;
   }
+  &.btn {
+    color: @white;
+  }
 }
 
 /*
-* Navbar
+* Button
 */
 
-.navbar {
-  background-color: #eee;
+.btn {
+  &.btn-link {
+    color: @public-green;
+    &:hover {
+      color: @public-green-dark;
+    }
+  }
+  &.btn-primary {
+    background-color: @public-green;
+    border-color: @public-green-dark;
+    &:hover {
+      background-color: darken(@public-green, 5%);
+      border-color: darken(@public-green-dark, 5%);
+    }
+  }
+  &.btn-success {
+    background-color: @color-success;
+    border-color: darken(@color-success, 10%);
+    &:hover {
+      background-color: darken(@color-success, 5%);
+      border-color: darken(@color-success, 15%);
+    }
+  }
+  &.color-info {
+    background-color: @color-info;
+    border-color: darken(@color-info, 10%);
+    &:hover {
+      background-color: darken(@color-info, 5%);
+      border-color: darken(@color-info, 15%);
+    }
+  }
+  &.color-warning {
+    background-color: @color-warning;
+    border-color: darken(@color-warning, 10%);
+    &:hover {
+      background-color: darken(@color-warning, 5%);
+      border-color: darken(@color-warning, 15%);
+    }
+  }
+  &.btn-danger {
+    color: @white;
+    background-color: @color-danger;
+    border-color: darken(@color-danger, 10%);
+    &:hover {
+      background-color: darken(@color-danger, 5%);
+      border-color: darken(@color-danger, 15%);
+    }
+  }
+}
+
+/*
+* Labels 
+*/
+
+.label {
+  &.label-default {
+    background-color: @gray;
+  }
+  &.label-primary {
+    background-color: @public-green;
+  }
+  &.label-success {
+    background-color: @color-success;
+  }
+  &.label-info {
+    background-color: @color-info;
+  }
+  &.label-warning {
+    background-color: @color-warning;
+  }
+  &.label-danger {
+    background-color: @color-danger;
+  }
+}
+
+/*
+* Badges
+*/
+
+.badge {
+  background-color: @gray;
+}
+
+/*
+* Dropdowns
+*/
+
+.dropdown-menu {
+  li > a {
+    color: @charcoal;
+    &:hover, &:active, &:focus {
+      background-color: #eee;
+      color: @charcoal;
+    } 
+  }
+  li.active > a {
+    background-color: @public-green;
+    &:hover {
+      background-color: @public-green-dark;
+    }
+  }
+  .dropdown-header {
+    color: @gray;
+  }
+  .divider {
+    background-color: lighten(@gray, 20%);
+  }
+}
+
+/*
+* Navs
+*/
+
+.nav-tabs {
+  li.active > a {
+    color: @public-green;
+    &:hover, &:focus {
+      color: @public-green-dark;
+    }
+  }
+}
+
+.nav-pills {
+  li.active > a {
+    background-color: @public-green;
+    .badge {
+      color: @public-green-dark;
+    }
+    &:hover, &:focus {
+      background-color: @public-green-dark;
+    }
+  }
+}
+
+/*
+* Navbar Default
+*/
+
+@color-navbar-default: #eee;
+
+.navbar-default {
+  background-color: @color-navbar-default;
+  border-color: darken(@color-navbar-default, 10%);
+  &.navbar-fixed-top {
+    border-color: @white;
+    border-width: 0 0 3px 0;
+    box-shadow: 0 6px @public-green;
+  }
+  .navbar-collapse {
+    border-color: darken(@color-navbar-default, 15%);
+  }
+  .navbar-nav {
+    li.active > a {
+      background-color: darken(@color-navbar-default, 10%);
+      &:hover, &:active, &:focus {
+        background-color: darken(@color-navbar-default, 10%);
+      }
+    }
+    li.dropdown {
+      a.dropdown-toggle {
+        &[aria-expanded=true] {
+          background-color: darken(@color-navbar-default, 10%);
+        }
+      }
+    }
+  }
 }
 
 /* 
@@ -40,6 +212,15 @@ a {
 
 .navbar-inverse {
   background-color: @public-green;
+  border-color: @public-green-dark;
+  &.navbar-fixed-top {
+    border-color: @white;
+    border-width: 0 0 3px 0;
+    box-shadow: 0 6px @public-green-dark;
+  }
+  .navbar-collapse {
+    border-color: @public-green-dark;
+  }
   .navbar-brand {
     color: @white;
     &:hover {
@@ -60,17 +241,121 @@ a {
         color: @public-green-light;
       }
     }
+    li.dropdown {
+      a.dropdown-toggle {
+        color: @white;
+        background-color: @public-green;
+        &:hover, &:active {
+          color: @public-green-light;
+        }
+        &[aria-expanded=true] {
+          background-color: @public-green-dark;
+        }
+      }
+      .dropdown-menu {
+        li > a {
+          color: @white;
+          &:hover, &:active, &:focus {
+            color: @public-green-light;
+          }
+        }
+        li.active > a {
+          background-color: @public-green-dark;
+        }
+        .dropdown-header {
+          color: @public-green-light;
+        }
+        .divider {
+          background-color: @public-green-dark;
+        }
+        // Rebuild the dropdown for non-mobile
+        @media(min-width: 768px) {
+          .dropdown-menu;
+        }
+      }
+    }
   }
   .navbar-toggle {
     border-color: @public-green-dark;
-    &:hover {
+    &:hover, &:focus {
       background-color: @public-green-dark;
     }
   }
-  &.navbar-fixed-top {
-    border-color: @white;
-    border-width: 0 0 3px 0;
-    box-shadow: 0 6px @public-green-light;
+}
+
+/*
+* Alerts
+*/
+
+.alert {
+  &.alert-success {
+    background-color: lighten(@color-success, 50%);
+    border-color: lighten(@color-success, 40%);
+    color: @color-success;
+  }
+  &.alert-info {
+    background-color: lighten(@color-info, 40%);
+    border-color: lighten(@color-info, 30%);
+    color: darken(@color-info, 10%);
+  }
+  &.alert-warning {
+    background-color: lighten(@color-warning, 30%);
+    border-color: lighten(@color-warning, 20%);
+    color: darken(@color-warning, 10%);
+  }
+  &.alert-danger {
+    background-color: lighten(@color-danger, 50%);
+    border-color: lighten(@color-danger, 40%);
+    color: @color-danger;
+  }
+}
+
+/*
+* Progress Bars
+*/
+
+.progress {
+  .progress-bar {
+    background-color: @public-green;
+    &.progress-bar-success {
+      background-color: @color-success;
+    }
+    &.progress-bar-info {
+      background-color: @color-info;
+    }
+    &.progress-bar-warning {
+      background-color: @color-warning;
+    }
+    &.progress-bar-danger {
+      background-color: @color-danger;
+    }
+  }
+}
+
+/*
+* List Groups
+*/
+
+.list-group {
+  a.list-group-item {
+    &:link, &:visited {
+      color: @charcoal;
+    }
+    &:hover, &:active {
+      color: @charcoal;
+    }
+    &.active {
+      &:link, &:visited {
+        color: @white;
+        background-color: @public-green;
+        border-color: @public-green-dark;
+      }
+      &:hover, &:active {
+        color: @white;
+        background-color: @public-green-dark;
+        border-color: @public-green-dark;
+      }
+    }
   }
 }
 
@@ -78,9 +363,65 @@ a {
 * Panels
 */
 
-.panel-default {
-  .panel-heading {
-    border-bottom: 2px solid @public-green-light;
+.panel {
+  &.panel-default {
+    .panel-heading {
+      border-bottom: 2px solid @public-green-light;
+    }
+  }
+  &.panel-primary {
+    border-color: @public-green-dark;
+    .panel-heading {
+      background-color: @public-green;
+      border-color: @public-green-dark;
+      border-bottom: 2px solid @public-green-dark;
+    }
+  }
+  &.panel-success {
+    border-color: lighten(@color-success, 30%);
+    .panel-heading {
+      background-color: lighten(@color-success, 40%);
+      border-color: lighten(@color-success, 30%);
+      border-bottom: 2px solid @color-success;
+      color: @color-success;
+    }
+  }
+  &.panel-info {
+    border-color: lighten(@color-info, 30%);
+    .panel-heading {
+      background-color: lighten(@color-info, 40%);
+      border-color: lighten(@color-info, 30%);
+      border-bottom: 2px solid @color-info;
+      color: @color-info;
+    }
+  }
+  &.panel-warning {
+    border-color: lighten(@color-warning, 20%);
+    .panel-heading {
+      background-color: lighten(@color-warning, 30%);
+      border-color: lighten(@color-warning, 20%);
+      border-bottom: 2px solid @color-warning;
+      color: @color-warning;
+    }
+  }
+  &.panel-danger {
+    border-color: lighten(@color-danger, 40%);
+    .panel-heading {
+      background-color: lighten(@color-danger, 50%);
+      border-color: lighten(@color-danger, 40%);
+      border-bottom: 2px solid @color-danger;
+      color: @color-danger;
+    }
+  }
+}
+
+/*
+* Carousel
+*/
+
+.carousel {
+  & > a.carousel-control {
+    color: @white;
   }
 }
 
