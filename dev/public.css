@@ -26,45 +26,45 @@ a.btn {
   color: #4e8b12;
 }
 .btn.btn-primary {
-  background-color: #5ba215;
-  border-color: #4e8b12;
+  background-color: #3b5fb8;
+  border-color: #2f4b91;
 }
 .btn.btn-primary:hover {
-  background-color: #4e8b12;
-  border-color: #42750f;
+  background-color: #3555a5;
+  border-color: #28417e;
 }
 .btn.btn-success {
-  background-color: #2a4fd4;
-  border-color: #223fa9;
+  background-color: #5ba215;
+  border-color: #42750f;
 }
 .btn.btn-success:hover {
-  background-color: #2647bf;
-  border-color: #1d3794;
+  background-color: #4e8b12;
+  border-color: #355e0c;
 }
-.btn.color-info {
+.btn.btn-info {
   background-color: #3d9ec9;
   border-color: #2e80a5;
 }
-.btn.color-info:hover {
+.btn.btn-info:hover {
   background-color: #3390b9;
   border-color: #287191;
 }
-.btn.color-warning {
+.btn.btn-warning {
   background-color: #ffb43f;
   border-color: #ffa00c;
 }
-.btn.color-warning:hover {
+.btn.btn-warning:hover {
   background-color: #ffaa25;
   border-color: #f29300;
 }
 .btn.btn-danger {
   color: #ffffff;
-  background-color: #cc201d;
-  border-color: #9f1917;
+  background-color: #cc4837;
+  border-color: #a6382a;
 }
 .btn.btn-danger:hover {
-  background-color: #b61c1a;
-  border-color: #891513;
+  background-color: #ba3f2f;
+  border-color: #913125;
 }
 /*
 * Labels 
@@ -73,10 +73,10 @@ a.btn {
   background-color: #bbbbbb;
 }
 .label.label-primary {
-  background-color: #5ba215;
+  background-color: #3b5fb8;
 }
 .label.label-success {
-  background-color: #2a4fd4;
+  background-color: #5ba215;
 }
 .label.label-info {
   background-color: #3d9ec9;
@@ -85,7 +85,7 @@ a.btn {
   background-color: #ffb43f;
 }
 .label.label-danger {
-  background-color: #cc201d;
+  background-color: #cc4837;
 }
 /*
 * Badges
@@ -261,9 +261,9 @@ a.btn {
 * Alerts
 */
 .alert.alert-success {
-  background-color: #fefeff;
-  border-color: #d4dbf6;
-  color: #2a4fd4;
+  background-color: #dbf7bf;
+  border-color: #c1f192;
+  color: #5ba215;
 }
 .alert.alert-info {
   background-color: #ddeef5;
@@ -276,18 +276,18 @@ a.btn {
   color: #ffa00c;
 }
 .alert.alert-danger {
-  background-color: #fcecec;
-  border-color: #f6c0bf;
-  color: #cc201d;
+  background-color: #f5ddda;
+  border-color: #ebb8b1;
+  color: #cc4837;
 }
 /*
 * Progress Bars
 */
 .progress .progress-bar {
-  background-color: #5ba215;
+  background-color: #3b5fb8;
 }
 .progress .progress-bar.progress-bar-success {
-  background-color: #2a4fd4;
+  background-color: #5ba215;
 }
 .progress .progress-bar.progress-bar-info {
   background-color: #3d9ec9;
@@ -296,7 +296,7 @@ a.btn {
   background-color: #ffb43f;
 }
 .progress .progress-bar.progress-bar-danger {
-  background-color: #cc201d;
+  background-color: #cc4837;
 }
 /*
 * List Groups
@@ -308,6 +308,9 @@ a.btn {
 .list-group a.list-group-item:hover,
 .list-group a.list-group-item:active {
   color: #222222;
+}
+.list-group a.list-group-item.active .list-group-item-text {
+  color: #c1f192;
 }
 .list-group a.list-group-item.active:link,
 .list-group a.list-group-item.active:visited {
@@ -328,21 +331,21 @@ a.btn {
   border-bottom: 2px solid #c1f192;
 }
 .panel.panel-primary {
-  border-color: #4e8b12;
+  border-color: #2f4b91;
 }
 .panel.panel-primary .panel-heading {
-  background-color: #5ba215;
-  border-color: #4e8b12;
-  border-bottom: 2px solid #4e8b12;
+  background-color: #3b5fb8;
+  border-color: #2f4b91;
+  border-bottom: 2px solid #2f4b91;
 }
 .panel.panel-success {
-  border-color: #a9b8ee;
+  border-color: #c1f192;
 }
 .panel.panel-success .panel-heading {
-  background-color: #d4dbf6;
-  border-color: #a9b8ee;
-  border-bottom: 2px solid #2a4fd4;
-  color: #2a4fd4;
+  background-color: #dbf7bf;
+  border-color: #c1f192;
+  border-bottom: 2px solid #5ba215;
+  color: #5ba215;
 }
 .panel.panel-info {
   border-color: #b5daea;
@@ -363,13 +366,13 @@ a.btn {
   color: #ffb43f;
 }
 .panel.panel-danger {
-  border-color: #f6c0bf;
+  border-color: #ebb8b1;
 }
 .panel.panel-danger .panel-heading {
-  background-color: #fcecec;
-  border-color: #f6c0bf;
-  border-bottom: 2px solid #cc201d;
-  color: #cc201d;
+  background-color: #f5ddda;
+  border-color: #ebb8b1;
+  border-bottom: 2px solid #cc4837;
+  color: #cc4837;
 }
 /*
 * Carousel

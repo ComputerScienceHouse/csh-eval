@@ -6,10 +6,11 @@
 @gray: #bbb;
 @white: #fff;
 
-@color-success: #2A4FD4;
+@color-primary: #3B5FB8;
+@color-success: @public-green;
 @color-info: #3d9ec9;
 @color-warning: #ffb43f;
-@color-danger: #CC201D;
+@color-danger: #CC4837;
 
 /*
 * General
@@ -46,11 +47,11 @@ a {
     }
   }
   &.btn-primary {
-    background-color: @public-green;
-    border-color: @public-green-dark;
+    background-color: @color-primary;
+    border-color: darken(@color-primary, 10%);
     &:hover {
-      background-color: darken(@public-green, 5%);
-      border-color: darken(@public-green-dark, 5%);
+      background-color: darken(@color-primary, 5%);
+      border-color: darken(@color-primary, 15%);
     }
   }
   &.btn-success {
@@ -61,7 +62,7 @@ a {
       border-color: darken(@color-success, 15%);
     }
   }
-  &.color-info {
+  &.btn-info {
     background-color: @color-info;
     border-color: darken(@color-info, 10%);
     &:hover {
@@ -69,7 +70,7 @@ a {
       border-color: darken(@color-info, 15%);
     }
   }
-  &.color-warning {
+  &.btn-warning {
     background-color: @color-warning;
     border-color: darken(@color-warning, 10%);
     &:hover {
@@ -97,7 +98,7 @@ a {
     background-color: @gray;
   }
   &.label-primary {
-    background-color: @public-green;
+    background-color: @color-primary;
   }
   &.label-success {
     background-color: @color-success;
@@ -304,8 +305,8 @@ a {
     color: darken(@color-warning, 10%);
   }
   &.alert-danger {
-    background-color: lighten(@color-danger, 50%);
-    border-color: lighten(@color-danger, 40%);
+    background-color: lighten(@color-danger, 40%);
+    border-color: lighten(@color-danger, 30%);
     color: @color-danger;
   }
 }
@@ -316,7 +317,7 @@ a {
 
 .progress {
   .progress-bar {
-    background-color: @public-green;
+    background-color: @color-primary;
     &.progress-bar-success {
       background-color: @color-success;
     }
@@ -345,6 +346,9 @@ a {
       color: @charcoal;
     }
     &.active {
+      .list-group-item-text {
+        color: @public-green-light;
+      }
       &:link, &:visited {
         color: @white;
         background-color: @public-green;
@@ -370,18 +374,18 @@ a {
     }
   }
   &.panel-primary {
-    border-color: @public-green-dark;
+    border-color: darken(@color-primary, 10%);
     .panel-heading {
-      background-color: @public-green;
-      border-color: @public-green-dark;
-      border-bottom: 2px solid @public-green-dark;
+      background-color: @color-primary;
+      border-color: darken(@color-primary, 10%);
+      border-bottom: 2px solid darken(@color-primary, 10%);
     }
   }
   &.panel-success {
-    border-color: lighten(@color-success, 30%);
+    border-color: lighten(@color-success, 40%);
     .panel-heading {
-      background-color: lighten(@color-success, 40%);
-      border-color: lighten(@color-success, 30%);
+      background-color: lighten(@color-success, 50%);
+      border-color: lighten(@color-success, 40%);
       border-bottom: 2px solid @color-success;
       color: @color-success;
     }
@@ -405,10 +409,10 @@ a {
     }
   }
   &.panel-danger {
-    border-color: lighten(@color-danger, 40%);
+    border-color: lighten(@color-danger, 30%);
     .panel-heading {
-      background-color: lighten(@color-danger, 50%);
-      border-color: lighten(@color-danger, 40%);
+      background-color: lighten(@color-danger, 40%);
+      border-color: lighten(@color-danger, 30%);
       border-bottom: 2px solid @color-danger;
       color: @color-danger;
     }

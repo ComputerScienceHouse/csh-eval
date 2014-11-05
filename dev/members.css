@@ -41,19 +41,19 @@ a.btn {
   background-color: #4e8b12;
   border-color: #355e0c;
 }
-.btn.color-info {
+.btn.btn-info {
   background-color: #3d9ec9;
   border-color: #2e80a5;
 }
-.btn.color-info:hover {
+.btn.btn-info:hover {
   background-color: #3390b9;
   border-color: #287191;
 }
-.btn.color-warning {
+.btn.btn-warning {
   background-color: #ffb43f;
   border-color: #ffa00c;
 }
-.btn.color-warning:hover {
+.btn.btn-warning:hover {
   background-color: #ffaa25;
   border-color: #f29300;
 }
