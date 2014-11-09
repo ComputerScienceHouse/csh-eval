@@ -350,8 +350,8 @@ a.btn {
 .panel.panel-info .panel-heading {
   background-color: #ddeef5;
   border-color: #b5daea;
-  border-bottom: 2px solid #3d9ec9;
-  color: #3d9ec9;
+  border-bottom: 2px solid #2e80a5;
+  color: #2e80a5;
 }
 .panel.panel-warning {
   border-color: #ffdca5;
@@ -359,8 +359,8 @@ a.btn {
 .panel.panel-warning .panel-heading {
   background-color: #fff0d8;
   border-color: #ffdca5;
-  border-bottom: 2px solid #ffb43f;
-  color: #ffb43f;
+  border-bottom: 2px solid #ffa00c;
+  color: #ffa00c;
 }
 .panel.panel-danger {
   border-color: #ffacca;
