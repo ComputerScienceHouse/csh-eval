@@ -6,8 +6,8 @@
 @gray: #bbb;
 @white: #fff;
 
-@color-primary: #3B5FB8;
-@color-success: @public-green;
+@color-primary: @public-green;
+@color-success: lighten(@public-green, 10%);
 @color-info: #3d9ec9;
 @color-warning: #ffb43f;
 @color-danger: #CC4837;
@@ -290,9 +290,9 @@ a {
 
 .alert {
   &.alert-success {
-    background-color: lighten(@color-success, 50%);
-    border-color: lighten(@color-success, 40%);
-    color: @color-success;
+    background-color: lighten(@color-success, 40%);
+    border-color: lighten(@color-success, 30%);
+    color: darken(@color-success, 10%);
   }
   &.alert-info {
     background-color: lighten(@color-info, 40%);
@@ -382,12 +382,12 @@ a {
     }
   }
   &.panel-success {
-    border-color: lighten(@color-success, 40%);
+    border-color: lighten(@color-success, 30%);
     .panel-heading {
-      background-color: lighten(@color-success, 50%);
-      border-color: lighten(@color-success, 40%);
-      border-bottom: 2px solid @color-success;
-      color: @color-success;
+      background-color: lighten(@color-success, 40%);
+      border-color: lighten(@color-success, 30%);
+      border-bottom: 2px solid darken(@color-success, 10%);
+      color: darken(@color-success, 10%);
     }
   }
   &.panel-info {
@@ -395,8 +395,8 @@ a {
     .panel-heading {
       background-color: lighten(@color-info, 40%);
       border-color: lighten(@color-info, 30%);
-      border-bottom: 2px solid @color-info;
-      color: @color-info;
+      border-bottom: 2px solid darken(@color-info, 10%);
+      color: darken(@color-info, 10%);
     }
   }
   &.panel-warning {
@@ -404,8 +404,8 @@ a {
     .panel-heading {
       background-color: lighten(@color-warning, 30%);
       border-color: lighten(@color-warning, 20%);
-      border-bottom: 2px solid @color-warning;
-      color: @color-warning;
+      border-bottom: 2px solid darken(@color-warning, 10%);
+      color: darken(@color-warning, 10%);
     }
   }
   &.panel-danger {

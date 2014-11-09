@@ -26,20 +26,20 @@ a.btn {
   color: #4e8b12;
 }
 .btn.btn-primary {
-  background-color: #3b5fb8;
-  border-color: #2f4b91;
-}
-.btn.btn-primary:hover {
-  background-color: #3555a5;
-  border-color: #28417e;
-}
-.btn.btn-success {
   background-color: #5ba215;
   border-color: #42750f;
 }
-.btn.btn-success:hover {
+.btn.btn-primary:hover {
   background-color: #4e8b12;
   border-color: #355e0c;
+}
+.btn.btn-success {
+  background-color: #74cf1b;
+  border-color: #5ba215;
+}
+.btn.btn-success:hover {
+  background-color: #68b918;
+  border-color: #4e8b12;
 }
 .btn.btn-info {
   background-color: #3d9ec9;
@@ -73,10 +73,10 @@ a.btn {
   background-color: #bbbbbb;
 }
 .label.label-primary {
-  background-color: #3b5fb8;
+  background-color: #5ba215;
 }
 .label.label-success {
-  background-color: #5ba215;
+  background-color: #74cf1b;
 }
 .label.label-info {
   background-color: #3d9ec9;
@@ -284,10 +284,10 @@ a.btn {
 * Progress Bars
 */
 .progress .progress-bar {
-  background-color: #3b5fb8;
+  background-color: #5ba215;
 }
 .progress .progress-bar.progress-bar-success {
-  background-color: #5ba215;
+  background-color: #74cf1b;
 }
 .progress .progress-bar.progress-bar-info {
   background-color: #3d9ec9;
@@ -331,12 +331,12 @@ a.btn {
   border-bottom: 2px solid #c1f192;
 }
 .panel.panel-primary {
-  border-color: #2f4b91;
+  border-color: #42750f;
 }
 .panel.panel-primary .panel-heading {
-  background-color: #3b5fb8;
-  border-color: #2f4b91;
-  border-bottom: 2px solid #2f4b91;
+  background-color: #5ba215;
+  border-color: #42750f;
+  border-bottom: 2px solid #42750f;
 }
 .panel.panel-success {
   border-color: #c1f192;
@@ -353,8 +353,8 @@ a.btn {
 .panel.panel-info .panel-heading {
   background-color: #ddeef5;
   border-color: #b5daea;
-  border-bottom: 2px solid #3d9ec9;
-  color: #3d9ec9;
+  border-bottom: 2px solid #2e80a5;
+  color: #2e80a5;
 }
 .panel.panel-warning {
   border-color: #ffdca5;
@@ -362,8 +362,8 @@ a.btn {
 .panel.panel-warning .panel-heading {
   background-color: #fff0d8;
   border-color: #ffdca5;
-  border-bottom: 2px solid #ffb43f;
-  color: #ffb43f;
+  border-bottom: 2px solid #ffa00c;
+  color: #ffa00c;
 }
 .panel.panel-danger {
   border-color: #ebb8b1;
