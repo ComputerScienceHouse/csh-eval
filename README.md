@@ -26,12 +26,17 @@ First install grunt-cli: `npm install -g grunt-cli`
 
 Next, install dependencies: `npm install`
 
-To compile and minify all LESS source files: `grunt` or `grunt default`
+Recommended grunt workflow:
+* In one terminal window, run `grunt dev` to automatically compile and minify LESS files whenever a change is made to either theme.
+* In another terminal window, run `grunt test` to spin up a web server and view your changes at `http://localhost:9000/public/` or `http://localhost:9000/members/`.
 
-To only compile LESS to CSS:
-* `grunt less:members` or `grunt less:public` to minify individual files
-* `grunt less` to compile all files
-
-To only minify CSS files: 
-* `grunt cssmin:members` or `grunt cssmin:public` to minify individual files
-* `grunt cssmin` to minify all files
+All available grunt tasks:
+* `grunt` or `grunt default`: Compile LESS and minify CSS for both themes
+* `grunt defaultMembers`: Compile LESS and minify CSS for the `members` theme only
+* `grunt defaultPublic`: Compile LESS and minify CSS for the `public` theme only
+* `grunt dev`: Compile LESS, minify CSS, and watch for changes in both themes
+* `grunt devMembers` Compile LESS, minfiy CSS, and watch for changes in the `members` theme
+* `grunt devPublic` Compile LESS, minfiy CSS, and watch for changes in the `public` theme
+* `grunt test`: Spin up a local web server at `http://localhost:9000` to view the test pages
+* `grunt testMembers`: Spin up a local web server and open the `members` test page at `http://localhost:9000/members/`
+* `grunt testPublic`: Spin up a local web server and open the `public` test page at `http://localhost:9000/public/`
