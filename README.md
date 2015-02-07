@@ -22,7 +22,9 @@ To contribute to this project:
 Using Grunt
 -----------
 
-First install grunt-cli: `npm install -g grunt-cli`
+Learn more about Grunt: http://gruntjs.com
+
+First, install grunt-cli: `npm install -g grunt-cli`
 
 Next, install dependencies: `npm install`
 
