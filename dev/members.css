@@ -1,9 +1,8 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:700,400);
 /*
 * General
 */
 body {
-  font-family: 'Open Sans', sans-serif;
+  font-family: sans-serif;
 }
 a:link,
 a:visited {
