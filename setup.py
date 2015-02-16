@@ -6,12 +6,12 @@ with open('requirements.txt') as r:
 with open('VERSION') as v:
     version = v.read()
 
-setup(name='csh-eval',
+setup(name='csh-evals',
       version=version,
       author='Matt Gambogi',
       author_email='gambogi@csh.rit.edu',
       url=('https://github.com/gambogi/csh-eval'),
-      packages=['csh.eval'],
+      packages=['evals'],
       description='An evaluations system for the Computer Science House'
                   ' at RIT.',
       install_requires=requirements
