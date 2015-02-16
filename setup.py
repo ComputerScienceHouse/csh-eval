@@ -10,7 +10,7 @@ setup(name='csh-eval',
       version=version,
       author='Matt Gambogi',
       author_email='gambogi@csh.rit.edu',
-      url=('https://github.com/gambogi/csh-eval')
+      url=('https://github.com/gambogi/csh-eval'),
       packages=['csh.eval'],
       description='An evaluations system for the Computer Science House'
                   ' at RIT.',
