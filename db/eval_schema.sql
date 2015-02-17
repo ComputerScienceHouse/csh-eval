@@ -22,6 +22,20 @@ CREATE TYPE status_t AS ENUM (
     'failed'
 );
 
+CREATE TYPE member_t AS ENUM (
+    'active',
+    'alumni',
+    'honorary',
+    'advisory',
+    'introductory'
+);
+
+CREATE TYPE dues_t AS ENUM (
+    'paid',
+    'unpaid',
+    'exempt'
+);
+
 CREATE TYPE event_t AS ENUM (
     'house',
     'eboard',
@@ -37,20 +51,25 @@ CREATE TYPE event_t AS ENUM (
 );
 
 CREATE TABLE member (
-    id          serial      PRIMARY KEY,
-    uuid        varchar     DEFAULT NULL,
-    username    varchar     NOT NULL,
-    password    varchar     DEFAULT NULL,
-    join_time   timestamp   DEFAULT now()
+    id             serial      PRIMARY KEY,
+    uuid           varchar     DEFAULT NULL,
+    username       varchar     NOT NULL,
+    commonname     varchar     NOT NULL,
+    password       varchar     DEFAULT NULL,
+    join_time      timestamp   NOT NULL DEFAULT now(),
+    resident       boolean     NOT NULL,
+    dues           dues_t      NOT NULL DEFAULT 'unpaid',
+    membership     member_t    NOT NULL
 );
 
 CREATE UNIQUE INDEX ldapid
               ON member (uuid);
 
-CREATE TABLE freshman (
-    id          integer     PRIMARY KEY REFERENCES member (id),
-    eval_date   date        NOT NULL,
-    status      status_t    NOT NULL DEFAULT 'pending'
+CREATE TABLE intro_eval (
+    id             serial      PRIMARY KEY,
+    freshman_id    integer     NOT NULL REFERENCES member (id),
+    eval_date      date        NOT NULL,
+    status         status_t    NOT NULL DEFAULT 'pending'
 );
 
 CREATE TABLE packet (
@@ -63,7 +82,8 @@ CREATE TABLE signature (
     id          serial      PRIMARY KEY,
     signer      integer     NOT NULL REFERENCES member (id),
     packet      integer     NOT NULL REFERENCES packet (id),
-    signed      timestamp   NOT NULL DEFAULT now()
+    required    boolean     NOT NULL DEFAULT false,
+    signed      timestamp
 );
 
 CREATE TABLE event (
@@ -93,6 +113,14 @@ CREATE TABLE project (
     status          status_t    NOT NULL DEFAULT 'pending'
 );
 
+CREATE TABLE evaluation (
+    id              serial      PRIMARY KEY,
+    member          integer     NOT NULL REFERENCES member (id),
+    comments        varchar     DEFAULT '',
+    deadline        timestamp   NOT NULL,
+    status          status_t    NOT NULL DEFAULT 'pending'
+);
+
 CREATE TABLE conditional (
     id              serial      PRIMARY KEY,
     member          integer     NOT NULL REFERENCES member (id),
@@ -103,17 +131,38 @@ CREATE TABLE conditional (
     status          status_t    NOT NULL DEFAULT 'pending'
 );
 
-CREATE TABLE evaluation (
-    id              serial      PRIMARY KEY,
-    member          integer     NOT NULL REFERENCES member (id),
-    comments        varchar     DEFAULT '',
-    deadline        timestamp   NOT NULL,
-    status          status_t    NOT NULL DEFAULT 'pending'
-);
-
 CREATE TABLE queue (
     id              serial      PRIMARY KEY,
     member          integer     REFERENCES member (id),
     entered         timestamp   NOT NULL DEFAULT now(),
     exited          timestamp   DEFAULT NULL
+);
+
+CREATE TABLE applicant (
+    id              serial      PRIMARY KEY,
+    member          integer     NOT NULL REFERENCES member (id),
+    created         timestamp   NOT NULL DEFAULT now(),
+    status          status_t    NOT NULL DEFAULT 'pending',
+    social          integer,
+    technical       integer,
+    creativity      integer,
+    versatility     integer,
+    leadership      integer,
+    motivation      integer,
+    overall_feel    integer
+);
+
+CREATE TABLE reviewer (
+    id              serial      PRIMARY KEY,
+    member_id       integer     NOT NULL REFERENCES member,
+    applicant_id    integer     NOT NULL REFERENCES applicant,
+    review_start    timestamp,
+    revew_submit    timestamp
+);
+
+CREATE TABLE question (
+    id              serial      PRIMARY KEY,
+    applicant       integer     NOT NULL REFERENCES applicant (id),
+    query           varchar     NOT NULL,
+    response        varchar     NOT NULL
 );
