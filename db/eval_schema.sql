@@ -59,7 +59,8 @@ CREATE TABLE member (
     join_time      timestamp   NOT NULL DEFAULT now(),
     resident       boolean     NOT NULL,
     dues           dues_t      NOT NULL DEFAULT 'unpaid',
-    membership     member_t    NOT NULL
+    membership     member_t    NOT NULL,
+	housing_points integer     NOT NULL DEFAULT 0
 );
 
 CREATE UNIQUE INDEX ldapid
