@@ -67,12 +67,11 @@ CREATE UNIQUE INDEX ldapid
               ON member (uuid);
 
 CREATE TABLE freshman_project (
-    id                serial      PRIMARY KEY,
-    freshman_id       integer     NOT NULL REFERENCES member (id),
-    eval_id           integer     NOT NULL REFERENCES eval (id),
-    eboard            boolean     NOT NULL DEFAULT false,
-    project_result    status_t    NOT NULL DEFAULT 'pending',
-    project_comments  varchar     NOT NULL DEFAULT ''
+    id          serial      PRIMARY KEY,
+    eval_id     integer     NOT NULL REFERENCES eval (id),
+    eboard      boolean     NOT NULL DEFAULT false,
+    result      status_t    NOT NULL DEFAULT 'pending',
+    comments    varchar     NOT NULL DEFAULT ''
 );
 
 CREATE TABLE packet (
