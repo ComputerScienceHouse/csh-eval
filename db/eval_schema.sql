@@ -60,17 +60,19 @@ CREATE TABLE member (
     resident       boolean     NOT NULL,
     dues           dues_t      NOT NULL DEFAULT 'unpaid',
     membership     member_t    NOT NULL,
-	housing_points integer     NOT NULL DEFAULT 0
+    housing_points integer     NOT NULL DEFAULT 0
 );
 
 CREATE UNIQUE INDEX ldapid
               ON member (uuid);
 
-CREATE TABLE intro_eval (
-    id             serial      PRIMARY KEY,
-    freshman_id    integer     NOT NULL REFERENCES member (id),
-    eval_date      date        NOT NULL,
-    status         status_t    NOT NULL DEFAULT 'pending'
+CREATE TABLE freshman_project (
+    id                serial      PRIMARY KEY,
+    freshman_id       integer     NOT NULL REFERENCES member (id),
+    eval_id           integer     NOT NULL REFERENCES eval (id),
+    eboard            boolean     NOT NULL DEFAULT false,
+    project_result    status_t    NOT NULL DEFAULT 'pending',
+    project_comments  varchar     NOT NULL DEFAULT ''
 );
 
 CREATE TABLE packet (
