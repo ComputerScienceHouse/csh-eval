@@ -60,33 +60,12 @@ CREATE TABLE member (
     resident       boolean     NOT NULL,
     dues           dues_t      NOT NULL DEFAULT 'unpaid',
     membership     member_t    NOT NULL,
-    housing_points integer     NOT NULL DEFAULT 0
+    housing_points integer     NOT NULL DEFAULT 0,
+    room_numer     integer     DEFAULT NULL
 );
 
 CREATE UNIQUE INDEX ldapid
               ON member (uuid);
-
-CREATE TABLE freshman_project (
-    id          serial      PRIMARY KEY,
-    eval_id     integer     NOT NULL REFERENCES eval (id),
-    eboard      boolean     NOT NULL DEFAULT false,
-    result      status_t    NOT NULL DEFAULT 'pending',
-    comments    varchar     NOT NULL DEFAULT ''
-);
-
-CREATE TABLE packet (
-    id          serial      PRIMARY KEY,
-    owner_id    integer     REFERENCES member (id),
-    due_date    date        NOT NULL
-);
-
-CREATE TABLE signature (
-    id          serial      PRIMARY KEY,
-    signer      integer     NOT NULL REFERENCES member (id),
-    packet      integer     NOT NULL REFERENCES packet (id),
-    required    boolean     NOT NULL DEFAULT false,
-    signed      timestamp
-);
 
 CREATE TABLE event (
     id          serial      PRIMARY KEY,
@@ -131,6 +110,28 @@ CREATE TABLE conditional (
     description     varchar     NOT NULL,
     comments        varchar     DEFAULT '',
     status          status_t    NOT NULL DEFAULT 'pending'
+);
+
+CREATE TABLE freshman_project (
+    id          serial      PRIMARY KEY,
+    eval_id     integer     NOT NULL REFERENCES evaluation (id),
+    eboard      boolean     NOT NULL DEFAULT false,
+    result      status_t    NOT NULL DEFAULT 'pending',
+    comments    varchar     NOT NULL DEFAULT ''
+);
+
+CREATE TABLE packet (
+    id          serial      PRIMARY KEY,
+    owner_id    integer     REFERENCES member (id),
+    due_date    date        NOT NULL
+);
+
+CREATE TABLE signature (
+    id          serial      PRIMARY KEY,
+    signer      integer     NOT NULL REFERENCES member (id),
+    packet      integer     NOT NULL REFERENCES packet (id),
+    required    boolean     NOT NULL DEFAULT false,
+    signed      timestamp
 );
 
 CREATE TABLE queue (
