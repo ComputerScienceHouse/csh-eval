@@ -94,6 +94,7 @@ CREATE TABLE event (
     title       varchar     NOT NULL,
     held        timestamp   NOT NULL DEFAULT now(),
     category    event_t     NOT NULL,
+    committee   committee_t NOT NULL,
     description varchar
 );
 
