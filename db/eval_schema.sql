@@ -1,12 +1,12 @@
--- csh-eval PostgreSQL schema
+-- csh-eval postgresql schema
 -- ==========================
 
 -- extensions
-CREATE EXTENSION pgcrypto;
-CREATE EXTENSION "uuid-ossp";
-CREATE EXTENSION citext;
+create extension pgcrypto;
+create extension "uuid-ossp";
+create extension citext;
 
-CREATE TYPE committee_t AS ENUM (
+create type committee_t as enum (
     'evals',
     'rnd',
     'social',
@@ -16,13 +16,13 @@ CREATE TYPE committee_t AS ENUM (
     'financial'
 );
 
-CREATE TYPE status_t AS ENUM (
+create type status_t as enum (
     'pending',
     'passed',
     'failed'
 );
 
-CREATE TYPE member_t AS ENUM (
+create type member_t as enum (
     'active',
     'alumni',
     'honorary',
@@ -31,13 +31,13 @@ CREATE TYPE member_t AS ENUM (
     'non'
 );
 
-CREATE TYPE dues_t AS ENUM (
+create type dues_t as enum (
     'paid',
     'unpaid',
     'exempt'
 );
 
-CREATE TYPE event_t AS ENUM (
+create type event_t as enum (
     'house',
     'social',
     'committee',
@@ -45,140 +45,140 @@ CREATE TYPE event_t AS ENUM (
     'orientation'
 );
 
-CREATE TYPE project_t as ENUM (
+create type project_t as enum (
     'major'
 );
 
-CREATE TYPE eval_t as ENUM (
+create type eval_t as enum (
     'introductory',
     'membership'
 );
 
-CREATE TABLE member (
-    id             serial      PRIMARY KEY,
-    uuid           varchar     DEFAULT NULL,
-    username       varchar     NOT NULL,
-    commonname     varchar     NOT NULL,
-    password       varchar     DEFAULT NULL,
-    dues           dues_t      NOT NULL DEFAULT 'unpaid',
-    housing_points integer     NOT NULL DEFAULT 0,
-    on_floor       boolean     NOT NULL DEFAULT false
+create table member (
+    id             serial      primary key,
+    uuid           varchar     default null,
+    username       varchar     not null,
+    commonname     varchar     not null,
+    password       varchar     default null,
+    dues           dues_t      not null default 'unpaid',
+    housing_points integer     not null default 0,
+    on_floor       boolean     not null default false
 );
 
-CREATE UNIQUE INDEX ldapid
-              ON member (uuid);
+create unique index ldapid
+              on member (uuid);
 
-CREATE TABLE eboard (
-    member_id   integer     NOT NULL REFERENCES member (id),
-    committee   committee_t NOT NULL,
-    start_date  date        NOT NULL,
-    end_date    date        DEFAULT NULL
+create table eboard (
+    member_id   integer     not null references member (id),
+    committee   committee_t not null,
+    start_date  date        not null,
+    end_date    date        default null
 );
 
-CREATE TABLE room (
-    member_id   integer     NOT NULL REFERENCES member (id),
-    room_number varchar     NOT NULL,
-    start_date  date        NOT NULL,
-    end_date    date        DEFAULT NULL
+create table room (
+    member_id   integer     not null references member (id),
+    room_number varchar     not null,
+    start_date  date        not null,
+    end_date    date        default null
 );
 
-CREATE TABLE membership (
-    member_id   integer     NOT NULL REFERENCES member (id),
-    status      member_t    NOT NULL,
-    start_date  date        NOT NULL,
-    end_date    date        DEFAULT NULL
+create table membership (
+    member_id   integer     not null references member (id),
+    status      member_t    not null,
+    start_date  date        not null,
+    end_date    date        default null
 );
 
-CREATE TABLE event (
-    id          serial      PRIMARY KEY,
-    title       varchar     NOT NULL,
-    held        timestamp   NOT NULL DEFAULT now(),
-    category    event_t     NOT NULL,
-    committee   committee_t NOT NULL,
+create table event (
+    id          serial      primary key,
+    title       varchar     not null,
+    held        timestamp   not null default now(),
+    category    event_t     not null,
+    committee   committee_t not null,
     description varchar
 );
 
-CREATE TABLE event_attendee (
-    member_id   integer     NOT NULL REFERENCES member (id),
-    event       integer     NOT NULL REFERENCES event (id)
-    host        boolean     NOT NULL DEFAULT FALSE;
+create table event_attendee (
+    member_id   integer     not null references member (id),
+    event       integer     not null references event (id)
+    host        boolean     not null default false;
 );
 
-CREATE TABLE project (
-    id              serial      PRIMARY KEY,
-    member_id       integer     NOT NULL REFERENCES member (id),
-    title           varchar     NOT NULL,
-    description     varchar     NOT NULL,
-    submitted       timestamp   NOT NULL DEFAULT now(),
-    passed          timestamp   DEFAULT NULL,
-    committee       committee_t NOT NULL,
-    project_type    project_t   NOT NULL,
-    comments        varchar     DEFAULT NULL,
-    status          status_t    NOT NULL DEFAULT 'pending'
+create table project (
+    id              serial      primary key,
+    member_id       integer     not null references member (id),
+    title           varchar     not null,
+    description     varchar     not null,
+    submitted       timestamp   not null default now(),
+    passed          timestamp   default null,
+    committee       committee_t not null,
+    project_type    project_t   not null,
+    comments        varchar     default null,
+    status          status_t    not null default 'pending'
 );
 
-CREATE TABLE evaluation (
-    id              serial      PRIMARY KEY,
-    member_id       integer     NOT NULL REFERENCES member (id),
-    comments        varchar     DEFAULT '',
-    deadline        timestamp   NOT NULL,
-    status          status_t    NOT NULL DEFAULT 'pending',
-    eval_type       eval_t      NOT NULL
+create table evaluation (
+    id              serial      primary key,
+    member_id       integer     not null references member (id),
+    comments        varchar     default '',
+    deadline        timestamp   not null,
+    status          status_t    not null default 'pending',
+    eval_type       eval_t      not null
 );
 
-CREATE TABLE conditional (
-    id              serial      PRIMARY KEY,
-    evaluation_id   integer     NOT NULL REFERENCES evaluation (id),
-    deadline        timestamp   NOT NULL,
-    description     varchar     NOT NULL,
-    comments        varchar     DEFAULT '',
+create table conditional (
+    id              serial      primary key,
+    evaluation_id   integer     not null references evaluation (id),
+    deadline        timestamp   not null,
+    description     varchar     not null,
+    comments        varchar     default '',
 );
 
-CREATE TABLE freshman_project (
-    id              serial  PRIMARY KEY,
-    description     varchar NOT NULL DEFAULT ''
-    project_date    date    NOT NULL DEFAULT now()
+create table freshman_project (
+    id              serial  primary key,
+    description     varchar not null default ''
+    project_date    date    not null default now()
 );
 
-CREATE TABLE freshman_project_participant (
-    project_id  integer     NOT NULL REFERENCES freshman_project (id),
-    eval_id     integer     NOT NULL REFERENCES evaluation (id),
-    eboard      boolean     NOT NULL DEFAULT false,
-    result      status_t    NOT NULL DEFAULT 'pending',
-    comments    varchar     DEFAULT ''
+create table freshman_project_participant (
+    project_id  integer     not null references freshman_project (id),
+    eval_id     integer     not null references evaluation (id),
+    eboard      boolean     not null default false,
+    result      status_t    not null default 'pending',
+    comments    varchar     default ''
 );
 
-CREATE TABLE packet (
-    id          serial      PRIMARY KEY,
-    member_id   integer     REFERENCES member (id),
-    due_date    date        NOT NULL,
-    percent_req integer     NOT NULL
+create table packet (
+    id          serial      primary key,
+    member_id   integer     references member (id),
+    due_date    date        not null,
+    percent_req integer     not null
 );
 
-CREATE TABLE signature (
-    member_id   integer     NOT NULL REFERENCES member (id),
-    packet_id   integer     NOT NULL REFERENCES packet (id),
-    required    boolean     NOT NULL DEFAULT false,
+create table signature (
+    member_id   integer     not null references member (id),
+    packet_id   integer     not null references packet (id),
+    required    boolean     not null default false,
     signed      timestamp
 );
 
-CREATE TABLE queue (
-    id              serial      PRIMARY KEY,
-    member          integer     REFERENCES member (id),
-    entered         timestamp   NOT NULL DEFAULT now(),
-    exited          timestamp   DEFAULT NULL
+create table queue (
+    id              serial      primary key,
+    member          integer     references member (id),
+    entered         timestamp   not null default now(),
+    exited          timestamp   default null
 );
 
-CREATE TABLE application (
-    id              serial      PRIMARY KEY,
-    member          integer     NOT NULL REFERENCES member (id),
-    created         timestamp   NOT NULL DEFAULT now(),
-    status          status_t    NOT NULL DEFAULT 'pending',
+create table application (
+    id              serial      primary key,
+    member          integer     not null references member (id),
+    created         timestamp   not null default now(),
+    status          status_t    not null default 'pending',
 );
 
-CREATE TABLE reviewer (
-    member_id       integer     NOT NULL REFERENCES member (id),
-    applicant_id    integer     NOT NULL REFERENCES applicant (id),
+create table reviewer (
+    member_id       integer     not null references member (id),
+    applicant_id    integer     not null references applicant (id),
     review_start    timestamp,
     revew_submit    timestamp,
     social          integer,
@@ -190,10 +190,10 @@ CREATE TABLE reviewer (
     overall_feel    integer
 );
 
-CREATE TABLE interviewer (
-    member_id       integer     NOT NULL  REFERENCES member (id),
-    application_id  integer     NOT NULL REFERENCES application (id),
-    interview_date  date        NOT NULL DEFAULT now(),
+create table interviewer (
+    member_id       integer     not null  references member (id),
+    application_id  integer     not null references application (id),
+    interview_date  date        not null default now(),
     social          integer,
     technical       integer,
     creativity      integer,
@@ -203,25 +203,25 @@ CREATE TABLE interviewer (
     overall_feel    integer
 );
 
-CREATE TABLE question (
-    application_id  integer     NOT NULL REFERENCES application (id),
-    query           varchar     NOT NULL
+create table question (
+    application_id  integer     not null references application (id),
+    query           varchar     not null
 );
 
-CREATE TABLE answer (
-    application_id  integer     NOT NULL REFERENCES application (id),
-    question_id     integer     NOT NULL REFERENCES question (id),
-    response        varchar     NOT NULL
+create table answer (
+    application_id  integer     not null references application (id),
+    question_id     integer     not null references question (id),
+    response        varchar     not null
 );
 
-CREATE TABLE housing_eval (
-    id          serial  PRIMARY KEY,
-    eval_date   date    NOT NULL
+create table housing_eval (
+    id          serial  primary key,
+    eval_date   date    not null
 );
 
-CREATE TABLE housing_evaluator (
-    housing_eval_id integer     NOT NULL REFERENCES housing_eval (id),
-    member_id       integer     NOT NULL REFERENCES member (id),
-    score           integer     NOT NULL,
-    voted           boolean     NOT NULL DEFAULT FALSE -- I missed this part of the discussion, so maybe this is wrong. 
+create table housing_evaluator (
+    housing_eval_id integer     not null references housing_eval (id),
+    member_id       integer     not null references member (id),
+    score           integer     not null,
+    voted           boolean     not null default false
 );
