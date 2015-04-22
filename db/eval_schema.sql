@@ -13,7 +13,8 @@ create type committee_t as enum (
     'history',
     'opcomm',
     'imps',
-    'financial'
+    'financial',
+    'chairman'
 );
 
 create type status_t as enum (
@@ -24,7 +25,8 @@ create type status_t as enum (
 
 create type member_t as enum (
     'active',
-    'alumni',
+    'alumni_good',
+    'alumni_bad',
     'honorary',
     'advisory',
     'introductory',
@@ -33,7 +35,6 @@ create type member_t as enum (
 
 create type dues_t as enum (
     'paid',
-    'unpaid',
     'exempt'
 );
 
@@ -226,3 +227,16 @@ create table housing_evaluator (
     score           integer     not null,
     voted           boolean     not null default false
 );
+
+create table term (
+    id              varchar    primary key,
+    start_date      date       not null,
+    end_date        date       not null
+);
+
+create table dues (
+    term_id         varchar     not null references term (id),
+    member_id       integer     not null references member (id),
+    status          dues_t      not null
+);
+
