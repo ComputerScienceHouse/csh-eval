@@ -100,8 +100,8 @@ create table event (
 
 create table event_attendee (
     member_id   integer     not null references member (id),
-    event       integer     not null references event (id)
-    host        boolean     not null default false;
+    event       integer     not null references event (id),
+    host        boolean     not null default false
 );
 
 create table project (
@@ -131,12 +131,12 @@ create table conditional (
     evaluation_id   integer     not null references evaluation (id),
     deadline        timestamp   not null,
     description     varchar     not null,
-    comments        varchar     default '',
+    comments        varchar     default ''
 );
 
 create table freshman_project (
     id              serial  primary key,
-    description     varchar not null default ''
+    description     varchar not null default '',
     project_date    date    not null default now()
 );
 
@@ -173,12 +173,12 @@ create table application (
     id              serial      primary key,
     member          integer     not null references member (id),
     created         timestamp   not null default now(),
-    status          status_t    not null default 'pending',
+    status          status_t    not null default 'pending'
 );
 
 create table reviewer (
     member_id       integer     not null references member (id),
-    applicant_id    integer     not null references applicant (id),
+    applicantion_id integer     not null references application (id),
     review_start    timestamp,
     revew_submit    timestamp,
     social          integer,
@@ -204,6 +204,7 @@ create table interviewer (
 );
 
 create table question (
+    id              serial      primary key,
     application_id  integer     not null references application (id),
     query           varchar     not null
 );
