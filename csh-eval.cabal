@@ -8,7 +8,7 @@ synopsis:            REPL for PEOPLE
 homepage:            https://github.com/ComputerScienceHouse/csh-eval
 license:             MIT
 license-file:        LICENSE
-author:              Matt Gambogi, Stephen Demos, Travis Whitaker
+author:             Matt Gambogi, Stephen Demos, Travis Whitaker
 maintainer:          pvals@csh.rit.edu
 -- copyright:           
 category:            Control
@@ -20,6 +20,27 @@ executable csh-eval
   main-is:             Main.hs
   -- other-modules:       
   -- other-extensions:    
-  build-depends:       base >=4.8 && <4.9
+  build-depends:         base >=4.8 && <4.9
+                       , safe
   hs-source-dirs:      src
   default-language:    Haskell2010
+
+library
+    hs-source-dirs:      lib
+    build-depends:       base >=4.8 && <4.9
+                 ,       safe
+    default-language:    Haskell2010
+    documentation:       True
+
+
+test-suite tests
+    hs-source-dirs:      test
+    main-is:             Tests.hs
+    build-depends:         base >=4.8 && <4.9
+                         , safe
+                         , HUnit
+                         , QuickCheck
+    ghc-options:         -Wall
+    default-extenstions: OverloadedStrings
+    default-language:    Haskell2010
+    type:                exitcode-stdio-1.0
