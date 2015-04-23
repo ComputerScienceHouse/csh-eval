@@ -62,9 +62,9 @@ create type "eval_t" as enum (
 drop table if exists "member" cascade;
 create table "member" (
     "id"              bigserial  primary key
-   ,"uuid"            uuid       default null constraint "unique_uuid" unique
-   ,"username"        varchar    not null constraint "unique_username" unique
-   ,"commonname"      varchar    not null constraint "unique_commonname" unique
+   ,"uuid"            uuid       default null constraint "unique_member_uuid" unique
+   ,"username"        varchar    not null constraint "unique_member_username" unique
+   ,"commonname"      varchar    not null constraint "unique_member_commonname" unique
    ,"password_hash"   bytea      default null
    ,"password_salt"   bytea      default null
    ,"housing_points"  integer    not null default 0
@@ -77,14 +77,16 @@ create table "eboard" (
    ,"committee"   committee_t  not null
    ,"start_date"  date         not null
    ,"end_date"    date         default null
+   ,constraint "no_simultaneous_eboard_positions" unique ("member_id", "start_data")
 );
 
 drop table if exists "room" cascade;
 create table "room" (
     "member_id"    bigint   not null
-   ,"room_number"  varchar  not null
+   ,"room_number"  varchar  not null constraint "unique_room_room_number" unique
    ,"start_date"   date     not null
    ,"end_date"     date     default null
+   ,constraint "no_simultaneous_room_occupation" unique ("member_id", "start_date")
 );
 
 drop table if exists "membership" cascade;
@@ -93,6 +95,7 @@ create table "membership" (
    ,"status"      member_t  not null
    ,"start_date"  date      not null
    ,"end_date"    date      default null
+   ,constraint "no_simultaneous_membership_status" unique ("member_id", "start_date")
 );
 
 drop table if exists "event" cascade;
@@ -103,7 +106,7 @@ create table "event" (
    ,"category"     event_t      not null
    ,"committee"    committee_t  not null
    ,"description"  varchar      not null
-   ,constraint "unique_title_held" unique ("title", "held")
+   ,constraint "unique_event_title_held" unique ("title", "held")
 );
 
 drop table if exists "event_attendee" cascade;
@@ -133,7 +136,7 @@ create table "evaluation" (
     "id"         bigserial  primary key
    ,"member_id"  bigint     not null
    ,"comments"   varchar    default null
-   ,"deadline"   timestamp  not null
+   ,"deadline"   timestamp  not null -- What does this do again? Needs better name.
    ,"status"     status_t   not null default 'pending'
    ,"eval_type"  eval_t     not null
 );
@@ -141,7 +144,7 @@ create table "evaluation" (
 drop table if exists "conditional" cascade;
 create table "conditional" (
     "id"             bigserial  primary key
-   ,"evaluation_id"  bigint     not null
+   ,"evaluation_id"  bigint     not null constraint "one_conditional_per_eval" unique
    ,"deadline"       timestamp  not null
    ,"description"    varchar    not null
    ,"comments"       varchar    default null
@@ -161,6 +164,7 @@ create table "freshman_project_participant" (
    ,"eboard"               boolean   not null default false
    ,"result"               status_t  not null default 'pending'
    ,"comments"             varchar   default null
+   ,constraint "one_freshman_project_per_eval" unique ("freshman_project_id", "evaluation_id")
 );
 
 drop table if exists "packet" cascade;
@@ -169,6 +173,7 @@ create table "packet" (
    ,"member_id"    bigint     not null
    ,"due_date"     date       not null
    ,"percent_req"  integer    not null
+   ,constraint "no_simultaneous_packets" unique ("member_id", "due_date")
 );
 
 drop table if exists "signature" cascade;
@@ -176,7 +181,8 @@ create table "signature" (
     "member_id"  bigint     not null
    ,"packet_id"  bigint     not null
    ,"required"   boolean    not null
-   ,"signed"     timestamp
+   ,"signed"     timestamp  default null
+   ,constraint "one_signature_per_packet_per_member" unique ("member_id", "packet_id")
 );
 
 drop table if exists "queue" cascade;
@@ -185,6 +191,7 @@ create table "queue" (
    ,"member_id"  bigint     not null
    ,"entered"    timestamp  not null
    ,"exited"     timestamp  default null
+   ,constraint "no_simultaneous_queue_positions" unique ("member_id", "entered")
 );
 
 drop table if exists "application" cascade;
@@ -193,6 +200,7 @@ create table "application" (
    ,"member_id"  bigint     not null
    ,"created"    timestamp  not null
    ,"status"     status_t   not null default 'pending'
+   constraint "no_simultaneous_applications" unique ("member_id", "created")
 );
 
 drop table if exists "reviewer" cascade;
@@ -208,6 +216,7 @@ create table "reviewer" (
    ,"leadership"      integer    not null
    ,"motivation"      integer    not null
    ,"overall_feel"    integer    not null
+   ,constraint "one_review_per_member_per_application" constraint ("member_id", "application_id")
 );
 
 drop table if exists "interviewer" cascade;
@@ -222,12 +231,13 @@ create table "interviewer" (
    ,"leadership"      integer    not null
    ,"motivation"      integer    not null
    ,"overall_feel"    integer    not null
+   constraint "one_interview_per_member_per_application" unique ("member_id", "application_id")
 );
 
 drop table if exists "question" cascade;
 create table "question" (
     "id"              bigserial  primary key
-   ,"application_id"  bigint     not null
+    -- removed application_id here
    ,"query"           varchar    not null
 );
 
@@ -236,12 +246,13 @@ create table "answer" (
     "application_id"  bigint   not null
    ,"question_id"     bigint   not null
    ,"response"        varchar  not null
+   constraint "one_response_per_application_per_question" unique ("application_id", "question_id")
 );
 
 drop table if exists "housing_eval" cascade;
 create table "housing_eval" (
     "id"         bigserial  primary key
-   ,"eval_date"  date       not null
+   ,"eval_date"  date       not null constraint "no_simultaneous_housing_evals" unique
 );
 
 drop table if exists "housing_evaluator" cascade;
@@ -250,13 +261,14 @@ create table "housing_evaluator" (
    ,"member_id"        bigint   not null
    ,"score"            integer  not null
    ,"voted"            boolean  not null default false
+   constraint "one_score_per_housing_eval" unique ("housing_eval_id", "member_id")
 );
 
 drop table if exists "term" cascade;
 create table "term" (
     "id"          bigint  primary key
-   ,"start_date"  date    not null
-   ,"end_date"    date    default null -- Assume current term.
+   ,"start_date"  date    not null constraint "no_simultaneous_terms" unique
+   ,"end_date"    date    default null -- Assume current term on creation.
 );
 
 drop table if exists "dues" cascade;
@@ -264,6 +276,7 @@ create table "dues" (
     "term_id"    bigint  not null
    ,"member_id"  bigint  not null
    ,"status"     dues_t  not null
+   constraint "one_dues_status_per_term" unique ("term_id", "member_id")
 );
 
 alter table "eboard" add foreign key ("member_id") references "member" ("id");
