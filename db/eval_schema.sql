@@ -136,7 +136,7 @@ create table "evaluation" (
     "id"         bigserial  primary key
    ,"member_id"  bigint     not null
    ,"comments"   varchar    default null
-   ,"deadline"   timestamp  not null -- What does this do again? Needs better name.
+   ,"deadline"   timestamp  not null
    ,"status"     status_t   not null default 'pending'
    ,"eval_type"  eval_t     not null
 );
@@ -231,15 +231,14 @@ create table "interviewer" (
    ,"leadership"      integer    not null
    ,"motivation"      integer    not null
    ,"overall_feel"    integer    not null
-  ,constraint "one_interview_per_member_per_application" unique ("member_id", "application_id")
+   ,constraint "one_interview_per_member_per_application" unique ("member_id", "application_id")
 );
 
 drop table if exists "question" cascade;
 create table "question" (
-    "id"              bigserial  primary key
-   ,"enstated"        timestamp  not null
-   ,"decommissioned"  timestamp  default null
-   ,"query"           varchar    not null
+    "id"      bigserial  primary key
+   ,"active"  boolean    default true
+   ,"query"   varchar    not null
 );
 
 drop table if exists "answer" cascade;
@@ -247,7 +246,7 @@ create table "answer" (
     "application_id"  bigint   not null
    ,"question_id"     bigint   not null
    ,"response"        varchar  not null
-  ,constraint "one_response_per_application_per_question" unique ("application_id", "question_id")
+   ,constraint "one_response_per_application_per_question" unique ("application_id", "question_id")
 );
 
 drop table if exists "housing_eval" cascade;
@@ -262,14 +261,14 @@ create table "housing_evaluator" (
    ,"member_id"        bigint   not null
    ,"score"            integer  not null
    ,"voted"            boolean  not null default false
-  ,constraint "one_score_per_housing_eval" unique ("housing_eval_id", "member_id")
+   ,constraint "one_score_per_housing_eval" unique ("housing_eval_id", "member_id")
 );
 
 drop table if exists "term" cascade;
 create table "term" (
     "id"          bigint  primary key
    ,"start_date"  date    not null constraint "no_simultaneous_terms" unique
-   ,"end_date"    date    default null -- Assume current term on creation.
+   ,"end_date"    date    default null
 );
 
 drop table if exists "dues" cascade;
@@ -277,7 +276,7 @@ create table "dues" (
     "term_id"    bigint  not null
    ,"member_id"  bigint  not null
    ,"status"     dues_t  not null
-  ,constraint "one_dues_status_per_term" unique ("term_id", "member_id")
+   ,constraint "one_dues_status_per_term" unique ("term_id", "member_id")
 );
 
 alter table "eboard" add foreign key ("member_id") references "member" ("id");
