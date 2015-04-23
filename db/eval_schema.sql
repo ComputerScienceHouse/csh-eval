@@ -203,34 +203,45 @@ create table "application" (
    ,constraint "no_simultaneous_applications" unique ("member_id", "created")
 );
 
+drop table if exists "metric" cascade;
+create table "metric" (
+    "id"      bigserial  primary key
+   ,"name"    varchar    not null constraint "unique_metric_name" unique
+   ,"active"  boolean    default true
+);
+
+drop table if exists "reviewer_metric" cascade;
+create table "reviewer_metric" (
+    "metric_id"    bigint   not null
+   ,"reviewer_id"  bigint   not null
+   ,"score"        integer  not null
+   ,constraint "one_score_per_reviewer_per_metric" unique ("metric_id", "reviewer_id")
+); -- Make FK and indices for this.
+
+drop table if exists "interviewer_metric" cascade;
+create table "interviewer_metric" (
+    "metric_id"       bigint   not null
+   ,"interviewer_id"  bigint   not null
+   ,"score"           integer  not null
+   ,constraint "one_score_per_interviewer_per_metric" unique ("metric_id", "interviewer_id")
+); -- Make FK and indices for this.
+
 drop table if exists "reviewer" cascade;
 create table "reviewer" (
-    "member_id"       bigint     not null
+    "id"              bigserial  primary key
+   ,"member_id"       bigint     not null
    ,"application_id"  bigint     not null
-   ,"review_start"    timestamp  not null -- Why do we track both?
+   ,"review_start"    timestamp  not null
    ,"revew_submit"    timestamp  not null
-   ,"social"          integer    not null -- Maybe these fields should be
-   ,"technical"       integer    not null -- broken out to facilitate changes
-   ,"creativity"      integer    not null -- later on?
-   ,"versatility"     integer    not null
-   ,"leadership"      integer    not null
-   ,"motivation"      integer    not null
-   ,"overall_feel"    integer    not null
    ,constraint "one_review_per_member_per_application" unique ("member_id", "application_id")
 );
 
 drop table if exists "interviewer" cascade;
 create table "interviewer" (
-    "member_id"       bigint     not null
+    "id"              bigserial  primary key
+   ,"member_id"       bigint     not null
    ,"application_id"  bigint     not null
    ,"interview_date"  timestamp  not null
-   ,"social"          integer    not null
-   ,"technical"       integer    not null
-   ,"creativity"      integer    not null
-   ,"versatility"     integer    not null
-   ,"leadership"      integer    not null
-   ,"motivation"      integer    not null
-   ,"overall_feel"    integer    not null
    ,constraint "one_interview_per_member_per_application" unique ("member_id", "application_id")
 );
 
@@ -306,6 +317,12 @@ alter table "queue" add foreign key ("member_id") references "member" ("id");
 
 alter table "application" add foreign key ("member_id") references "member" ("id");
 
+alter table "reviewer_metric" add foreign key ("metric_id") references "metric" ("id");
+alter table "reviewer_metric" add foreign key ("reviewer_id") references "reviewer" ("id");
+
+alter table "interviewer_metric" add foreign key ("metric_id") references "metric" ("id");
+alter table "interviewer_metric" add foreign key ("interviewer_id") references "interviewer" ("id");
+
 alter table "reviewer" add foreign key ("member_id") references "member" ("id");
 alter table "reviewer" add foreign key ("application_id") references "application" ("id");
 
@@ -370,9 +387,19 @@ create index "queue_member_id_index" on "queue" ("member_id");
 create index "application_id_index" on "application" ("id");
 create index "application_member_id_index" on "application" ("member_id");
 
+create index "metric_id_index" on "metric" ("id");
+
+create index "reviewer_metric_metric_id_index" on "reviewer_metric" ("metric_id");
+create index "reviewer_metric_reviewer_id_index" on "reviewer_metric" ("reviewer_id");
+
+create index "interviewer_metric_metric_id_index" on "interviewer_metric" ("metric_id");
+create index "interviewer_metric_interviewer_id_index" on "interviewer_metric" ("interviewer_id");
+
+create index "reviewer_id_index" on "reviewer" ("id");
 create index "reviewer_member_id_index" on "reviewer" ("member_id");
 create index "reviewer_application_id_index" on "reviewer" ("application_id");
 
+create index "interviewer_id_index" on "interviewer" ("id");
 create index "interviewer_member_id_index" on "interviewer" ("member_id");
 create index "interviewer_application_id_index" on "interviewer" ("application_id");
 
