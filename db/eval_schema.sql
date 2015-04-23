@@ -77,7 +77,7 @@ create table "eboard" (
    ,"committee"   committee_t  not null
    ,"start_date"  date         not null
    ,"end_date"    date         default null
-   ,constraint "no_simultaneous_eboard_positions" unique ("member_id", "start_data")
+   ,constraint "no_simultaneous_eboard_positions" unique ("member_id", "start_date")
 );
 
 drop table if exists "room" cascade;
@@ -200,7 +200,7 @@ create table "application" (
    ,"member_id"  bigint     not null
    ,"created"    timestamp  not null
    ,"status"     status_t   not null default 'pending'
-   constraint "no_simultaneous_applications" unique ("member_id", "created")
+   ,constraint "no_simultaneous_applications" unique ("member_id", "created")
 );
 
 drop table if exists "reviewer" cascade;
@@ -216,7 +216,7 @@ create table "reviewer" (
    ,"leadership"      integer    not null
    ,"motivation"      integer    not null
    ,"overall_feel"    integer    not null
-   ,constraint "one_review_per_member_per_application" constraint ("member_id", "application_id")
+   ,constraint "one_review_per_member_per_application" unique ("member_id", "application_id")
 );
 
 drop table if exists "interviewer" cascade;
@@ -231,7 +231,7 @@ create table "interviewer" (
    ,"leadership"      integer    not null
    ,"motivation"      integer    not null
    ,"overall_feel"    integer    not null
-   constraint "one_interview_per_member_per_application" unique ("member_id", "application_id")
+  ,constraint "one_interview_per_member_per_application" unique ("member_id", "application_id")
 );
 
 drop table if exists "question" cascade;
@@ -247,7 +247,7 @@ create table "answer" (
     "application_id"  bigint   not null
    ,"question_id"     bigint   not null
    ,"response"        varchar  not null
-   constraint "one_response_per_application_per_question" unique ("application_id", "question_id")
+  ,constraint "one_response_per_application_per_question" unique ("application_id", "question_id")
 );
 
 drop table if exists "housing_eval" cascade;
@@ -262,7 +262,7 @@ create table "housing_evaluator" (
    ,"member_id"        bigint   not null
    ,"score"            integer  not null
    ,"voted"            boolean  not null default false
-   constraint "one_score_per_housing_eval" unique ("housing_eval_id", "member_id")
+  ,constraint "one_score_per_housing_eval" unique ("housing_eval_id", "member_id")
 );
 
 drop table if exists "term" cascade;
@@ -277,7 +277,7 @@ create table "dues" (
     "term_id"    bigint  not null
    ,"member_id"  bigint  not null
    ,"status"     dues_t  not null
-   constraint "one_dues_status_per_term" unique ("term_id", "member_id")
+  ,constraint "one_dues_status_per_term" unique ("term_id", "member_id")
 );
 
 alter table "eboard" add foreign key ("member_id") references "member" ("id");
@@ -312,8 +312,6 @@ alter table "reviewer" add foreign key ("application_id") references "applicatio
 
 alter table "interviewer" add foreign key ("member_id") references "member" ("id");
 alter table "interviewer" add foreign key ("application_id") references "application" ("id");
-
-alter table "question" add foreign key ("application_id") references "application" ("id");
 
 alter table "answer" add foreign key ("application_id") references "application" ("id");
 alter table "answer" add foreign key ("question_id") references "question" ("id");
@@ -358,14 +356,14 @@ create index "conditional_evaluation_id" on "conditional" ("evaluation_id");
 
 create index "freshman_project_id_index" on "freshman_project" ("id");
 
-create index "freshman_project_participant_id_index" on "freshman_project_participant" ("id");
+create index "freshman_project_participant_id_index" on "freshman_project_participant" ("freshman_project_id");
 create index "freshman_project_participant_evaluation_id_index" on "freshman_project_participant" ("evaluation_id");
 
 create index "packet_id_index" on "packet" ("id");
 create index "packet_member_id_index" on "packet" ("member_id");
 
-create index "signature_member_id_index" on "packet" ("member_id");
-create index "signature_packet_id_index" on "packet" ("packet_id");
+create index "signature_member_id_index" on "signature" ("member_id");
+create index "signature_packet_id_index" on "signature" ("packet_id");
 
 create index "queue_id_index" on "queue" ("id");
 create index "queue_member_id_index" on "queue" ("member_id");
