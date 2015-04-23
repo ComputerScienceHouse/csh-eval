@@ -322,4 +322,75 @@ alter table "housing_evaluator" add foreign key ("member_id") references "member
 
 alter table "dues" add foreign key ("term_id") references "term" ("id");
 
+create index "member_id_index" on "member" ("id");
+create index "member_uuid_index" on"member" ("uuid");
+create index "member_username_index" on "member" ("username");
+create index "member_commonname_index" on "member" ("commonname");
+create index "member_onfloor_status_index" on "member" ("onfloor_status");
+
+create index "eboard_member_id_index" on "eboard" ("member_id");
+
+create index "room_member_id_index" on "room" ("member_id");
+create index "room_room_number_index" on "room" ("room_number");
+
+create index "membership_member_id_index" on "membership" ("member_id");
+create index "membership_status_index" on "membership" ("status");
+
+create index "event_id_index" on "event" ("id");
+create index "event_title_index" on "event" ("title");
+create index "event_category_index" on "event" ("category");
+
+create index "event_attendee_member_id_index" on "event_attendee" ("member_id");
+create index "event_attendee_event_id_index" on "event_attendee" ("event_id");
+
+create index "project_id_index" on "project" ("id");
+create index "project_member_id_index" on "project" ("member_id");
+create index "project_title_index" on "project" ("title");
+create index "project_status_index" on "project" ("status");
+
+create index "evaluation_id_index" on "evaluation" ("id");
+create index "evaluation_member_id_index" on "evaluation" ("member_id");
+create index "evaluation_eval_type_index" on "evaluation" ("eval_type");
+
+create index "conditional_id_index" on "conditional" ("id");
+create index "conditional_evaluation_id" on "conditional" ("evaluation_id");
+
+create index "freshman_project_id_index" on "freshman_project" ("id");
+
+create index "freshman_project_participant_id_index" on "freshman_project_participant" ("id");
+create index "freshman_project_participant_evaluation_id_index" on "freshman_project_participant" ("evaluation_id");
+
+create index "packet_id_index" on "packet" ("id");
+create index "packet_member_id_index" on "packet" ("member_id");
+
+create index "signature_member_id_index" on "packet" ("member_id");
+create index "signature_packet_id_index" on "packet" ("packet_id");
+
+create index "queue_id_index" on "queue" ("id");
+create index "queue_member_id_index" on "queue" ("member_id");
+
+create index "application_id_index" on "application" ("id");
+create index "application_member_id_index" on "application" ("member_id");
+
+create index "reviewer_member_id_index" on "reviewer" ("member_id");
+create index "reviewer_application_id_index" on "reviewer" ("application_id");
+
+create index "interviewer_member_id_index" on "interviewer" ("member_id");
+create index "interviewer_application_id_index" on "interviewer" ("application_id");
+
+create index "question_id_index" on "question" ("id");
+
+create index "answer_application_id_index" on "answer" ("application_id");
+create index "answer_question_id_index" on "answer" ("question_id");
+
+create index "housing_eval_id_index" on "housing_eval" ("id");
+
+create index "housing_evaluator_housing_eval_id_index" on "housing_evaluator" ("housing_eval_id");
+create index "housing_evaluator_member_id_index" on "housing_evaluator" ("member_id");
+
+create index "term_id_index" on "term" ("id");
+
+create index "dues_term_id_index" on "dues" ("term_id");
+create index "dues_member_id_index" on "dues" ("member_id");
+
 commit;
