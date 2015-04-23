@@ -237,7 +237,8 @@ create table "interviewer" (
 drop table if exists "question" cascade;
 create table "question" (
     "id"              bigserial  primary key
-    -- removed application_id here
+   ,"enstated"        timestamp  not null
+   ,"decommissioned"  timestamp  default null
    ,"query"           varchar    not null
 );
 
