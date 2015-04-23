@@ -38,7 +38,7 @@ executable csh-eval-db-init
 
 library
     exposed-modules:     CSH.Eval.Routes
-    hs-source-dirs:      lib
+    hs-source-dirs:      src
     build-depends:       base >=4.8 && <4.9
                  ,       safe
                  ,       servant
