@@ -120,7 +120,6 @@ create table "event_attendee" (
 drop table if exists "project" cascade;
 create table "project" (
     "id"            bigserial    primary key
-   ,"member_id"     bigint       not null
    ,"title"         varchar      not null
    ,"description"   varchar      not null
    ,"submitted"     timestamp    not null
@@ -131,12 +130,21 @@ create table "project" (
    ,"status"        status_t     not null default 'pending'
 );
 
+drop table if exists "project_participant" cascade;
+create table "project_participant" (
+    "member_id"    bigint   not null
+   ,"project_id"   bigint   not null
+   ,"description"  varchar  default null
+   ,constraint "one_member_per_project" unique ("member_id", "project_id")
+);
+
 drop table if exists "evaluation" cascade;
 create table "evaluation" (
     "id"         bigserial  primary key
    ,"member_id"  bigint     not null
    ,"comments"   varchar    default null
    ,"deadline"   timestamp  not null
+   ,"available"  boolean    default false
    ,"status"     status_t   not null default 'pending'
    ,"eval_type"  eval_t     not null
 );
@@ -290,6 +298,20 @@ create table "dues" (
    ,constraint "one_dues_status_per_term" unique ("term_id", "member_id")
 );
 
+drop table if exists "statement" cascade;
+create table "statement" (
+    "id"            bigserial  primary key
+   ,"sg_record"     varchar    not null constraint "unique_statement_group_record" unique
+   ,"side_effects"  boolean    not null
+);
+
+drop table if exists "statement_exec" cascade;
+create table "statement_exec" (
+    "statement_id"  bigint     not null
+   ,"member_id"     bigint     not null
+   ,"timestamp"     timestamp  not null
+);
+
 alter table "eboard" add foreign key ("member_id") references "member" ("id");
 
 alter table "room" add foreign key ("member_id") references "member" ("id");
@@ -299,7 +321,8 @@ alter table "membership" add foreign key ("member_id") references "member" ("id"
 alter table "event_attendee" add foreign key ("member_id") references "member" ("id");
 alter table "event_attendee" add foreign key ("event_id") references "event" ("id");
 
-alter table "project" add foreign key ("member_id") references "member" ("id");
+alter table "project_participant" add foreign key ("member_id") references "member" ("id");
+alter table "project_participant" add foreign key ("project_id") references "project" ("id");
 
 alter table "evaluation" add foreign key ("member_id") references "member" ("id");
 
@@ -337,6 +360,9 @@ alter table "housing_evaluator" add foreign key ("member_id") references "member
 
 alter table "dues" add foreign key ("term_id") references "term" ("id");
 
+alter table "statement_exec" add foreign key ("statement_id") references "statement" ("id");
+alter table "statement_exec" add foreign key ("member_id") references "member" ("id");
+
 create index "member_id_index" on "member" ("id");
 create index "member_uuid_index" on"member" ("uuid");
 create index "member_username_index" on "member" ("username");
@@ -359,13 +385,16 @@ create index "event_attendee_member_id_index" on "event_attendee" ("member_id");
 create index "event_attendee_event_id_index" on "event_attendee" ("event_id");
 
 create index "project_id_index" on "project" ("id");
-create index "project_member_id_index" on "project" ("member_id");
 create index "project_title_index" on "project" ("title");
 create index "project_status_index" on "project" ("status");
+
+create index "project_participant_member_id_index" on "project_participant" ("member_id");
+create index "project_participant_project_id_index" on "project_participant" ("project_id");
 
 create index "evaluation_id_index" on "evaluation" ("id");
 create index "evaluation_member_id_index" on "evaluation" ("member_id");
 create index "evaluation_eval_type_index" on "evaluation" ("eval_type");
+create index "evaluation_available_index" on "evaluation" ("available");
 
 create index "conditional_id_index" on "conditional" ("id");
 create index "conditional_evaluation_id" on "conditional" ("evaluation_id");
@@ -417,5 +446,11 @@ create index "term_id_index" on "term" ("id");
 
 create index "dues_term_id_index" on "dues" ("term_id");
 create index "dues_member_id_index" on "dues" ("member_id");
+
+create index "statement_id_index" on "statement" ("id");
+create index "statement_sg_record_index" on "statement" ("sg_record");
+
+create index "statement_exec_statement_id_index" on "statement_exec" ("statement_id");
+create index "statement_exec_member_id_index" on "statement_exec" ("member_id");
 
 commit;
