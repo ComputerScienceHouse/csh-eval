@@ -144,6 +144,7 @@ create table "evaluation" (
    ,"member_id"  bigint     not null
    ,"comments"   varchar    default null
    ,"deadline"   timestamp  not null
+   ,"available"  boolean    default false
    ,"status"     status_t   not null default 'pending'
    ,"eval_type"  eval_t     not null
 );
@@ -376,6 +377,7 @@ create index "project_participant_project_id_index" on "project_participant" ("p
 create index "evaluation_id_index" on "evaluation" ("id");
 create index "evaluation_member_id_index" on "evaluation" ("member_id");
 create index "evaluation_eval_type_index" on "evaluation" ("eval_type");
+create index "evaluation_available_index" on "evaluation" ("available");
 
 create index "conditional_id_index" on "conditional" ("id");
 create index "conditional_evaluation_id" on "conditional" ("evaluation_id");
