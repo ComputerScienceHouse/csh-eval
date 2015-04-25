@@ -26,6 +26,10 @@ executable csh-eval
                        , servant-server
                        , csh-eval
                        , warp
+                       , resource-pool
+                       , time
+                       , HDBC
+                       , HDBC-postgresql
   hs-source-dirs:      src
   default-language:    Haskell2010
 
@@ -38,11 +42,15 @@ executable csh-eval-db-init
 
 library
     exposed-modules:     CSH.Eval.Routes
+                        ,CSH.Eval.DB.ContextPool
+                        ,CSH.Eval.DB.Statements
     hs-source-dirs:      src
     build-depends:       base >=4.8 && <4.9
                  ,       safe
                  ,       servant
                  ,       servant-server
+                 ,       resource-pool
+                 ,       time
                  ,       HDBC
                  ,       HDBC-postgresql
     default-language:    Haskell2010
