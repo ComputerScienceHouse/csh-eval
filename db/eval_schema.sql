@@ -83,10 +83,11 @@ create table "eboard" (
 drop table if exists "room" cascade;
 create table "room" (
     "member_id"    bigint   not null
-   ,"room_number"  varchar  not null constraint "unique_room_room_number" unique
+   ,"room_number"  varchar  not null
    ,"start_date"   date     not null
    ,"end_date"     date     default null
-   ,constraint "no_simultaneous_room_occupation" unique ("member_id", "start_date")
+   ,constraint "no_simultaneous_member_occupation" unique ("member_id", "start_date")
+   ,constraint "no_simultaneous_room_occupation" unique ("room_number", "start_date")
 );
 
 drop table if exists "membership" cascade;
@@ -224,7 +225,7 @@ create table "reviewer_metric" (
    ,"reviewer_id"  bigint   not null
    ,"score"        integer  not null
    ,constraint "one_score_per_reviewer_per_metric" unique ("metric_id", "reviewer_id")
-); -- Make FK and indices for this.
+);
 
 drop table if exists "interviewer_metric" cascade;
 create table "interviewer_metric" (
@@ -232,7 +233,7 @@ create table "interviewer_metric" (
    ,"interviewer_id"  bigint   not null
    ,"score"           integer  not null
    ,constraint "one_score_per_interviewer_per_metric" unique ("metric_id", "interviewer_id")
-); -- Make FK and indices for this.
+);
 
 drop table if exists "reviewer" cascade;
 create table "reviewer" (
