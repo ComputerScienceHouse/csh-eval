@@ -298,6 +298,20 @@ create table "dues" (
    ,constraint "one_dues_status_per_term" unique ("term_id", "member_id")
 );
 
+drop table if exists "statement" cascade;
+create table "statement" (
+    "id"            bigserial  primary key
+   ,"sg_record"     varchar    not null constraint "unique_statement_group_record" unique
+   ,"side_effects"  boolean    not null
+);
+
+drop table if exists "statement_exec" cascade;
+create table "statement_exec" (
+    "statement_id"  bigint     not null
+   ,"member_id"     bigint     not null
+   ,"timestamp"     timestamp  not null
+);
+
 alter table "eboard" add foreign key ("member_id") references "member" ("id");
 
 alter table "room" add foreign key ("member_id") references "member" ("id");
@@ -345,6 +359,9 @@ alter table "housing_evaluator" add foreign key ("housing_eval_id") references "
 alter table "housing_evaluator" add foreign key ("member_id") references "member" ("id");
 
 alter table "dues" add foreign key ("term_id") references "term" ("id");
+
+alter table "statement_exec" add foreign key ("statement_id") references "statement" ("id");
+alter table "statement_exec" add foreign key ("member_id") references "member" ("id");
 
 create index "member_id_index" on "member" ("id");
 create index "member_uuid_index" on"member" ("uuid");
@@ -429,5 +446,11 @@ create index "term_id_index" on "term" ("id");
 
 create index "dues_term_id_index" on "dues" ("term_id");
 create index "dues_member_id_index" on "dues" ("member_id");
+
+create index "statement_id_index" on "statement" ("id");
+create index "statement_sg_record_index" on "statement" ("sg_record");
+
+create index "statement_exec_statement_id_index" on "statement_exec" ("statement_id");
+create index "statement_exec_member_id_index" on "statement_exec" ("member_id");
 
 commit;
