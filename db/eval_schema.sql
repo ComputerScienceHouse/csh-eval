@@ -120,7 +120,6 @@ create table "event_attendee" (
 drop table if exists "project" cascade;
 create table "project" (
     "id"            bigserial    primary key
-   ,"member_id"     bigint       not null
    ,"title"         varchar      not null
    ,"description"   varchar      not null
    ,"submitted"     timestamp    not null
@@ -129,6 +128,14 @@ create table "project" (
    ,"project_type"  project_t    not null
    ,"comments"      varchar      default null
    ,"status"        status_t     not null default 'pending'
+);
+
+drop table if exists "project_participant" cascade;
+create table "project_participant" (
+    "member_id"    bigint   not null
+   ,"project_id"   bigint   not null
+   ,"description"  varchar  default null
+   ,constraint "one_member_per_project" unique ("member_id", "project_id")
 );
 
 drop table if exists "evaluation" cascade;
@@ -299,7 +306,8 @@ alter table "membership" add foreign key ("member_id") references "member" ("id"
 alter table "event_attendee" add foreign key ("member_id") references "member" ("id");
 alter table "event_attendee" add foreign key ("event_id") references "event" ("id");
 
-alter table "project" add foreign key ("member_id") references "member" ("id");
+alter table "project_participant" add foreign key ("member_id") references "member" ("id");
+alter table "project_participant" add foreign key ("project_id") references "project" ("id");
 
 alter table "evaluation" add foreign key ("member_id") references "member" ("id");
 
@@ -359,9 +367,11 @@ create index "event_attendee_member_id_index" on "event_attendee" ("member_id");
 create index "event_attendee_event_id_index" on "event_attendee" ("event_id");
 
 create index "project_id_index" on "project" ("id");
-create index "project_member_id_index" on "project" ("member_id");
 create index "project_title_index" on "project" ("title");
 create index "project_status_index" on "project" ("status");
+
+create index "project_participant_member_id_index" on "project_participant" ("member_id");
+create index "project_participant_project_id_index" on "project_participant" ("project_id");
 
 create index "evaluation_id_index" on "evaluation" ("id");
 create index "evaluation_member_id_index" on "evaluation" ("member_id");
