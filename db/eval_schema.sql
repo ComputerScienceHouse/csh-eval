@@ -241,7 +241,7 @@ create table "reviewer" (
    ,"member_id"       bigint     not null
    ,"application_id"  bigint     not null
    ,"review_start"    timestamp  not null
-   ,"revew_submit"    timestamp  not null
+   ,"review_submit"    timestamp  not null
    ,constraint "one_review_per_member_per_application" unique ("member_id", "application_id")
 );
 
