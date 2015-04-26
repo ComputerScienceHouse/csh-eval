@@ -64,7 +64,7 @@ create table "member" (
     "id"              bigserial  primary key
    ,"uuid"            uuid       default null constraint "unique_member_uuid" unique
    ,"username"        varchar    not null constraint "unique_member_username" unique
-   ,"commonname"      varchar    not null constraint "unique_member_commonname" unique
+   ,"commonname"      varchar    not null
    ,"password_hash"   bytea      default null
    ,"password_salt"   bytea      default null
    ,"housing_points"  integer    not null default 0
@@ -241,7 +241,7 @@ create table "reviewer" (
    ,"member_id"       bigint     not null
    ,"application_id"  bigint     not null
    ,"review_start"    timestamp  not null
-   ,"review_submit"    timestamp  not null
+   ,"review_submit"   timestamp  not null
    ,constraint "one_review_per_member_per_application" unique ("member_id", "application_id")
 );
 
