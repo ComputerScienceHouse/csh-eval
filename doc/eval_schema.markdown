@@ -2,7 +2,7 @@
 
 ## Types
 
-#### `committee_t
+#### `committee_t`
 
 This represents the different committees. Committees are mutually
 exclusive. The possible committees represented are 
@@ -21,13 +21,13 @@ exclusive. The possible committees represented are
 The status of votes and evaluations. All votes and evaluations must have a
 status, and all statuses are mutually exclusive. Possible statuses are
 
-* pending - The vote or evaluation has not yet happened, for instance
+* `pending` - The vote or evaluation has not yet happened, for instance
             a submitted major project that has not yet come up, or a freshman
             who has not gone through their 10 week evaluation yet. 
 
-* passed  - The vote or evaluation has passed.
+* `passed` - The vote or evaluation has passed.
 
-* failed  - The vote or evaluation has failed.
+* `failed` - The vote or evaluation has failed.
 
 #### `member_t`
 
