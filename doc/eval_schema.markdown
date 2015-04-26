@@ -2,7 +2,7 @@
 
 ## Types
 
-#### `committee\_t
+#### `committee_t
 
 This represents the different committees. Committees are mutually
 exclusive. The possible committees represented are 
@@ -16,7 +16,7 @@ exclusive. The possible committees represented are
 *  `financial` - Financial
 *  `chariman`  - Chairman
 
-#### `status\_t`
+#### `status_t`
 
 The status of votes and evaluations. All votes and evaluations must have a
 status, and all statuses are mutually exclusive. Possible statuses are
@@ -29,7 +29,7 @@ status, and all statuses are mutually exclusive. Possible statuses are
 
 * failed  - The vote or evaluation has failed.
 
-#### `member\_t`
+#### `member_t`
 
 Possible membership states a member can have. All members must have a 
 membership status, and all membership statuses are mutually exclusive. 
@@ -39,12 +39,12 @@ statuses are:
 
 * `active` - from Articles Section 3.B Active Membership
 
-* `alumni\_good` - from Articles Section 3.C.2 Alumni Membership selection:
+* `alumni_good` - from Articles Section 3.C.2 Alumni Membership selection:
                    "Active members who depart house (i.e. resign) after passing
                     the current operating session’s Membership Evaluations are
                     considered to be Alumni in good standing."
 
-* `alumni\_bad` - from Articles Section 3.C.2 Alumni Membership selection:
+* `alumni_bad` - from Articles Section 3.C.2 Alumni Membership selection:
                   "Active members who depart house without passing the current
                    operating session’s Membership Evaluations are considered to
                    be Alumni in bad standing."
@@ -61,32 +61,31 @@ statuses are:
           through the evaluations process, but end up failing an evaluation
           before they have passed their first membership evaluation. 
 
-#### `dues\_t`
+#### `dues_t`
 
 Represents the status of a member's owed dues. The possible values are
 
-* paid   - The member has paid dues.
+* `paid` - The member has paid dues.
 
-* exempt - The member is exempted from paying dues.
+* `exempt` - The member is exempted from paying dues.
 
-#### `event\_t`
+#### `event_t`
 
 Represents the type of an event. The possible values are
 
-* house       - A House Meeting.
+* `house` - A House Meeting.
 
-* social      - A social event.
+* `social` - A social event.
 
-* committee   - A committee meeting.
+* `committee` - A committee meeting.
 
-* seminar     - A technical seminar.
+* `seminar` - A technical seminar.
 
-* orientation - A CSH Orientation event. This would include things like
-                the House Systems Seminar at the beginning of the year, which
-                isn't a technical seminar, but has attendance we need to keep
-                for clerical reasons
+* `orientation` - A CSH Orientation event. This includes events like the House
+                  Systems Seminar, which isn't a technical seminar, but has
+                  attendance we need to keep for clerical reasons
 
-#### `project\_t`
+#### `project_t`
 
 Represents the type of a project. Currently, there is only one type of
 project. This is built in to the schema in preperation for the points
@@ -96,7 +95,7 @@ projects would be added to this enumeration.
 
 * `major` - A major technical project. 
 
-#### `eval\_t`
+#### `eval_t`
 
 Represents the type of an evaluation. This is enumerated to allow for
 changes to the constitution modifying the current evaluations process,
@@ -139,24 +138,24 @@ a member are
 * `commonname` - Common Name for the user (e.g. "Stephen Demos"). Corresponds to
                  a cn in LDAP
 
-* `password\_hash` - A hash of a password. This is used for members who
+* `password_hash` - A hash of a password. This is used for members who
                      have an introductory account exclusively for logging into the
                      evaluations database. Users with LDAP entries will log in through
                      webauth will not use this field. 
 
-* `password\_salt` - Salt for the password. See password\_hash. 
+* `password_salt` - Salt for the password. See `password_hash`.
 
-* `housing\_points` - The number of Housing Points accumulated by the
+* `housing_points` - The number of Housing Points accumulated by the
                       member.
 
-* `onfloor\_status` - True if the member has onfloor status as described in the
+* `onfloor_status` - True if the member has onfloor status as described in the
                       constitution, False otherwise.
 
 #### `event`
 #### `project`
 #### `evaluation`
 #### `conditional`
-#### `freshman\_project`
+#### `freshman_project`
 #### `packet`
 #### `queue`
 #### `application`
@@ -164,7 +163,7 @@ a member are
 #### `reviewer`
 #### `interviewer`
 #### `question`
-#### `housing\_eval`
+#### `housing_eval`
 #### `term`
 
 ## Contexts
@@ -187,18 +186,18 @@ Stores information on the Executive Board positions of every member at
 any given time. The absence of an entry for a member on a particular date 
 implies they did not hold an Executive Board position at on that date. 
 A member may not hold two Executive Board positions simultaneously. The 
-absence of an end\_date attribute implies the member currently holds the
+absence of an `end_date` attribute implies the member currently holds the
 specified Executive Board position.
 
-* `member\_id` - The member that held the Executive Board position for
+* `member_id` - The member that held the Executive Board position for
                  this span.
 
 * `committee` - The committee that the Executive Board member was
                 running for this span.
 
-* `start\_date` - The date that this Executive Board span started. 
+* `start_date` - The date that this Executive Board span started. 
 
-* `end\_date` - The date that this Executive Board span ended. If this
+* `end_date` - The date that this Executive Board span ended. If this
                 attribute is null, the member currently holds this Executive Board
                 position.
 
@@ -207,23 +206,23 @@ specified Executive Board position.
 
 ### Participation Contexts
 
-These tables describe participation. The participation can be for an event, 
-a project, or freshman project. 
+These tables describe participation. The participation can be for an event,
+a project, or freshman project.
 
-### `event\_attendee`
-### `project\_participant`
-### `freshman\_project\_participant`
-### `housing\_evaluator`
+### `event_attendee`
+### `project_participant`
+### `freshman_project_participant`
+### `housing_evaluator`
 
 #### Other Contexts
 
 ### `signature`
-### `reviewer\_metric`
-### `interviewer\_metric`
+### `reviewer_metric`
+### `interviewer_metric`
 ### `answer`
 ### `dues`
 
 ### Logging
 
 ### `statement`
-### `statement\_exec`
+### `statement_exec`
