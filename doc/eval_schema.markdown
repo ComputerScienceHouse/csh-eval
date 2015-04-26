@@ -101,9 +101,9 @@ Represents the type of an evaluation. This is enumerated to allow for
 changes to the constitution modifying the current evaluations process,
 or to allow for a future change in scope of the evaluations database. 
 
-* introductory - An introductory evaluation (also refered to as a
-    10-week evaluation)
-* membership   - A membership evaluation
+* `introductory` - An introductory evaluation (also refered to as a
+                   10-week evaluation, or freshman evals)
+* `membership` - A membership evaluation
 
 ## Tables
 
@@ -209,20 +209,20 @@ specified Executive Board position.
 These tables describe participation. The participation can be for an event,
 a project, or freshman project.
 
-### `event_attendee`
-### `project_participant`
-### `freshman_project_participant`
-### `housing_evaluator`
+#### `event_attendee`
+#### `project_participant`
+#### `freshman_project_participant`
+#### `housing_evaluator`
 
-#### Other Contexts
+### Other Contexts
 
-### `signature`
-### `reviewer_metric`
-### `interviewer_metric`
-### `answer`
-### `dues`
+#### `signature`
+#### `reviewer_metric`
+#### `interviewer_metric`
+#### `answer`
+#### `dues`
 
 ### Logging
 
-### `statement`
-### `statement_exec`
+#### `statement`
+#### `statement_exec`
