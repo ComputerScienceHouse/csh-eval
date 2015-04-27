@@ -43,17 +43,20 @@ executable csh-eval-db-init
 
 library
     exposed-modules:     CSH.Eval.Routes
-                        ,CSH.Eval.DB.ContextPool
-                        ,CSH.Eval.DB.Statements
+                       , CSH.Eval.DB.ContextPool
+                       , CSH.Eval.DB.Statements
+                       , CSH.LDAP
     hs-source-dirs:      src
     build-depends:       base >=4.8 && <4.9
                  ,       safe
                  ,       servant
                  ,       servant-server
                  ,       resource-pool
+                 ,       text
                  ,       time
                  ,       HDBC
                  ,       HDBC-postgresql
+                 ,       ldap-client
     default-language:    Haskell2010
 
 
