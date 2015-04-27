@@ -152,6 +152,19 @@ a member are
                       constitution, False otherwise.
 
 #### `event`
+
+* `title` - varchar; The name of the event.
+
+* `held` - timestamp; The time the event began.
+
+* `category` - `event_t`; The kind of event. See `event_t` for an enumeration of
+               possible kinds
+
+* `committee` - `committee_t`; The committee affiliated with the event.
+
+* `description` - varchar; A description of the event. This may be used to generate
+                  a webnews post with the notes
+
 #### `project`
 #### `evaluation`
 #### `conditional`
