@@ -1,10 +1,16 @@
 module CSH.Eval.Routes where
+
+import Network.Wai (Application)
 import Servant
 
-type Routes = Get String
+type EvalAPI = Get String
 
-routes :: Proxy Routes
-routes = Proxy
+evalAPI :: Application
+evalAPI = serve evalAPIProxy server
 
-server :: Server Routes
+evalAPIProxy :: Proxy EvalAPI
+evalAPIProxy = Proxy
+
+server :: Server EvalAPI
 server = return "Hello world"
+
