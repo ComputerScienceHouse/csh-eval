@@ -136,7 +136,7 @@ create table "project_participant" (
     "member_id"    bigint   not null
    ,"project_id"   bigint   not null
    ,"description"  varchar  default null
-   ,constraint "one_member_per_praticipant" unique ("member_id", "project_id")
+   ,constraint "one_member_per_participant" unique ("member_id", "project_id")
 );
 
 drop table if exists "evaluation" cascade;
