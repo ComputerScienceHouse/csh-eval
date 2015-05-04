@@ -874,7 +874,7 @@ getInterviewersApplicationIDP = mkInit "select * from \"interviewer\" where \"ap
 getInterviewerMemberIDApplicationIDP :: StatementInitializer
 getInterviewerMemberIDApplicationIDP = mkInit "select * from \"interviewer\" where \"member_id\" = ? and \"application_id\" = ?;"
 
--- *** Question:
+-- *** Question
 
 -- | ('Database.HDBC.SqlInteger') Fetch a question by ID.
 getQuestionIDP :: StatementInitializer
@@ -1094,7 +1094,7 @@ getStatementExecStatementIDP = mkInit "select * from \"statement_exec\" where \"
 getStatementExecMemberIDP :: StatementInitializer
 getStatementExecMemberIDP = mkInit "select * from \"statement_exec\" where \"member_id\" = ?;"
 
--- ** Object Initializers:
+-- ** Object Initializers
 
 -- The following prepared statements instantiate specific objects in the model.
 -- Depending on the object, various specialized instantiators may be provided
@@ -1239,7 +1239,7 @@ mkStatementP = mkInit "insert into \"statement\" (\"sg_record\", \"side_effects\
 grEboardP :: StatementInitializer
 grEboardP = mkInit "insert into \"eboard\" (\"member_id\", \"committee\", \"start_date\") values (?, ?, ?);"
 
--- ***Room:
+-- ***Room
 
 -- | ('Database.HDBC.SqlInteger' X 'Database.HDBC.SqlByteString' X
 --   'Database.HDBC.SqlUTCTime') Grant a room occupancy context to a given
@@ -1489,7 +1489,7 @@ upFreshmanProjectDescriptionP = mkInit "update \"freshman_project\" set \"descri
 upFreshmanProjectDateP :: StatementInitializer
 upFreshmanProjectDateP = mkInit "update \"freshman_project\" set \"project_date\" = ? where \"id\" = ?;"
 
--- Packet:
+-- *** Packet
 
 -- | ('Database.HDBC.SqlUTCTime' X 'Database.HDBC.SqlInteger') Update a given
 --   packet's due date.
@@ -1513,7 +1513,7 @@ upQueueEnteredP = mkInit "update \"queue\" set \"entered\" = ? where \"id\" = ?;
 upQueueExitedP :: StatementInitializer
 upQueueExitedP = mkInit "update \"queue\" set \"exited\" = ? where \"id\" = ?;"
 
--- *** Application:
+-- *** Application
 
 -- | ('Database.HDBC.SqlUTCTime' X 'Database.HDBC.SqlInteger') Update a given
 --   application's creation date.
@@ -1575,7 +1575,7 @@ upQuestionQueryP = mkInit "update \"question\" set \"query\" = ? where \"id\" = 
 upHousingEvalDateP :: StatementInitializer
 upHousingEvalDateP = mkInit "update \"housing_eval\" set \"eval_date\" = ? where \"id\" = ?;"
 
--- Term:
+-- *** Term
 
 -- | ('Database.HDBC.SqlUTCTime' X 'Database.HDBC.SqlInteger') Update a given
 --   term's start date.
@@ -1643,7 +1643,7 @@ upFreshmanProjectParticipantResultP = mkInit "update \"freshman_project_particip
 upFreshmanProjectParticipantCommentsP :: StatementInitializer
 upFreshmanProjectParticipantCommentsP = mkInit "update \"freshman_project_participant\" set \"comments\" = ? where \"freshman_project_id\" = ? and \"evaluation_id\" = ?;"
 
--- *** Signature:
+-- *** Signature
 
 -- | ('Database.HDBC.SqlBool' X 'Database.HDBC.SqlInteger' X
 --   'Database.HDBC.SqlInteger) Update whether or not a given member's
@@ -1665,7 +1665,7 @@ upSignatureSignedP = mkInit "update \"signature\" set \"signed\" = ? where \"mem
 upReviewerMetricScoreP :: StatementInitializer
 upReviewerMetricScoreP = mkInit "update \"reviewer_metric\" set \"score\" = ? where \"metric_id\" = ? and \"reviewer_id\" = ?;"
 
--- *** Interviewer Metric:
+-- *** Interviewer Metric
 
 -- | ('Database.HDBC.SqlInteger' X 'Database.HDBC.SqlInteger' X
 --   'Database.HDBC.SqlInteger) Update a given interviewer's score with respect
