@@ -46,6 +46,7 @@ userDn user = Dn $ T.concat ["uid=", user, ",", userBaseTxt]
 -- | Wraps LDAP transactions.
 -- For example, here is a function that will retrieve a user from LDAP, given
 -- a username/password pair and a user to search for:
+--
 -- @
 --      import CSH.LDAP
 --      import Ldap.Client
