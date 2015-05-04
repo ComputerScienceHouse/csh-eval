@@ -44,5 +44,20 @@ userDn :: Text -- ^ uid of user
 userDn user = Dn $ T.concat ["uid=", user, ",", userBaseTxt]
 
 -- | Wraps LDAP transactions.
+-- For example, here is a function that will retrieve a user from LDAP, given
+-- a username/password pair and a user to search for:
+-- @
+--      import CSH.LDAP
+--      import Ldap.Client
+--
+--      fetchUser usr pass searchuser  = withCSH $ \l -> do
+--                      bind  l (userDn usr) (Password pass)
+--                      user <- search l (Dn userBaseTxt)
+--                                        (typesOnly False)
+--                                        (Attr "uid" := searchuser)
+--                                        []
+--                      return user
+-- @
 withCSH :: (Ldap -> IO a) -> IO (Either LdapError a)
 withCSH = with (Secure "ldap.csh.rit.edu") 636
+
