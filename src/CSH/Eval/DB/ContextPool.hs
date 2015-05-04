@@ -1,7 +1,8 @@
 module CSH.Eval.DB.ContextPool where
 
 import Control.Concurrent.MVar (MVar
-                               ,newMVar)
+                               ,newMVar
+                               ,takeMVar)
 
 import Data.Time.Clock.POSIX (posixDayLength)
 
@@ -11,7 +12,8 @@ import Data.Pool (Pool
 import Database.HDBC (IConnection
                      ,clone
                      ,disconnect)
-import Database.HDBC.PostgreSQL (Connection)
+import Database.HDBC.PostgreSQL (Connection
+                                ,connectPostgreSQL)
 
 import CSH.Eval.DB.Statements (StatementGroup
                               ,createStatementGroup
@@ -36,7 +38,7 @@ createContextPool :: String         -- ^ PostgreSQL connection string.
                   -> Int            -- ^ Maximum number of pooled contexts.
                   -> IO ContextPool
 createContextPool cs ps = do
-    rc  <- connectPostgreSql cs
+    rc  <- connectPostgreSQL cs
     rcm <- newMVar rc
     -- Database connection contexts live in a pool with one stripe and have a
     -- lifetime of one day.
