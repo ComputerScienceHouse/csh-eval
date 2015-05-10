@@ -10,10 +10,16 @@ An evaluations system for the Computer Science House at RIT.
              in mind.
 
 ## Setup for development
+
+__Note:__ Requires ghc version 7.10!
+
 - Install PostgreSQL (we have been using the latest stable: 9.4)
-- Initialize the database: `db/recreatedb.sh`
 - Initialize your cabal sandbox: `cabal sandbox init`
 - Install the dependencies (with tests) `cabal install --enable-tests --only-dependencies`
+- Initialize the database:
+	- Create a user called "pvals": `createuser pvals`
+	- Create a database called "pvals" owned by the pvals user: `createdb pvals -O pvals`
+	- Run the following command: `cabal exec runhaskell db/DBInitMain.hs db/eval_schema.sql`
 - `cabal build`
 - `cabal test`
 
