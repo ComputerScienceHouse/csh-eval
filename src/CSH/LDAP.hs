@@ -1,4 +1,16 @@
-{-# LANGUAGE OverloadedStrings #-}
+{-|
+Module      : CSH.LDAP
+Description : LDAP convenience function and examples
+Copyright   : Stephen Demos, Matt Gambogi, Travis Whitaker, Computer Science House 2015
+License     : MIT
+Maintainer  : pvals@csh.rit.edu
+Stability   : Provisional
+Portability : POSIX
+
+CSH.LDAP provides methods useful for interacting with CSH's LDAP configuration
+-}
+
+{-# LANGUAGE Trustworthy, OverloadedStrings #-}
 module CSH.LDAP
 ( userBaseTxt
 , appBaseTxt
@@ -10,6 +22,7 @@ module CSH.LDAP
 ) where
 
 import Ldap.Client
+import Safe
 import Data.Text as T
 
 -- | Generates a base given an Org Unit (ou) name.
@@ -43,6 +56,23 @@ userDn :: Text -- ^ uid of user
        -> Dn
 userDn user = Dn $ T.concat ["uid=", user, ",", userBaseTxt]
 
--- | Wraps LDAP transactions.
+{- | Wraps LDAP transactions.
+For example, here is a function that will retrieve a user from LDAP, given
+a username/password pair and a user to search for:
+
+@
+     import CSH.LDAP
+     import Ldap.Client
+
+     fetchUser usr pass searchuser  = withCSH $ \l -> do
+                     bind  l (userDn usr) (Password pass)
+                     user <- search l (Dn userBaseTxt)
+                                       (typesOnly False)
+                                       (Attr "uid" := searchuser)
+                                       []
+                     return user
+@
+-}
 withCSH :: (Ldap -> IO a) -> IO (Either LdapError a)
 withCSH = with (Secure "ldap.csh.rit.edu") 636
+
