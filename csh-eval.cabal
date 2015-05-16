@@ -22,7 +22,7 @@ executable csh-eval
   -- other-extensions:    
   build-depends:         base >=4.7 && <4.9
                        , safe
-                       , servant-server
+                       , servant
                        , csh-eval
                        , warp
                        , resource-pool
@@ -48,7 +48,7 @@ library
     hs-source-dirs:      src
     build-depends:       base >=4.7 && <4.9
                  ,       safe
-                 ,       servant-server
+                 ,       servant
                  ,       resource-pool
                  ,       text
                  ,       time
