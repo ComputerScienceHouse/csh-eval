@@ -1,5 +1,6 @@
-csh-eval
-==========
+[![Circle CI](https://circleci.com/gh/ComputerScienceHouse/csh-eval.svg?style=svg)](https://circleci.com/gh/ComputerScienceHouse/csh-eval)
+csh-eval 
+=========
 An evaluations system for the Computer Science House at RIT.
 
 ## Project Goals
