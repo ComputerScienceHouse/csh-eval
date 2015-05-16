@@ -1,0 +1,5 @@
+machine:
+    timezone: America/New_York
+    ghc:
+        version:
+            7.8
