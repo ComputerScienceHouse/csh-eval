@@ -41,8 +41,7 @@ executable csh-eval-db-init
                       ,shelly
 
 library
-    exposed-modules:     CSH.Eval.Routes
-                       , CSH.Eval.DB.ContextPool
+    exposed-modules:     CSH.Eval.DB.ContextPool
                        , CSH.Eval.DB.Statements
                        , CSH.LDAP
     hs-source-dirs:      src
