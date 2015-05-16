@@ -1,5 +1,4 @@
 machine:
     timezone: America/New_York
     ghc:
-        version:
-            7.8
+        version: 7.8.3
