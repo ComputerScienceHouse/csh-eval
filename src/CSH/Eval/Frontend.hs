@@ -16,8 +16,9 @@ data EvalFrontend = EvalFrontend
 -- This is where you add new HTML pages
 -- The EvalAPI is defined as a subsite of this website, under the /api route.
 mkYesod "EvalFrontend" [parseRoutes|
-/    HomeR GET
-/api EvalSubsiteR WaiSubsite getEvalAPI
+/                           HomeR GET
+/evals/membership/overview  EvalsMembershipOverviewR GET
+/api                        EvalSubsiteR WaiSubsite getEvalAPI
 |]
 
 -- | The basic layout for every CSH Eval page
@@ -25,7 +26,7 @@ evalLayout :: Widget -> Handler Html
 evalLayout widget = do
     pc <- widgetToPageContent $ do
         widget
-        toWidget $(luciusFile "csh-eval.lucius")
+        toWidget $(luciusFile "frontend/csh-eval.lucius")
     withUrlRenderer
         [hamlet|
             $doctype 5
@@ -51,5 +52,8 @@ getEvalAPI _ = WaiSubsite evalAPI
 
 -- | An example Html handler for the frontend. 
 getHomeR :: Handler Html
-getHomeR = defaultLayout [whamlet|<h1>Hello World!|]
+getHomeR = defaultLayout $(whamletFile "frontend/index.hamlet")
+
+getEvalsMembershipOverviewR :: Handler Html
+getEvalsMembershipOverviewR = defaultLayout $(whamletFile "frontend/evals/membership/overview.hamlet")
 
