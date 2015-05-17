@@ -31,10 +31,12 @@ Bugs and feature requests may also be made through Github issues.
 
 Github pull requests are used as a code review mechanism. All commits must be
 sent as pull requests, typically from topic branches in contributors' forks.
-One must not merge their own pull requests into this repository's master
-branch, this ensures that at least one other contributor with push access has
-reviewed the code.
+Pull requests may not be merged into this repository's master branch by the requestor,
+this ensures that at least one other contributor with push access has
+reviewed the code. Pull requests are built and tested by circleci. Pull requests may not
+be merged until the circle build status is known.
 
+All functions must have at least one doctest example in their docstring.
 All pure Haskell functions must be accompanied by QuickCheck props. All impure
 functions must be accompanied by HUnit tests. All pure SQL must be accompanied
 by offerings to the deity of the contributor's choosing, proportional in
