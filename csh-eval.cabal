@@ -62,8 +62,11 @@ test-suite tests
     main-is:             Tests.hs
     build-depends:         base >=4.7 && <4.9
                          , safe
-                         , HUnit
-                         , QuickCheck
+                         , tasty
+                         , tasty-quickcheck
+                         , quickcheck-instances
+                         , tasty-hunit
+                         , doctest
     ghc-options:         -Wall
     default-extensions:  OverloadedStrings
     default-language:    Haskell2010
