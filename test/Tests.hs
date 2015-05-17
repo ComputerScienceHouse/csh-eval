@@ -20,6 +20,5 @@ tests = testGroup "Tests" [ ldap
 
 ldap :: TestTree
 ldap = testGroup "LDAP" [ doctests
-                        , hunits
                         ] where
         doctests = HU.testCase "doctests" $ doctestModule "CSH/LDAP.hs"
