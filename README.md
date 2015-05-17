@@ -1,5 +1,5 @@
-csh-eval
-==========
+csh-eval [![Circle CI](https://circleci.com/gh/ComputerScienceHouse/csh-eval.svg?style=svg)](https://circleci.com/gh/ComputerScienceHouse/csh-eval)
+=========
 An evaluations system for the Computer Science House at RIT.
 
 ## Project Goals
@@ -11,7 +11,7 @@ An evaluations system for the Computer Science House at RIT.
 
 ## Setup for development
 
-__Note:__ Requires ghc version 7.10!
+__Note:__ Requires ghc version 7.8 or above
 
 - Install PostgreSQL (we have been using the latest stable: 9.4)
 - Initialize your cabal sandbox: `cabal sandbox init`
