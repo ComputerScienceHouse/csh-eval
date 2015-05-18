@@ -4,3 +4,4 @@
 *.hi
 cabal.sandbox.config
 .cabal-sandbox
+client_session_key.aes
