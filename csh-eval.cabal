@@ -40,14 +40,10 @@ executable csh-eval-db-init
   main-is:             DBInitMain.hs
   hs-source-dirs:      db
   default-language:    Haskell2010
-<<<<<<< HEAD
   build-depends:       base >= 4.8 && < 4.9
                       ,hasql
                       ,hasql-postgres
                       ,bytestring
-=======
-  build-depends:       base >=4.7 && <4.9
->>>>>>> master
                       ,text
                       ,csh-eval
 
