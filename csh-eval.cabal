@@ -23,6 +23,7 @@ executable csh-eval
   build-depends:         base >=4.7 && <4.9
                        , safe
                        , servant
+                       , servant-server >=0.4.0
                        , csh-eval
                        , warp
                        , resource-pool
@@ -47,11 +48,13 @@ library
     exposed-modules:     CSH.Eval.DB.ContextPool
                        , CSH.Eval.DB.Statements
                        , CSH.Eval.Frontend
+                       , CSH.Eval.Routes
                        , CSH.LDAP
     hs-source-dirs:      src
     build-depends:       base >=4.7 && <4.9
                  ,       safe
                  ,       servant
+                 ,       servant-server
                  ,       resource-pool
                  ,       text
                  ,       time
