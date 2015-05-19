@@ -10,8 +10,6 @@ Portability : POSIX
 CSH.Eval.DB.Schema defines and documents the database schema.
 -}
 
-{-# OPTIONS_HADDOCK ignore-exports #-}
-
 {-# LANGUAGE QuasiQuotes, OverloadedStrings, RankNTypes #-}
 
 module CSH.Eval.DB.Schema (
