@@ -24,7 +24,7 @@ executable csh-eval
                        ,servant-server      >= 0.4     && <0.4.1
                        ,csh-eval
                        ,warp                >=3.0.13   && <3.0.14
-                       ,time                >=1.5.0    && <1.5.1
+                       ,time                >=1.4.2    && <1.5.1
                        ,hasql               >=0.7.3    && <0.7.4
                        ,hasql-postgres      >=0.10.3   && <0.10.4
                        ,wai                 >=3.0.2    && <3.0.3
@@ -59,7 +59,7 @@ library
                       ,servant              >= 0.4     && <0.4.1
                       ,servant-server       >= 0.4     && <0.4.1
                       ,text                 >=1.2.0.6  && <1.2.1
-                      ,time                 >=1.5.0    && <1.5.1
+                      ,time                 >=1.4.2    && <1.5.1
                       ,hasql                >=0.7.3    && <0.7.4
                       ,hasql-postgres       >=0.10.3   && <0.10.4
                       ,ldap-client          >= 0.1.0   && <0.1.1
