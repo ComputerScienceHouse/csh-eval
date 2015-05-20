@@ -1,22 +1,22 @@
 -- csh-eval.cabal
 
-name:                  csh-eval
-version:               0.1.0.0
-synopsis:              REPL for PEOPLE
-description:           REPL for PEOPLE
-homepage:              https://github.com/ComputerScienceHouse/csh-eval
-license:               MIT
-license-file:          LICENSE
-author:                Matt Gambogi, Stephen Demos, Travis Whitaker
-maintainer:            pvals@csh.rit.edu
-copyright:             Matt Gambogi, Stephen Demos, Travis Whitaker, Computer Science House 2015
-category:              Control
-build-type:            Simple
-extra-source-files:    README.md
-cabal-version:         >=1.10
+name:                   csh-eval
+version:                0.1.0.0
+synopsis:               REPL for PEOPLE
+description:            REPL for PEOPLE
+homepage:               https://github.com/ComputerScienceHouse/csh-eval
+license:                MIT
+license-file:           LICENSE
+author:                 Matt Gambogi, Stephen Demos, Travis Whitaker
+maintainer:             pvals@csh.rit.edu
+copyright:              Matt Gambogi, Stephen Demos, Travis Whitaker, Computer Science House 2015
+category:               Control
+build-type:             Simple
+extra-source-files:     README.md
+cabal-version:          >=1.10
 
 executable csh-eval
-  main-is:             Main.hs
+  main-is:              Main.hs
   build-depends:        base                >=4.7      && <4.9
                        ,bytestring          >=0.10.4   && <0.10.7
                        ,safe                >=0.3.9    && <0.3.10
@@ -52,6 +52,7 @@ library
                       ,CSH.Eval.Frontend
                       ,CSH.Eval.Routes
                       ,CSH.LDAP
+                      ,CSH.Eval.Model
   hs-source-dirs:      src
   build-depends:       base                 >=4.7      && <4.9
                       ,bytestring           >=0.10.4   && <0.10.7
