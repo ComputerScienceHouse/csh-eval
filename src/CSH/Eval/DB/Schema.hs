@@ -264,14 +264,14 @@ member :: SchemaInit
 member = mapM_ H.unitEx [
      [H.stmt|drop table if exists "member" cascade|]
    , [H.stmt|create table "member" (
-        "id"              bigserial  primary key
-       ,"uuid"            uuid       default null constraint "unique_member_uuid" unique
-       ,"username"        varchar    not null constraint "unique_member_username" unique
-       ,"commonname"      varchar    not null
-       ,"password_hash"   bytea      default null
-       ,"password_salt"   bytea      default null
-       ,"housing_points"  integer    not null default 0
-       ,"onfloor_status"  boolean    not null default false
+         "id"              bigserial  primary key
+       , "uuid"            uuid       default null  constraint "unique_member_uuid" unique
+       , "username"        varchar    not null  constraint "unique_member_username" unique
+       , "commonname"      varchar    not null
+       , "password_hash"   bytea      default null
+       , "password_salt"   bytea      default null
+       , "housing_points"  integer    not null default 0
+       , "onfloor_status"  boolean    not null default false
     )|]
    ]
 
@@ -293,11 +293,11 @@ eboard :: SchemaInit
 eboard = mapM_ H.unitEx [
      [H.stmt|drop table if exists "eboard" cascade|]
    , [H.stmt|create table "eboard" (
-        "member_id"   bigint       not null
-       ,"committee"   committee_t  not null
-       ,"start_date"  date         not null
-       ,"end_date"    date         default null
-       ,constraint "no_simultaneous_eboard_positions" unique ("member_id", "start_date")
+         "member_id"   bigint       not null
+       , "committee"   committee_t  not null
+       , "start_date"  date         not null
+       , "end_date"    date         default null
+       , constraint "no_simultaneous_eboard_positions" unique ("member_id", "start_date")
     )|]
    ]
 
@@ -312,12 +312,12 @@ room :: SchemaInit
 room = mapM_ H.unitEx [
      [H.stmt|drop table if exists "room" cascade|]
    , [H.stmt|create table "room" (
-        "member_id"    bigint   not null
-       ,"room_number"  varchar  not null
-       ,"start_date"   date     not null
-       ,"end_date"     date     not null
-       ,constraint "no_simultaneous_member_occupation" unique ("member_id", "start_date")
-       ,constraint "no_simultaneous_room_occupation" unique ("room_number", "start_date")
+         "member_id"    bigint   not null
+       , "room_number"  varchar  not null
+       , "start_date"   date     not null
+       , "end_date"     date     not null
+       , constraint "no_simultaneous_member_occupation" unique ("member_id", "start_date")
+       , constraint "no_simultaneous_room_occupation" unique ("room_number", "start_date")
     )|]
    ]
 
@@ -330,11 +330,11 @@ membership :: SchemaInit
 membership = mapM_ H.unitEx [
      [H.stmt|drop table if exists "membership" cascade|]
    , [H.stmt|create table "membership" (
-        "member_id"   bigint    not null
-       ,"status"      member_t  not null
-       ,"start_date"  date      not null
-       ,"end_date"    date      default null
-       ,constraint "no_simultaneous_membership_status" unique ("member_id", "start_date")
+         "member_id"   bigint    not null
+       , "status"      member_t  not null
+       , "start_date"  date      not null
+       , "end_date"    date      default null
+       , constraint "no_simultaneous_membership_status" unique ("member_id", "start_date")
     )|]
    ]
 
@@ -349,13 +349,13 @@ event :: SchemaInit
 event = mapM_ H.unitEx [
      [H.stmt|drop table if exists "event" cascade|]
    , [H.stmt|create table "event" (
-        "id"           bigserial    primary key
-       ,"title"        varchar      not null
-       ,"held"         timestamp    not null
-       ,"category"     event_t      not null
-       ,"committee"    committee_t  not null
-       ,"description"  varchar      not null
-       ,constraint "unique_event_title_held" unique ("title", "held")
+         "id"           bigserial    primary key
+       , "title"        varchar      not null
+       , "held"         timestamp    not null
+       , "category"     event_t      not null
+       , "committee"    committee_t  not null
+       , "description"  varchar      not null
+       , constraint "unique_event_title_held" unique ("title", "held")
     )|]
    ]
 
@@ -363,10 +363,10 @@ event_attendee :: SchemaInit
 event_attendee = mapM_ H.unitEx [
      [H.stmt|drop table if exists "event_attendee" cascade|]
    , [H.stmt|create table "event_attendee" (
-        "member_id"  bigint   not null
-       ,"event_id"   bigint   not null
-       ,"host"       boolean  not null default false
-       ,constraint "unique_event_attendee" unique ("member_id", "event_id")
+         "member_id"  bigint   not null
+       , "event_id"   bigint   not null
+       , "host"       boolean  not null default false
+       , constraint "unique_event_attendee" unique ("member_id", "event_id")
     )|]
    ]
 
@@ -374,15 +374,15 @@ project :: SchemaInit
 project = mapM_ H.unitEx [
      [H.stmt|drop table if exists "project" cascade|]
    , [H.stmt|create table "project" (
-        "id"            bigserial    primary key
-       ,"title"         varchar      not null
-       ,"description"   varchar      not null
-       ,"submitted"     timestamp    not null
-       ,"passed"        timestamp    default null
-       ,"committee"     committee_t  not null
-       ,"project_type"  project_t    not null
-       ,"comments"      varchar      default null
-       ,"status"        status_t     not null default 'pending'
+         "id"            bigserial    primary key
+       , "title"         varchar      not null
+       , "description"   varchar      not null
+       , "submitted"     timestamp    not null
+       , "passed"        timestamp    default null
+       , "committee"     committee_t  not null
+       , "project_type"  project_t    not null
+       , "comments"      varchar      default null
+       , "status"        status_t     not null default 'pending'
     )|]
    ]
 
@@ -390,10 +390,10 @@ project_participant :: SchemaInit
 project_participant = mapM_ H.unitEx [
      [H.stmt|drop table if exists "project_participant" cascade|]
    , [H.stmt|create table "project_participant" (
-        "member_id"    bigint   not null
-       ,"project_id"   bigint   not null
-       ,"description"  varchar  default null
-       ,constraint "one_member_per_participant" unique ("member_id", "project_id")
+         "member_id"    bigint   not null
+       , "project_id"   bigint   not null
+       , "description"  varchar  default null
+       , constraint "one_member_per_participant" unique ("member_id", "project_id")
     )|]
    ]
 
@@ -401,13 +401,13 @@ evaluation :: SchemaInit
 evaluation = mapM_ H.unitEx [
      [H.stmt|drop table if exists "evaluation" cascade|]
    , [H.stmt|create table "evaluation" (
-        "id"         bigserial  primary key
-       ,"member_id"  bigint     not null
-       ,"comments"   varchar    default null
-       ,"deadline"   timestamp  not null
-       ,"available"  boolean    default false
-       ,"status"     status_t   not null default 'pending'
-       ,"eval_type"  eval_t     not null
+         "id"         bigserial  primary key
+       , "member_id"  bigint     not null
+       , "comments"   varchar    default null
+       , "deadline"   timestamp  not null
+       , "available"  boolean    default false
+       , "status"     status_t   not null default 'pending'
+       , "eval_type"  eval_t     not null
     )|]
    ]
 
@@ -415,11 +415,11 @@ conditional :: SchemaInit
 conditional = mapM_ H.unitEx [
      [H.stmt|drop table if exists "conditional" cascade|]
    , [H.stmt|create table "conditional" (
-        "id"             bigserial  primary key
-       ,"evaluation_id"  bigint     not null constraint "one_conditional_per_eval" unique
-       ,"deadline"       timestamp  not null
-       ,"description"    varchar    not null
-       ,"comments"       varchar    default null
+         "id"             bigserial  primary key
+       , "evaluation_id"  bigint     not null  constraint "one_conditional_per_eval" unique
+       , "deadline"       timestamp  not null
+       , "description"    varchar    not null
+       , "comments"       varchar    default null
     )|]
    ]
 
@@ -427,9 +427,9 @@ freshman_project :: SchemaInit
 freshman_project = mapM_ H.unitEx [
      [H.stmt|drop table if exists "freshman_project" cascade|]
    , [H.stmt|create table "freshman_project" (
-        "id"            bigserial  primary key
-       ,"description"   varchar    not null
-       ,"project_date"  date       not null
+         "id"            bigserial  primary key
+       , "description"   varchar    not null
+       , "project_date"  date       not null
     )|]
    ]
 
@@ -437,12 +437,12 @@ freshman_project_participant :: SchemaInit
 freshman_project_participant = mapM_ H.unitEx [
      [H.stmt|drop table if exists "freshman_project_participant" cascade|]
    , [H.stmt|create table "freshman_project_participant" (
-        "freshman_project_id"  bigint    not null
-       ,"evaluation_id"        bigint    not null
-       ,"eboard"               boolean   not null default false
-       ,"status"               status_t  not null default 'pending'
-       ,"comments"             varchar   default null
-       ,constraint "one_freshman_project_per_eval" unique ("freshman_project_id", "evaluation_id")
+         "freshman_project_id"  bigint    not null
+       , "evaluation_id"        bigint    not null
+       , "eboard"               boolean   not null default false
+       , "status"               status_t  not null default 'pending'
+       , "comments"             varchar   default null
+       , constraint "one_freshman_project_per_eval" unique ("freshman_project_id", "evaluation_id")
     )|]
    ]
 
@@ -450,11 +450,11 @@ packet :: SchemaInit
 packet = mapM_ H.unitEx [
      [H.stmt|drop table if exists "packet" cascade|]
    , [H.stmt|create table "packet" (
-        "id"           bigserial  primary key
-       ,"member_id"    bigint     not null
-       ,"due_date"     date       not null
-       ,"percent_req"  integer    not null
-       ,constraint "no_simultaneous_packets" unique ("member_id", "due_date")
+         "id"           bigserial  primary key
+       , "member_id"    bigint     not null
+       , "due_date"     date       not null
+       , "percent_req"  integer    not null
+       , constraint "no_simultaneous_packets" unique ("member_id", "due_date")
     )|]
    ]
 
@@ -462,11 +462,11 @@ signature :: SchemaInit
 signature = mapM_ H.unitEx [
      [H.stmt|drop table if exists "signature" cascade|]
    , [H.stmt|create table "signature" (
-        "member_id"  bigint     not null
-       ,"packet_id"  bigint     not null
-       ,"required"   boolean    not null
-       ,"signed"     timestamp  default null
-       ,constraint "one_signature_per_packet_per_member" unique ("member_id", "packet_id")
+         "member_id"  bigint     not null
+       , "packet_id"  bigint     not null
+       , "required"   boolean    not null
+       , "signed"     timestamp  default null
+       , constraint "one_signature_per_packet_per_member" unique ("member_id", "packet_id")
     )|]
    ]
 
@@ -474,11 +474,11 @@ queue :: SchemaInit
 queue = mapM_ H.unitEx [
      [H.stmt|drop table if exists "queue" cascade|]
    , [H.stmt|create table "queue" (
-        "id"         bigserial  primary key
-       ,"member_id"  bigint     not null
-       ,"entered"    timestamp  not null
-       ,"exited"     timestamp  default null
-       ,constraint "no_simultaneous_queue_positions" unique ("member_id", "entered")
+         "id"         bigserial  primary key
+       , "member_id"  bigint     not null
+       , "entered"    timestamp  not null
+       , "exited"     timestamp  default null
+       , constraint "no_simultaneous_queue_positions" unique ("member_id", "entered")
     )|]
    ]
 
@@ -486,11 +486,11 @@ application :: SchemaInit
 application = mapM_ H.unitEx [
      [H.stmt|drop table if exists "application" cascade|]
    , [H.stmt|create table "application" (
-        "id"         bigserial  primary key
-       ,"member_id"  bigint     not null
-       ,"created"    timestamp  not null
-       ,"status"     status_t   not null default 'pending'
-       ,constraint "no_simultaneous_applications" unique ("member_id", "created")
+         "id"         bigserial  primary key
+       , "member_id"  bigint     not null
+       , "created"    timestamp  not null
+       , "status"     status_t   not null default 'pending'
+       , constraint "no_simultaneous_applications" unique ("member_id", "created")
     )|]
    ]
 
@@ -498,9 +498,9 @@ metric :: SchemaInit
 metric = mapM_ H.unitEx [
      [H.stmt|drop table if exists "metric" cascade|]
    , [H.stmt|create table "metric" (
-        "id"      bigserial  primary key
-       ,"name"    varchar    not null constraint "unique_metric_name" unique
-       ,"active"  boolean    default true
+         "id"      bigserial  primary key
+       , "name"    varchar    not null  constraint "unique_metric_name" unique
+       , "active"  boolean    default true
     )|]
    ]
 
@@ -508,10 +508,10 @@ reviewer_metric :: SchemaInit
 reviewer_metric = mapM_ H.unitEx [
      [H.stmt|drop table if exists "reviewer_metric" cascade|]
    , [H.stmt|create table "reviewer_metric" (
-        "metric_id"    bigint   not null
-       ,"reviewer_id"  bigint   not null
-       ,"score"        integer  not null
-       ,constraint "one_score_per_reviewer_per_metric" unique ("metric_id", "reviewer_id")
+         "metric_id"    bigint   not null
+       , "reviewer_id"  bigint   not null
+       , "score"        integer  not null
+       , constraint "one_score_per_reviewer_per_metric" unique ("metric_id", "reviewer_id")
     )|]
    ]
 
@@ -519,10 +519,10 @@ interviewer_metric :: SchemaInit
 interviewer_metric = mapM_ H.unitEx [
      [H.stmt|drop table if exists "interviewer_metric" cascade|]
    , [H.stmt|create table "interviewer_metric" (
-        "metric_id"       bigint   not null
-       ,"interviewer_id"  bigint   not null
-       ,"score"           integer  not null
-       ,constraint "one_score_per_interviewer_per_metric" unique ("metric_id", "interviewer_id")
+         "metric_id"       bigint   not null
+       , "interviewer_id"  bigint   not null
+       , "score"           integer  not null
+       , constraint "one_score_per_interviewer_per_metric" unique ("metric_id", "interviewer_id")
     )|]
    ]
 
@@ -530,12 +530,12 @@ reviewer :: SchemaInit
 reviewer = mapM_ H.unitEx [
      [H.stmt|drop table if exists "reviewer" cascade|]
    , [H.stmt|create table "reviewer" (
-        "id"              bigserial  primary key
-       ,"member_id"       bigint     not null
-       ,"application_id"  bigint     not null
-       ,"review_start"    timestamp  not null
-       ,"review_submit"   timestamp  not null
-       ,constraint "one_review_per_member_per_application" unique ("member_id", "application_id")
+         "id"              bigserial  primary key
+       , "member_id"       bigint     not null
+       , "application_id"  bigint     not null
+       , "review_start"    timestamp  not null
+       , "review_submit"   timestamp  not null
+       , constraint "one_review_per_member_per_application" unique ("member_id", "application_id")
     )|]
    ]
 
@@ -543,11 +543,11 @@ interviewer :: SchemaInit
 interviewer = mapM_ H.unitEx [
      [H.stmt|drop table if exists "interviewer" cascade|]
    , [H.stmt|create table "interviewer" (
-        "id"              bigserial  primary key
-       ,"member_id"       bigint     not null
-       ,"application_id"  bigint     not null
-       ,"interview_date"  timestamp  not null
-       ,constraint "one_interview_per_member_per_application" unique ("member_id", "application_id")
+         "id"              bigserial  primary key
+       , "member_id"       bigint     not null
+       , "application_id"  bigint     not null
+       , "interview_date"  timestamp  not null
+       , constraint "one_interview_per_member_per_application" unique ("member_id", "application_id")
     )|]
    ]
 
@@ -555,9 +555,9 @@ question :: SchemaInit
 question = mapM_ H.unitEx [
      [H.stmt|drop table if exists "question" cascade|]
    , [H.stmt|create table "question" (
-        "id"      bigserial  primary key
-       ,"active"  boolean    default true
-       ,"query"   varchar    not null
+         "id"      bigserial  primary key
+       , "active"  boolean    default true
+       , "query"   varchar    not null
     )|]
    ]
 
@@ -565,10 +565,10 @@ answer :: SchemaInit
 answer = mapM_ H.unitEx [
      [H.stmt|drop table if exists "answer" cascade|]
    , [H.stmt|create table "answer" (
-        "application_id"  bigint   not null
-       ,"question_id"     bigint   not null
-       ,"response"        varchar  not null
-       ,constraint "one_response_per_application_per_question" unique ("application_id", "question_id")
+         "application_id"  bigint   not null
+       , "question_id"     bigint   not null
+       , "response"        varchar  not null
+       , constraint "one_response_per_application_per_question" unique ("application_id", "question_id")
     )|]
    ]
 
@@ -576,8 +576,8 @@ housing_eval :: SchemaInit
 housing_eval = mapM_ H.unitEx [
      [H.stmt|drop table if exists "housing_eval" cascade|]
    , [H.stmt|create table "housing_eval" (
-        "id"         bigserial  primary key
-       ,"eval_date"  date       not null constraint "no_simultaneous_housing_evals" unique
+         "id"         bigserial  primary key
+       , "eval_date"  date       not null  constraint "no_simultaneous_housing_evals" unique
     )|]
    ]
 
@@ -585,11 +585,11 @@ housing_evaluator :: SchemaInit
 housing_evaluator = mapM_ H.unitEx [
      [H.stmt|drop table if exists "housing_evaluator" cascade|]
    , [H.stmt|create table "housing_evaluator" (
-        "housing_eval_id"  bigint   not null
-       ,"member_id"        bigint   not null
-       ,"score"            integer  not null
-       ,"voted"            boolean  not null default false
-       ,constraint "one_score_per_housing_eval" unique ("housing_eval_id", "member_id")
+         "housing_eval_id"  bigint   not null
+       , "member_id"        bigint   not null
+       , "score"            integer  not null
+       , "voted"            boolean  not null default false
+       , constraint "one_score_per_housing_eval" unique ("housing_eval_id", "member_id")
     )|]
    ]
 
@@ -597,9 +597,9 @@ term :: SchemaInit
 term = mapM_ H.unitEx [
      [H.stmt|drop table if exists "term" cascade|]
    , [H.stmt|create table "term" (
-        "id"          bigint  primary key
-       ,"start_date"  date    not null constraint "no_simultaneous_terms" unique
-       ,"end_date"    date    default null
+         "id"          bigint  primary key
+       , "start_date"  date    not null  constraint "no_simultaneous_terms" unique
+       , "end_date"    date    default null
     )|]
    ]
 
@@ -607,10 +607,10 @@ dues :: SchemaInit
 dues = mapM_ H.unitEx [
      [H.stmt|drop table if exists "dues" cascade|]
    , [H.stmt|create table "dues" (
-        "term_id"    bigint  not null
-       ,"member_id"  bigint  not null
-       ,"status"     dues_t  not null
-       ,constraint "one_dues_status_per_term" unique ("term_id", "member_id")
+         "term_id"    bigint  not null
+       , "member_id"  bigint  not null
+       , "status"     dues_t  not null
+       , constraint "one_dues_status_per_term" unique ("term_id", "member_id")
     )|]
    ]
 
@@ -618,9 +618,9 @@ statement :: SchemaInit
 statement = mapM_ H.unitEx [
      [H.stmt|drop table if exists "statement" cascade|]
    , [H.stmt|create table "statement" (
-        "id"            bigserial  primary key
-       ,"sg_record"     varchar    not null constraint "unique_statement_group_record" unique
-       ,"side_effects"  boolean    not null
+         "id"            bigserial  primary key
+       , "sg_record"     varchar    not null  constraint "unique_statement_group_record" unique
+       , "side_effects"  boolean    not null
     )|]
    ]
 
@@ -628,9 +628,9 @@ statement_exec :: SchemaInit
 statement_exec = mapM_ H.unitEx [
      [H.stmt|drop table if exists "statement_exec" cascade|]
    , [H.stmt|create table "statement_exec" (
-        "statement_id"  bigint     not null
-       ,"member_id"     bigint     not null
-       ,"timestamp"     timestamp  not null
+         "statement_id"  bigint     not null
+       , "member_id"     bigint     not null
+       , "timestamp"     timestamp  not null
     )|]
    ]
 
