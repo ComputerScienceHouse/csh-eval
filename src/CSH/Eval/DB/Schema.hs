@@ -338,7 +338,8 @@ membership = mapM_ H.unitEx [
     )|]
    ]
 
--- | * @title@       - varchar; The name of the event.
+-- | Logs an event
+--   * @title@       - varchar; The name of the event.
 --   * @held@        - timestamp; The time the event began.
 --   * @category@    - @event_t@; The kind of event. See @event_t@ for an
 --                     enumeration of possible kinds.
@@ -359,6 +360,10 @@ event = mapM_ H.unitEx [
     )|]
    ]
 
+-- | Records attendance of members at events
+--   * @member_id@ - Member in attendance
+--   * @event_id@  - Event being attended
+--   * @host@ - This attendee also hosted the event
 event_attendee :: SchemaInit
 event_attendee = mapM_ H.unitEx [
      [H.stmt|drop table if exists "event_attendee" cascade|]
@@ -370,6 +375,18 @@ event_attendee = mapM_ H.unitEx [
     )|]
    ]
 
+-- | Project record.
+--   * @id@           - Unique id of the project
+--   * @title@        - Title of the project
+--   * @description@  - Description of the project. Should be blog post in
+--                      length
+--   * @submitted@    - Date submitted
+--   * @passed@       - Date passed (if null, project has not been evaluated)
+--   * @committee@    - Committee afiliated with the project
+--   * @project_type@ - Kind of project (e.g. "Major")
+--   * @comments@     - Eboard comments on the project
+--   * @status@       - current status of the project, for possible values, see
+--                      @status_t@
 project :: SchemaInit
 project = mapM_ H.unitEx [
      [H.stmt|drop table if exists "project" cascade|]
@@ -386,6 +403,14 @@ project = mapM_ H.unitEx [
     )|]
    ]
 
+-- | Records a member's participation in a project. This table exists for
+--   group major project support.
+--   * @member_id@   - The id of the member who participated in the project
+--   * @project_id@  - The id of the project participated in
+--   * @description@ - The description of the work contribution.
+--                     In single owner projects this field will be null.
+--                     Otherwise, it will read something like:
+--                     "I'd say the work distribution was about 60/40"
 project_participant :: SchemaInit
 project_participant = mapM_ H.unitEx [
      [H.stmt|drop table if exists "project_participant" cascade|]
@@ -397,6 +422,16 @@ project_participant = mapM_ H.unitEx [
     )|]
    ]
 
+-- | A record of an evaluation. These should be created at the beginning of a
+--   term as an active member. Effectively scheduling an evaluation.
+--
+--   * @id@        - Unique id of the evaluation
+--   * @member_id@ - id of member being evaluated
+--   * @comments@  - any comments the member may have on their pending evaluation
+--   * @deadline@  - the date the evaluation occurs
+--   * @available@ - the availability of the results
+--   * @status@    - status of the evaluation
+--   * @eval_type@ - see @eval_t@ for details.
 evaluation :: SchemaInit
 evaluation = mapM_ H.unitEx [
      [H.stmt|drop table if exists "evaluation" cascade|]
@@ -411,6 +446,13 @@ evaluation = mapM_ H.unitEx [
     )|]
    ]
 
+-- | Represents a conditional and its stipulations. No result is recorded for
+--   the conditional as that is tied to the evaluation record
+--   * @id@            - unique id of the conditional
+--   * @evaluation_id@ - id of the evaluation associated with this 
+--   * @deadline@      - date the conditional is due
+--   * @description@   - explanation of the terms of the conditional
+--   * @comments@      - summary of the evaluation
 conditional :: SchemaInit
 conditional = mapM_ H.unitEx [
      [H.stmt|drop table if exists "conditional" cascade|]
@@ -423,16 +465,27 @@ conditional = mapM_ H.unitEx [
     )|]
    ]
 
+-- | Represents a freshman project
+-- * @id@           - Unique id
+-- * @description@  - Writeup of the actual project.
+-- * @term_id@      - Term the project was held
 freshman_project :: SchemaInit
 freshman_project = mapM_ H.unitEx [
      [H.stmt|drop table if exists "freshman_project" cascade|]
    , [H.stmt|create table "freshman_project" (
          "id"            bigserial  primary key
        , "description"   varchar    not null
-       , "project_date"  date       not null
+       , "term_id"       bigint     not null
     )|]
    ]
 
+-- | A participant in a freshman project
+-- * @freshman_project_id@ - freshman project participated in
+-- * @evaluation_id@       - evaluation associated with the participation
+-- * @eboard@              - whether or not this participant was on freshman
+--                           eboard, the most prestigious of positions
+-- * @status@              - result of the project. Determined by freshman eboard
+-- * @comments@            - comments on the participation from the freshman eboard
 freshman_project_participant :: SchemaInit
 freshman_project_participant = mapM_ H.unitEx [
      [H.stmt|drop table if exists "freshman_project_participant" cascade|]
@@ -645,6 +698,7 @@ enableForeignKeys = mapM_ H.unitEx [
    , [H.stmt|alter table "project_participant" add foreign key ("project_id") references "project" ("id")|]
    , [H.stmt|alter table "evaluation" add foreign key ("member_id") references "member" ("id")|]
    , [H.stmt|alter table "conditional" add foreign key ("evaluation_id") references "evaluation" ("id")|]
+   , [H.stmt|alter table "freshman_project" add foreign key ("term_id") references "term" ("id")|]
    , [H.stmt|alter table "freshman_project_participant" add foreign key ("freshman_project_id") references "freshman_project" ("id")|]
    , [H.stmt|alter table "freshman_project_participant" add foreign key ("evaluation_id") references "evaluation" ("id")|]
    , [H.stmt|alter table "packet" add foreign key ("member_id") references "member" ("id")|]
