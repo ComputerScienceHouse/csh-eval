@@ -40,7 +40,6 @@ module CSH.Eval.DB.Schema (
    , review
    , interview
    , question
-   , housing_eval
    , term
 
      -- ** Contexts
@@ -56,7 +55,6 @@ module CSH.Eval.DB.Schema (
    , event_attendee
    , project_participant
    , freshman_project_participant
-   , housing_evaluator
 
      -- *** Other Contexts
    , signature

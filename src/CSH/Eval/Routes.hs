@@ -1,3 +1,12 @@
+{-|
+Module      : CSH.Eval.Routes
+Description : Routing for the API server
+Copyright   : Stephen Demos, Matt Gambogi, Travis Whitaker, Computer Science House 2015
+License     : MIT
+Maintainer  : pvals@csh.rit.edu
+Stability   : Provisional
+Portability : POSIX
+-}
 {-# LANGUAGE DataKinds #-}
 module CSH.Eval.Routes where
 
