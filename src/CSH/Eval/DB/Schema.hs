@@ -489,9 +489,10 @@ conditional = mapM_ H.unitEx
 
 -- | Represents a freshman project
 --
--- * @id@           - Unique id
--- * @description@  - Writeup of the actual project.
--- * @term_id@      - Term the project was held
+-- * @id@          - Unique id
+-- * @description@ - Writeup of the actual project.
+-- * @term_id@     - Term the project was held
+-- * @event_id@    - The event associated with the project
 freshman_project :: SchemaInit
 freshman_project = mapM_ H.unitEx
    [ [H.stmt|drop table if exists "freshman_project" cascade|]
@@ -499,6 +500,7 @@ freshman_project = mapM_ H.unitEx
        ( "id"            bigserial  primary key
        , "description"   varchar    not null
        , "term_id"       bigint     not null
+       , "event_id"      bigint     default null
     )|]
    ]
 
@@ -794,6 +796,7 @@ enableForeignKeys = mapM_ H.unitEx
    , [H.stmt|alter table "evaluation" add foreign key ("member_id") references "member" ("id")|]
    , [H.stmt|alter table "conditional" add foreign key ("evaluation_id") references "evaluation" ("id")|]
    , [H.stmt|alter table "freshman_project" add foreign key ("term_id") references "term" ("id")|]
+   , [H.stmt|alter table "freshman_project" add foreign key ("event_id") references "event" ("id")|]
    , [H.stmt|alter table "freshman_project_participant" add foreign key ("freshman_project_id") references "freshman_project" ("id")|]
    , [H.stmt|alter table "freshman_project_participant" add foreign key ("evaluation_id") references "evaluation" ("id")|]
    , [H.stmt|alter table "packet" add foreign key ("member_id") references "member" ("id")|]
