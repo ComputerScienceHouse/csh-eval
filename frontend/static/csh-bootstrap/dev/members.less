@@ -1,0 +1,428 @@
+// Colors
+@members-purple: #8b2c93;
+@members-purple-dark: darken(@members-purple, 10%);
+@members-puprle-light: lighten(@members-purple, 40%);
+@members-pink: #df0051;
+@charcoal: #222;
+@gray: #bbb;
+@white: #fff;
+
+@color-success: #5ba215;
+@color-info: #3d9ec9;
+@color-warning: #ffb43f;
+
+/*
+* General
+*/
+
+// Import and apply the Open Sans font
+// @import url(https://fonts.googleapis.com/css?family=Open+Sans:700,400);
+body {
+  font-family: sans-serif; //'Open Sans', sans-serif;
+}
+
+// Links
+a {
+  &:link, &:visited {
+    color: @members-purple;
+  }
+  &:hover, &:active {
+    color: @members-purple-dark;
+  }
+  &.btn {
+    color: @white;
+  }
+}
+
+/*
+* Button
+*/
+
+.btn {
+  &.btn-link {
+    color: @members-purple;
+    &:hover {
+      color: @members-purple-dark;
+    }
+  }
+  &.btn-primary {
+    background-color: @members-purple;
+    border-color: @members-purple-dark;
+    &:hover {
+      background-color: darken(@members-purple, 5%);
+      border-color: darken(@members-purple-dark, 5%);
+    }
+  }
+  &.btn-success {
+    background-color: @color-success;
+    border-color: darken(@color-success, 10%);
+    &:hover {
+      background-color: darken(@color-success, 5%);
+      border-color: darken(@color-success, 15%);
+    }
+  }
+  &.btn-info {
+    background-color: @color-info;
+    border-color: darken(@color-info, 10%);
+    &:hover {
+      background-color: darken(@color-info, 5%);
+      border-color: darken(@color-info, 15%);
+    }
+  }
+  &.btn-warning {
+    background-color: @color-warning;
+    border-color: darken(@color-warning, 10%);
+    &:hover {
+      background-color: darken(@color-warning, 5%);
+      border-color: darken(@color-warning, 15%);
+    }
+  }
+  &.btn-danger {
+    color: @white;
+    background-color: @members-pink;
+    border-color: darken(@members-pink, 10%);
+    &:hover {
+      background-color: darken(@members-pink, 5%);
+      border-color: darken(@members-pink, 15%);
+    }
+  }
+}
+
+/*
+* Labels 
+*/
+
+.label {
+  &.label-default {
+    background-color: @gray;
+  }
+  &.label-primary {
+    background-color: @members-purple;
+  }
+  &.label-success {
+    background-color: @color-success;
+  }
+  &.label-info {
+    background-color: @color-info;
+  }
+  &.label-warning {
+    background-color: @color-warning;
+  }
+  &.label-danger {
+    background-color: @members-pink;
+  }
+}
+
+/*
+* Badges
+*/
+
+.badge {
+  background-color: @gray;
+}
+
+/*
+* Dropdowns
+*/
+
+.dropdown-menu {
+  li > a {
+    color: @charcoal;
+    &:hover, &:active, &:focus {
+      background-color: #eee;
+      color: @charcoal;
+    } 
+  }
+  li.active > a {
+    background-color: @members-purple;
+    &:hover {
+      background-color: @members-purple-dark;
+    }
+  }
+  .dropdown-header {
+    color: @gray;
+  }
+  .divider {
+    background-color: lighten(@gray, 20%);
+  }
+}
+
+/*
+* Navs
+*/
+
+.nav-tabs {
+  li.active > a {
+    color: @members-purple;
+    &:hover, &:focus {
+      color: @members-purple-dark;
+    }
+  }
+}
+
+.nav-pills {
+  li.active > a {
+    background-color: @members-purple;
+    .badge {
+      color: @members-purple-dark;
+    }
+    &:hover, &:focus {
+      background-color: @members-purple-dark;
+    }
+  }
+}
+
+/*
+* Navbar Default
+*/
+
+@color-navbar-default: #eee;
+
+.navbar-default {
+  background-color: @color-navbar-default;
+  border-color: darken(@color-navbar-default, 10%);
+  &.navbar-fixed-top {
+    border-color: @white;
+    border-width: 0 0 3px 0;
+    box-shadow: 0 6px @members-purple;
+  }
+  .navbar-collapse {
+    border-color: darken(@color-navbar-default, 15%);
+  }
+  .navbar-nav {
+    li.active > a {
+      background-color: darken(@color-navbar-default, 10%);
+      &:hover, &:active, &:focus {
+        background-color: darken(@color-navbar-default, 10%);
+      }
+    }
+    li.dropdown {
+      a.dropdown-toggle {
+        &[aria-expanded=true] {
+          background-color: darken(@color-navbar-default, 10%);
+        }
+      }
+    }
+  }
+}
+
+/* 
+* Navbar Inverse
+*/
+
+.navbar-inverse {
+  background-color: @members-purple;
+  border-color: @members-purple-dark;
+  &.navbar-fixed-top {
+    border-color: @white;
+    border-width: 0 0 3px 0;
+    box-shadow: 0 6px @members-pink;
+  }
+  .navbar-collapse {
+    border-color: @members-purple-dark;
+  }
+  .navbar-brand {
+    color: @white;
+    &:hover {
+      color: @members-puprle-light;
+    }
+  }
+  .navbar-nav {
+    li > a {
+      color: @white;
+      &:hover {
+        color: @members-puprle-light;
+      }
+    }
+    li.active > a {
+      background-color: @members-purple-dark;
+      &:hover, &:active, &:focus {
+        background-color: @members-purple-dark;
+        color: @members-puprle-light;
+      }
+    }
+    li.dropdown {
+      a.dropdown-toggle {
+        color: @white;
+        background-color: @members-purple;
+        &:hover, &:active {
+          color: @members-puprle-light;
+        }
+        &[aria-expanded=true] {
+          background-color: @members-purple-dark;
+        }
+      }
+      .dropdown-menu {
+        li > a {
+          color: @white;
+          &:hover, &:active, &:focus {
+            color: @members-puprle-light;
+          }
+        }
+        li.active > a {
+          background-color: @members-purple-dark;
+        }
+        .dropdown-header {
+          color: @members-puprle-light;
+        }
+        .divider {
+          background-color: @members-purple-dark;
+        }
+        // Rebuild the dropdown for non-mobile
+        @media(min-width: 768px) {
+          .dropdown-menu;
+        }
+      }
+    }
+  }
+  .navbar-toggle {
+    border-color: @members-purple-dark;
+    &:hover, &:focus {
+      background-color: @members-purple-dark;
+    }
+  }
+}
+
+/*
+* Alerts
+*/
+
+.alert {
+  &.alert-success {
+    background-color: lighten(@color-success, 50%);
+    border-color: lighten(@color-success, 40%);
+    color: @color-success;
+  }
+  &.alert-info {
+    background-color: lighten(@color-info, 40%);
+    border-color: lighten(@color-info, 30%);
+    color: darken(@color-info, 10%);
+  }
+  &.alert-warning {
+    background-color: lighten(@color-warning, 30%);
+    border-color: lighten(@color-warning, 20%);
+    color: darken(@color-warning, 10%);
+  }
+  &.alert-danger {
+    background-color: lighten(@members-pink, 50%);
+    border-color: lighten(@members-pink, 40%);
+    color: @members-pink;
+  }
+}
+
+/*
+* Progress Bars
+*/
+
+.progress {
+  .progress-bar {
+    background-color: @members-purple;
+    &.progress-bar-success {
+      background-color: @color-success;
+    }
+    &.progress-bar-info {
+      background-color: @color-info;
+    }
+    &.progress-bar-warning {
+      background-color: @color-warning;
+    }
+    &.progress-bar-danger {
+      background-color: @members-pink;
+    }
+  }
+}
+
+/*
+* List Groups
+*/
+
+.list-group {
+  a.list-group-item {
+    &:link, &:visited {
+      color: @charcoal;
+    }
+    &:hover, &:active {
+      color: @charcoal;
+    }
+    &.active {
+      &:link, &:visited {
+        color: @white;
+        background-color: @members-purple;
+        border-color: @members-purple-dark;
+      }
+      &:hover, &:active {
+        color: @white;
+        background-color: @members-purple-dark;
+        border-color: @members-purple-dark;
+      }
+    }
+  }
+}
+
+/*
+* Panels
+*/
+
+.panel {
+  &.panel-default {
+    .panel-heading {
+      border-bottom: 2px solid @members-pink;
+    }
+  }
+  &.panel-primary {
+    border-color: @members-purple-dark;
+    .panel-heading {
+      background-color: @members-purple;
+      border-color: @members-purple-dark;
+      border-bottom: 2px solid @members-purple-dark;
+    }
+  }
+  &.panel-success {
+    border-color: lighten(@color-success, 40%);
+    .panel-heading {
+      background-color: lighten(@color-success, 50%);
+      border-color: lighten(@color-success, 40%);
+      border-bottom: 2px solid @color-success;
+      color: @color-success;
+    }
+  }
+  &.panel-info {
+    border-color: lighten(@color-info, 30%);
+    .panel-heading {
+      background-color: lighten(@color-info, 40%);
+      border-color: lighten(@color-info, 30%);
+      border-bottom: 2px solid darken(@color-info, 10%);
+      color: darken(@color-info, 10%);
+    }
+  }
+  &.panel-warning {
+    border-color: lighten(@color-warning, 20%);
+    .panel-heading {
+      background-color: lighten(@color-warning, 30%);
+      border-color: lighten(@color-warning, 20%);
+      border-bottom: 2px solid darken(@color-warning, 10%);
+      color: darken(@color-warning, 10%);
+    }
+  }
+  &.panel-danger {
+    border-color: lighten(@members-pink, 40%);
+    .panel-heading {
+      background-color: lighten(@members-pink, 50%);
+      border-color: lighten(@members-pink, 40%);
+      border-bottom: 2px solid @members-pink;
+      color: @members-pink;
+    }
+  }
+}
+
+/*
+* Carousel
+*/
+
+.carousel {
+  & > a.carousel-control {
+    color: @white;
+  }
+}
+
+

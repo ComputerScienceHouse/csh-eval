@@ -1,0 +1,39 @@
+{
+  "name": "bootstrap-csh",
+  "description": "CSS overrides for Twitter Bootstrap, for use in Computer Science House websites.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/bencentra/bootstrap-csh",
+  "author": {
+    "name": "Ben Centra",
+    "url": "http://bencentra.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bencentra/bootstrap-csh"
+  },
+  "bugs": {
+    "url": "https://github.com/bencentra/bootstrap-csh/issues"
+  },
+  "licenses": [
+    {
+
+    }
+  ],
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "scripts": {
+
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-cssmin": "~0.10.0",
+    "grunt-contrib-less": "~0.12.0",
+    "grunt-contrib-connect": "0.7.1",
+    "grunt-contrib-watch": "0.5.3"
+  },
+  "keywords": [
+    "bootstrap",
+    "csh"
+  ]
+}
