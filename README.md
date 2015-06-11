@@ -15,7 +15,7 @@ __Note:__ Requires ghc version 7.8 or above
 
 - Install PostgreSQL (we have been using the latest stable: 9.4)
 - Initialize your cabal sandbox: `cabal sandbox init`
-- Install the dependencies (with tests) `cabal install --enable-tests --only-dependencies`
+- Install the dependencies (with tests) `cabal install --enable-tests --only-dependencies --reorder-goals`
 - Initialize the database:
 	- Create a user called "pvals": `createuser pvals`
 	- Create a database called "pvals" owned by the pvals user: `createdb pvals -O pvals`
