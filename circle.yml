@@ -6,7 +6,7 @@ machine:
 dependencies:
     override:
         - cabal update
-        - cabal install -j --dependencies-only --enable-tests
+        - cabal install -j --dependencies-only --enable-tests --reorder-goals
     post:
         - echo "create role pvals with password 'circleci';" | psql -U postgres
         - createdb pvals -O pvals

@@ -40,14 +40,12 @@ initDB = sequence_ [
    , queue
    , application
    , metric
-   , reviewer_metric
-   , interviewer_metric
-   , reviewer
-   , interviewer
+   , review_metric
+   , interview_metric
+   , review
+   , interview
    , question
    , answer
-   , housing_eval
-   , housing_evaluator
    , term
    , dues
    , statement
