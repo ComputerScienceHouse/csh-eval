@@ -44,15 +44,15 @@ have to be added very often.
 
 3.  Add the handler for the page at the bottom of the `src/CSH/Eval/Frontend.hs`
     file. The handler is defined to be named
-
+    ``` Haskell
         getNameOfRouteR :: Handler Html
-
+    ```
     for the above route example. 
 
     The handler should be defined as
-
+    ```Haskell
         getNameOfRouteR = defaultLayout $(whamletFile "frontend/folder/folder/file.hamlet")
-
+    ```
 4.  Make your page. See the [Yesod Shakespeare Templates][shakespeare] page for
     details on making pages using the hamlet templating language.
 
