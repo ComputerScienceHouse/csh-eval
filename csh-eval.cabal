@@ -78,7 +78,7 @@ test-suite tests
                       ,tasty-quickcheck     >=0.8.3.2  && <0.8.4
                       ,quickcheck-instances >=0.3.11   && <0.3.12
                       ,tasty-hunit          >=0.9.2    && <0.9.3
-                      ,doctest              >=0.9.13   && <0.9.14
+                      ,doctest              >=0.9.13
   ghc-options:         -Wall
   default-extensions:  OverloadedStrings
   default-language:    Haskell2010

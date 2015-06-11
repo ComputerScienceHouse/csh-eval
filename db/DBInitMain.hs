@@ -16,48 +16,49 @@ import CSH.Eval.DB.Schema
 
 initDB :: SchemaInit
 initDB = sequence_ [
-    committee_t
-   ,status_t
-   ,member_t
-   ,dues_t
-   ,event_t
-   ,project_t
-   ,eval_t
-   ,member
-   ,eboard
-   ,room
-   ,membership
-   ,event
-   ,event_attendee
-   ,project
-   ,project_participant
-   ,evaluation
-   ,conditional
-   ,freshman_project
-   ,freshman_project_participant
-   ,packet
-   ,signature
-   ,queue
-   ,application
-   ,metric
-   ,reviewer_metric
-   ,interviewer_metric
-   ,reviewer
-   ,interviewer
-   ,question
-   ,answer
-   ,housing_eval
-   ,housing_evaluator
-   ,term
-   ,dues
-   ,statement
-   ,statement_exec
-   ,enableForeignKeys
-   ,enableIndices
+     committee_t
+   , status_t
+   , member_t
+   , dues_t
+   , event_t
+   , project_t
+   , eval_t
+   , member
+   , eboard
+   , room
+   , membership
+   , event
+   , event_attendee
+   , project
+   , project_participant
+   , evaluation
+   , conditional
+   , freshman_project
+   , freshman_project_participant
+   , packet
+   , signature
+   , queue
+   , application
+   , metric
+   , review_metric
+   , interview_metric
+   , review
+   , interview
+   , question
+   , answer
+   , term
+   , dues
+   , statement
+   , statement_exec
+   , enableForeignKeys
+   , enableIndices
    ]
 
 withEcho :: Bool -> IO a -> IO a
-withEcho e a = hGetEcho stdin >>= (\o -> bracket_ (hSetEcho stdin e) (hSetEcho stdin o) a)
+withEcho e a = hGetEcho stdin
+           >>= (\o -> bracket_ (hSetEcho stdin e)
+                               (hSetEcho stdin o)
+                               a)
 
 getPassword :: IO String
 getPassword = do
@@ -70,7 +71,7 @@ getPassword = do
 
 main :: IO ()
 main = do
-    (host:port:user:db:[]) <- getArgs
+    [host, port, user, db] <- getArgs
     passwd                 <- getPassword
 
     let pgs = HP.ParamSettings (C.pack host)

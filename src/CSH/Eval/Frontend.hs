@@ -1,3 +1,14 @@
+{-|
+Module      : CSH.Eval.Frontend
+Description : The top level routing of calls to the web viewer
+Copyright   : Stephen Demos, Matt Gambogi, Travis Whitaker, Computer Science House 2015
+License     : MIT
+Maintainer  : pvals@csh.rit.edu
+Stability   : Provisional
+Portability : POSIX
+
+Defines the web application layer of Evals
+-}
 {-# LANGUAGE QuasiQuotes       #-}
 {-# LANGUAGE TypeFamilies      #-}
 {-# LANGUAGE TemplateHaskell   #-}
