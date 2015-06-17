@@ -1,2 +1,15 @@
+<div .navbar .navbar-fixed-top .navbar-inverse>
+  <div .container>
+    <div .navbar-header>
+  <div .collapse navbar-collapse>
+  <ul .nav navbar-nav navbar-right>
+    <li .active>
+      <a href="#">Members Portal
+    <li>
+      <a href="http://csh.rit.edu">Public Site
+    <li>
+      <a href="https://webauth.csh.rit.edu/logout">Webauth Logout
+
+
 <h1>Welcome to the Evaluations Database!
 <p>This one already looks better than the last one.

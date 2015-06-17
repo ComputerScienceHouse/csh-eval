@@ -17,6 +17,7 @@ Defines the web application layer of Evals
 module CSH.Eval.Frontend (evalFrontend) where
 
 import CSH.Eval.Routes (evalAPI)
+import Text.Hamlet (hamletFile)
 import Text.Lucius (luciusFile)
 import Yesod
 
@@ -37,18 +38,8 @@ evalLayout :: Widget -> Handler Html
 evalLayout widget = do
     pc <- widgetToPageContent $ do
         widget
-        toWidget $(luciusFile "frontend/csh-eval.lucius")
-    withUrlRenderer
-        [hamlet|
-            $doctype 5
-            <html>
-                <head>
-                    <title>#{pageTitle pc}
-                    <meta charset=utf-8>
-                    ^{pageHead pc}
-                <body>
-                    ^{pageBody pc}
-        |]
+        toWidget $(luciusFile "frontend/static/csh-bootstrap.min.css")
+    withUrlRenderer $(hamletFile "frontend/templates/base.hamlet")
 
 instance Yesod EvalFrontend where
     defaultLayout = evalLayout
@@ -67,4 +58,3 @@ getHomeR = defaultLayout $(whamletFile "frontend/index.hamlet")
 
 getEvalsMembershipOverviewR :: Handler Html
 getEvalsMembershipOverviewR = defaultLayout $(whamletFile "frontend/evals/membership/overview.hamlet")
-
