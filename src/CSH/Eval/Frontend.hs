@@ -38,7 +38,7 @@ evalLayout :: Widget -> Handler Html
 evalLayout widget = do
     pc <- widgetToPageContent $ do
         widget
-        toWidget $(luciusFile "frontend/static/csh-bootstrap/release/members.min.css")
+        toWidget $(luciusFile "frontend/static/csh-bootstrap.min.css")
     withUrlRenderer $(hamletFile "frontend/templates/base.hamlet")
 
 instance Yesod EvalFrontend where
