@@ -54,7 +54,7 @@ getEvalAPI _ = WaiSubsite evalAPI
 
 -- | An example Html handler for the frontend. 
 getHomeR :: Handler Html
-getHomeR = evalLayout $(whamletFile "frontend/index.hamlet")
+getHomeR = defaultLayout $(whamletFile "frontend/index.hamlet")
 
 getEvalsMembershipOverviewR :: Handler Html
 getEvalsMembershipOverviewR = defaultLayout $(whamletFile "frontend/evals/membership/overview.hamlet")
