@@ -27,7 +27,7 @@ This guide for adding pages is meant for basic pages. Ones with more complex
 layouts (dashboards, for instance) will be more difficult, but hopefully won't
 have to be added very often. 
 
-1.  Add a hamlet page under the `frontend` folder. Make sure it is named well
+1.  Add a hamlet page under the `template` folder. Make sure it is named well
     and placed under it's proper category (`voting/`, `packet/`, `evals/`,
     etc.).
 
