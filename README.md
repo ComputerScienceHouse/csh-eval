@@ -26,7 +26,7 @@ __Note:__ Requires ghc version 7.8 or above
 ## Contributing
 
 ### Discussion
-General coordination and discussion takes place in #pvals on cshrtp.slack.com.
+General coordination and discussion takes place in #pvals on cshfreshmen.slack.com.
 An `@csh.rit.edu` address is required to chat. Longer form discussion for specific
 features will occur under issues tagged `discussion` on the ComputerScienceHouse Github.
 Bugs and feature requests may also be made through Github issues.
