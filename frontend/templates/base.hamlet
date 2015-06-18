@@ -5,4 +5,9 @@ $doctype 5
     <meta charset=utf-8>
     ^{pageHead pc}
   <body>
-    ^{pageBody pc}
+    <nav .navbar .navbar-inverse>
+      <div .container>
+    <div #content>
+      ^{pageBody pc}
+    <div #footer>
+      <div .container>
