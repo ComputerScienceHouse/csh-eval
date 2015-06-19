@@ -22,6 +22,7 @@ import Text.Lucius (luciusFile)
 import Yesod
 import Yesod.Static
 
+-- Declaration of location of static files
 staticFiles "frontend/static"
 
 -- | datatype for Yesod
@@ -34,9 +35,9 @@ data EvalFrontend = EvalFrontend
 -- The EvalAPI is defined as a subsite of this website, under the /api route.
 mkYesod "EvalFrontend" [parseRoutes|
 /                           HomeR                    GET
-/membership/overview        EvalsMembershipOverviewR GET
+/evals/membership/overview  EvalsMembershipOverviewR GET
 /api                        EvalSubsiteR WaiSubsite  getEvalAPI
-/static                     StaticR                  Static getStatic
+/static                     StaticR Static           getStatic
 |]
 
 -- | The basic layout for every CSH Eval page
@@ -47,17 +48,19 @@ evalLayout widget = do
         addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
         addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
         addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"
-        toWidget $(luciusFile "frontend/static/csh-bootstrap.min.css")
-        toWidget $(luciusFile "frontend/static/csh-eval.lucius")
+        addStylesheet $ StaticR csh_bootstrap_min_css
+        toWidget $(luciusFile "frontend/templates/csh-eval.lucius")
     withUrlRenderer $(hamletFile "frontend/templates/base.hamlet")
 
+-- | The Yesod instance for the EvalFrontend
 instance Yesod EvalFrontend where
     defaultLayout = evalLayout
 
-
 -- | Defines the WAI Application for the eval Yesod app
 evalFrontend :: IO Application
-evalFrontend = toWaiApp EvalFrontend
+evalFrontend = do
+    s <- static "frontend/static"
+    toWaiApp $ EvalFrontend s
 
 -- | A Yesod subsite for the evalAPI defined using servant in "CSH.Eval.Routes"
 getEvalAPI :: EvalFrontend -> WaiSubsite
@@ -67,5 +70,6 @@ getEvalAPI _ = WaiSubsite evalAPI
 getHomeR :: Handler Html
 getHomeR = defaultLayout $(whamletFile "frontend/templates/index.hamlet")
 
+-- | The page for the Overiview of Membership Evaluations
 getEvalsMembershipOverviewR :: Handler Html
-getEvalsMembershipOverviewR = defaultLayout $(whamletFile "frontend/templates/membership/overview.hamlet")
+getEvalsMembershipOverviewR = defaultLayout $(whamletFile "frontend/templates/evals/membership/overview.hamlet")
