@@ -35,9 +35,9 @@ data EvalFrontend = EvalFrontend
 -- The EvalAPI is defined as a subsite of this website, under the /api route.
 mkYesod "EvalFrontend" [parseRoutes|
 /                           HomeR                    GET
-/membership/overview        EvalsMembershipOverviewR GET
+/evals/membership/overview  EvalsMembershipOverviewR GET
 /api                        EvalSubsiteR WaiSubsite  getEvalAPI
-/static                     StaticR                  Static getStatic
+/static                     StaticR Static           getStatic
 |]
 
 -- | The basic layout for every CSH Eval page
@@ -70,5 +70,6 @@ getEvalAPI _ = WaiSubsite evalAPI
 getHomeR :: Handler Html
 getHomeR = defaultLayout $(whamletFile "frontend/templates/index.hamlet")
 
+-- | The page for the Overiview of Membership Evaluations
 getEvalsMembershipOverviewR :: Handler Html
-getEvalsMembershipOverviewR = defaultLayout $(whamletFile "frontend/templates/membership/overview.hamlet")
+getEvalsMembershipOverviewR = defaultLayout $(whamletFile "frontend/templates/evals/membership/overview.hamlet")
