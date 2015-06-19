@@ -22,6 +22,7 @@ import Text.Lucius (luciusFile)
 import Yesod
 import Yesod.Static
 
+-- Declaration of location of static files
 staticFiles "frontend/static"
 
 -- | datatype for Yesod
@@ -51,9 +52,9 @@ evalLayout widget = do
         toWidget $(luciusFile "frontend/static/csh-eval.lucius")
     withUrlRenderer $(hamletFile "frontend/templates/base.hamlet")
 
+-- | The Yesod instance for the EvalFrontend
 instance Yesod EvalFrontend where
     defaultLayout = evalLayout
-
 
 -- | Defines the WAI Application for the eval Yesod app
 evalFrontend :: IO Application
