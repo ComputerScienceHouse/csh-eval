@@ -20,17 +20,23 @@ import CSH.Eval.Routes (evalAPI)
 import Text.Hamlet (hamletFile)
 import Text.Lucius (luciusFile)
 import Yesod
+import Yesod.Static
+
+staticFiles "frontend/static"
 
 -- | datatype for Yesod
 data EvalFrontend = EvalFrontend
+                  { getStatic :: Static
+                  }
 
 -- Route definition for the Evaluations Database Website
 -- This is where you add new HTML pages
 -- The EvalAPI is defined as a subsite of this website, under the /api route.
 mkYesod "EvalFrontend" [parseRoutes|
-/                           HomeR GET
-/evals/membership/overview  EvalsMembershipOverviewR GET
-/api                        EvalSubsiteR WaiSubsite getEvalAPI
+/                           HomeR                    GET
+/membership/overview        EvalsMembershipOverviewR GET
+/api                        EvalSubsiteR WaiSubsite  getEvalAPI
+/static                     StaticR                  Static getStatic
 |]
 
 -- | The basic layout for every CSH Eval page
@@ -48,6 +54,7 @@ evalLayout widget = do
 instance Yesod EvalFrontend where
     defaultLayout = evalLayout
 
+
 -- | Defines the WAI Application for the eval Yesod app
 evalFrontend :: IO Application
 evalFrontend = toWaiApp EvalFrontend
@@ -56,9 +63,9 @@ evalFrontend = toWaiApp EvalFrontend
 getEvalAPI :: EvalFrontend -> WaiSubsite
 getEvalAPI _ = WaiSubsite evalAPI
 
--- | An example Html handler for the frontend. 
+-- | An example Html handler for the frontend.
 getHomeR :: Handler Html
-getHomeR = defaultLayout $(whamletFile "frontend/index.hamlet")
+getHomeR = defaultLayout $(whamletFile "frontend/templates/index.hamlet")
 
 getEvalsMembershipOverviewR :: Handler Html
-getEvalsMembershipOverviewR = defaultLayout $(whamletFile "frontend/evals/membership/overview.hamlet")
+getEvalsMembershipOverviewR = defaultLayout $(whamletFile "frontend/templates/membership/overview.hamlet")
