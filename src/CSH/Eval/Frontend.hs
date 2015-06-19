@@ -59,8 +59,8 @@ instance Yesod EvalFrontend where
 -- | Defines the WAI Application for the eval Yesod app
 evalFrontend :: IO Application
 evalFrontend = do
-    static@(Static settings) <- static "frontend/static"
-    toWaiApp $ EvalFrontend static
+    s <- static "frontend/static"
+    toWaiApp $ EvalFrontend s
 
 -- | A Yesod subsite for the evalAPI defined using servant in "CSH.Eval.Routes"
 getEvalAPI :: EvalFrontend -> WaiSubsite
