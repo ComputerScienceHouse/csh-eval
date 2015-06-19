@@ -1,6 +1,6 @@
 csh-eval [![Circle CI](https://circleci.com/gh/ComputerScienceHouse/csh-eval.svg?style=svg)](https://circleci.com/gh/ComputerScienceHouse/csh-eval)
 =========
-An evaluations system for the Computer Science House at RIT.
+An evaluations platform for the Computer Science House at RIT.
 
 ## Project Goals
 - Maintainablility: Should be easy to refactor with confidence.
@@ -27,9 +27,15 @@ __Note:__ Requires ghc version 7.8 or above
 
 ### Discussion
 General coordination and discussion takes place in #pvals on cshfreshmen.slack.com.
-An `@csh.rit.edu` address is required to chat. Longer form discussion for specific
-features will occur under issues tagged `discussion` on the ComputerScienceHouse Github.
+An `@*rit.edu` address is required to chat. Longer form discussion for specific
+features will occur under issues on the ComputerScienceHouse Github.
 Bugs and feature requests may also be made through Github issues.
+
+### Issue Tracking
+If you are working on a feature or patch for the project, make an issue on the 
+ComputerScienceHouse github issue tracker, and assign yourself to it. Unassigned 
+tasks are assumed to be fair game, and may in theory be picked up by anyone. If an
+issue is unclear, ask for clarification!
 
 ### Review Process
 Github pull requests are used as a code review mechanism. All commits must be
