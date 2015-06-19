@@ -10,6 +10,7 @@ dependencies:
     post:
         - echo "create role pvals with password 'circleci';" | psql -U postgres
         - createdb pvals -O pvals
+        - cabal run csh-eval-db-init
 
 test:
     post:

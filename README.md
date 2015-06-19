@@ -16,12 +16,14 @@ __Note:__ Requires ghc version 7.8 or above
 - Install PostgreSQL (we have been using the latest stable: 9.4)
 - Initialize your cabal sandbox: `cabal sandbox init`
 - Install the dependencies (with tests) `cabal install --enable-tests --only-dependencies --reorder-goals`
+- Build it. `cabal build`
 - Initialize the database:
 	- Create a user called "pvals": `createuser pvals`
 	- Create a database called "pvals" owned by the pvals user: `createdb pvals -O pvals`
-	- Run the following command: `cabal exec runhaskell db/DBInitMain.hs db/eval_schema.sql`
-- `cabal build`
+	- Initialize the schema: `cabal run csh-eval-db-init`
 - `cabal test`
+- Try starting the site: `cabal run csh-eval`. You should find it running on
+  `localhost:8000`
 
 ## Contributing
 
