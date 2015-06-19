@@ -48,7 +48,7 @@ evalLayout widget = do
         addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
         addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
         addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"
-        toWidget $(luciusFile "frontend/static/csh-bootstrap.min.css")
+        addStylesheet $ StaticR csh_bootstrap_min_css
         toWidget $(luciusFile "frontend/static/csh-eval.lucius")
     withUrlRenderer $(hamletFile "frontend/templates/base.hamlet")
 
