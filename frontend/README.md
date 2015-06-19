@@ -27,7 +27,7 @@ This guide for adding pages is meant for basic pages. Ones with more complex
 layouts (dashboards, for instance) will be more difficult, but hopefully won't
 have to be added very often. 
 
-1.  Add a hamlet page under the `template` folder. Make sure it is named well
+1.  Add a hamlet page under the `frontend/templates` folder. Make sure it is named well
     and placed under it's proper category (`voting/`, `packet/`, `evals/`,
     etc.).
 
@@ -51,7 +51,7 @@ have to be added very often.
 
     The handler should be defined as
     ```Haskell
-        getNameOfRouteR = defaultLayout $(whamletFile "frontend/folder/folder/file.hamlet")
+        getNameOfRouteR = defaultLayout $(whamletFile "frontend/templates/folder/folder/file.hamlet")
     ```
 4.  Make your page. See the [Yesod Shakespeare Templates][shakespeare] page for
     details on making pages using the hamlet templating language.
@@ -66,7 +66,7 @@ the API calls are listed on the API specification. Just use it like any other
 function. To see how to call a function in Hamlet, look at the [Yesod
 Shakespeare Templates][shakespeare] page.
 
-If you need to call the API from javascript, we provide that funcitonality
+If you need to call the API from javascript, we provide that functionality
 too! Just call the function listed in the API specification for Javascript
 and it will handle the ajax call. Provide a callback, and you are all set with
 your data in hand!
