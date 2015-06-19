@@ -5,6 +5,11 @@ html, body {
 
 body {
     padding-top: 70px;
+    padding-top: 76px;
+    padding-bottom: 20px;
+    background-color: #eee;
+    background-image: url(@{StaticR background_png});
+    background-attachment: fixed;
 }
 
 .logo {
