@@ -14,11 +14,16 @@ Defines the web application layer of Evals
 {-# LANGUAGE TemplateHaskell   #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module CSH.Eval.Frontend (evalFrontend) where
+module CSH.Eval.Frontend 
+( evalFrontend
+) where
+
+import qualified Data.Text as T
 
 import CSH.Eval.Routes (evalAPI)
 import Text.Hamlet (hamletFile)
 import Text.Lucius (luciusFile)
+import Text.Blaze  (preEscapedText)
 import Yesod
 import Yesod.Static
 
@@ -33,6 +38,8 @@ data EvalFrontend = EvalFrontend
 -- Route definition for the Evaluations Database Website
 -- This is where you add new HTML pages
 -- The EvalAPI is defined as a subsite of this website, under the /api route.
+-- Static files are placed under the /static route, also as a subsite,
+-- facilitated by the yesod-static package.
 mkYesod "EvalFrontend" [parseRoutes|
 /                           HomeR                    GET
 /evals/membership/overview  EvalsMembershipOverviewR GET
@@ -66,7 +73,15 @@ evalFrontend = do
 getEvalAPI :: EvalFrontend -> WaiSubsite
 getEvalAPI _ = WaiSubsite evalAPI
 
--- | An example Html handler for the frontend.
+-- * Widgets
+
+-- | A basic widget for a panel
+widgetPanel :: T.Text -> T.Text -> T.Text -> Widget
+widgetPanel mdsize title body = $(whamletFile "frontend/templates/widgets/panel.hamlet")
+
+-- * Pages
+
+-- | An example Html handler for the frontend
 getHomeR :: Handler Html
 getHomeR = defaultLayout $(whamletFile "frontend/templates/index.hamlet")
 

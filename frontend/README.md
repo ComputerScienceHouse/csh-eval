@@ -27,9 +27,9 @@ This guide for adding pages is meant for basic pages. Ones with more complex
 layouts (dashboards, for instance) will be more difficult, but hopefully won't
 have to be added very often. 
 
-1.  Add a hamlet page under the `frontend/templates` folder. Make sure it is named well
-    and placed under it's proper category (`voting/`, `packet/`, `evals/`,
-    etc.).
+1.  Add a hamlet page under the `frontend/templates` folder. Make sure it is
+    named well and placed under it's proper category (`voting/`, `packet/`,
+    `evals/`, etc.).
 
 2.  Add the route to your new page in the `src/CSH/Eval/Frontend.hs` file under
     the route definitions. The layout of the route definition is
@@ -67,9 +67,41 @@ function. To see how to call a function in Hamlet, look at the [Yesod
 Shakespeare Templates][shakespeare] page.
 
 If you need to call the API from javascript, we provide that functionality
-too! Just call the function listed in the API specification for Javascript
+too. Just call the function listed in the API specification for Javascript
 and it will handle the ajax call. Provide a callback, and you are all set with
 your data in hand!
+
+## Widgets
+
+We provide a set of reusable widgets to be used our pages, to cut down on the
+volume of HTML that needs to be written, make everything cleaner looking,
+and reduce errors. Check out the Haddock for `CSH.Eval.Frontend` for an
+up-to-date listing of all of the widgets we provide. 
+
+It is simple to embed a widget into your page -
+```Haskell
+    ^{widgetName arg1 arg2}
+```
+
+### Adding Widgets
+
+If you come across a reusable chunk of HTML while writing or modifying a page
+that might be useful for the rest of the site, you should add a widget for it.
+Adding a widget is similar to adding a page, except you don't specify a route.
+
+1.  Add a hamlet page under `frontend/templates/widgets`. 
+
+2.  Add a widget function.
+    ``` Haskell
+        widgetName :: Widget
+        widgetName = $(whamletFile "frontend/templates/widgets/name.hamlet")
+    ```
+    The function can also take arguments, using standard Haskell syntax. Most
+    arguments should be of the type `T.Text`.
+
+If any of your arguments can allow embedded HTML, you should reference that
+argument with a `preEscapedText` function call. (See `panel.hamlet` for an
+example)
 
 ## Questions
 
