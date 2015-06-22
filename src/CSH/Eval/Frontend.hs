@@ -75,8 +75,13 @@ getEvalAPI _ = WaiSubsite evalAPI
 
 -- * Widgets
 
+-- | A helper function to convert integers to text, to make templates that use
+-- Integer arguments more readable.
+toText :: Integer -> T.Text
+toText = T.pack . show
+
 -- | A basic widget for a panel
-widgetPanel :: T.Text -> T.Text -> T.Text -> Widget
+widgetPanel :: Integer -> T.Text -> T.Text -> Widget
 widgetPanel mdsize title body = $(whamletFile "frontend/templates/widgets/panel.hamlet")
 
 -- * Pages

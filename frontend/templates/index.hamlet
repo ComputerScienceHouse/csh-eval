@@ -1,2 +1,2 @@
 <div .row>
-  ^{widgetPanel "3" "<strong>Example Title</strong>" "<p>Welcome to the CSH Evaluations Database, written in <strike>perl</strike> <strike>python</strike> haskell!</p>"}
+  ^{widgetPanel 3 "<strong>Example Title</strong>" "<p>Welcome to the CSH Evaluations Database, written in <strike>perl</strike> <strike>python</strike> haskell!</p>"}
