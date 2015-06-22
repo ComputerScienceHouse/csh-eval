@@ -60,6 +60,14 @@ withEcho e a = hGetEcho stdin
                                (hSetEcho stdin o)
                                a)
 
+getArguments :: IO [String]
+getArguments = do
+    args <- getArgs
+    if length args /= 4
+    then putStr "usage: DBInitMain host port user db\n\n"
+    else putStr "initializing evaluations database..."
+    return args
+
 getPassword :: IO String
 getPassword = do
     putStr "Password: "
@@ -71,7 +79,7 @@ getPassword = do
 
 main :: IO ()
 main = do
-    [host, port, user, db] <- getArgs
+    [host, port, user, db] <- getArguments
     passwd                 <- getPassword
 
     let pgs = HP.ParamSettings (C.pack host)
