@@ -1,0 +1,7 @@
+<div .col-md-#{mdsize} .col-sm-12>
+  <div .panel .panel-default .center>
+    <div .panel-heading>
+      <div .panel-title>
+        #{preEscapedText title}
+    <div .panel-body>
+      #{preEscapedText body}

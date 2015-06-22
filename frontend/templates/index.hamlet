@@ -1,8 +1,2 @@
 <div .row>
-  <div .col-md-3 .col-sm-12>
-    <div .panel .panel-default .center>
-      <div .panel-heading>
-        <div .panel-title>
-          <strong>Example Title
-      <div .panel-body>
-        <p>Welcome to the CSH Evaluations Database, written in <strike>perl</strike> <strike>python</strike> haskell!
+  ^{widgetPanel "3" "<strong>Example Title</strong>" "<p>Welcome to the CSH Evaluations Database, written in <strike>perl</strike> <strike>python</strike> haskell!</p>"}
