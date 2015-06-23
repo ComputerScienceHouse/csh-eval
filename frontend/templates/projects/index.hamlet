@@ -1,2 +1,16 @@
 <h1>
     Major Projects
+<table .table .table-responsive .table-bordered>
+    <thead>
+        <tr>
+            <td>Member
+            <td>Project Name
+            <td>Description
+            <td>Status
+    <tbody>
+        $forall (member, name, description, status) <- projects
+            <tr>
+                <td>#{member}
+                <td>#{name}
+                <td>#{description}
+                <td>#{status}

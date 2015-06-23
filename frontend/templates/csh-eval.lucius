@@ -27,3 +27,7 @@ body {
 .panel-heading {
   padding: 10px;
 }
+
+td {
+    font-style: bold;
+}

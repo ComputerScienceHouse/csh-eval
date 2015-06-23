@@ -108,3 +108,7 @@ getEvalsMembershipOverviewR = defaultLayout $(whamletFile "frontend/templates/ev
 -- | The page for a overview of CSH projects.
 getProjectsR :: Handler Html
 getProjectsR = defaultLayout $(whamletFile "frontend/templates/projects/index.hamlet")
+    where projects :: [(String, String, String, String)]
+          projects = [("Harlan Haskins", "CSH Eval Stubs", "Stubbed out the projects page.", "In Progress")
+                     ,("DuWayne Theroc-Johnson", "Bloodline", "A 1-900 hotline for blood deliveries", "Completed")
+                     ] 
