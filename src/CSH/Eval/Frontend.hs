@@ -45,6 +45,7 @@ mkYesod "EvalFrontend" [parseRoutes|
 /evals/membership/overview  EvalsMembershipOverviewR GET
 /api                        EvalSubsiteR WaiSubsite  getEvalAPI
 /static                     StaticR Static           getStatic
+/projects                   ProjectsR                GET
 |]
 
 -- | The basic layout for every CSH Eval page
@@ -93,3 +94,7 @@ getHomeR = defaultLayout $(whamletFile "frontend/templates/index.hamlet")
 -- | The page for the Overiview of Membership Evaluations
 getEvalsMembershipOverviewR :: Handler Html
 getEvalsMembershipOverviewR = defaultLayout $(whamletFile "frontend/templates/evals/membership/overview.hamlet")
+
+-- | The page for a overview of CSH projects.
+getProjectsR :: Handler Html
+getProjectsR = defaultLayout $(whamletFile "frontend/templates/projects/index.hamlet")
