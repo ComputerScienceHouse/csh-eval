@@ -2,13 +2,16 @@ $if null projects
     <div .col-md-12>
         <h1>No projects.
 $else
-    $forall (member, name, description, status) <- projects
-        <div .wordwrap .col-md-4 .col-s-6 .col-xs-12>
-            <div .project-content>
-                <span .project-title>#{name}
-                <p>
-                    <span .project-author>by #{member}
-                    <br />
-                    <span .project-description>#{description}
-                    <br />
-                    <span .project-status>#{status}
+    $forall (member, name, description, status, id) <- projects
+        <a href="/projects/#{id}">
+            <div .wordwrap .col-md-4 .col-s-6 .col-xs-12>
+                <div .project-content>
+                    <h3>#{name}
+                    <p>
+                        by 
+                        <strong>
+                            #{member}
+                        <br />
+                        #{description}
+                        <br />
+                        #{status}

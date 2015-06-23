@@ -35,7 +35,7 @@ td {
 }
 
 .project-content {
-   font-size: 24px;
+   font-size: 12pt;
    background: #fff;
    color: #000;
    height: 300px;
@@ -54,11 +54,13 @@ td {
    box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.1); 
 }
 
+.project-title {
+    font-size: 24pt;
+}
+
 #no-projects {
     color: #888;
     text-align: center;
     margin: 100px 0px;
 }
-
-.project-author {
 
