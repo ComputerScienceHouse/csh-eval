@@ -81,8 +81,18 @@ toText :: Integer -> T.Text
 toText = T.pack . show
 
 -- | A basic widget for a panel
-widgetPanel :: Integer -> T.Text -> T.Text -> Widget
+widgetPanel :: Integer -- horizontal size of the panel
+            -> Widget  -- widget for the title of the panel
+            -> Widget  -- widget for the body of the panel
+            -> Widget
 widgetPanel mdsize title body = $(whamletFile "frontend/templates/widgets/panel.hamlet")
+
+-- | A basic widget for a panel that takes text as arguments instead of widgets
+widgetPanelText :: Integer -- horizontal size of the panel
+                -> T.Text  -- html for the title of the panel
+                -> T.Text  -- html for the body of the panel
+                -> Widget
+widgetPanelText mdsize title body = $(whamletFile "frontend/templates/widgets/panelText.hamlet")
 
 -- * Pages
 
