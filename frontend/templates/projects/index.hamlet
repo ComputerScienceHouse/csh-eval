@@ -2,6 +2,8 @@ $if null projects
     <div .col-md-12>
         <h1>No projects.
 $else
-    $forall (member, name, description, status, id) <- projects
-        <a href="/projects/#{id}">
-            ^{panel member name description status}
+    $forall chunk <- projects
+        <div .col-md-4>
+            $forall (member, name, description, status, id) <- chunk
+                <div .row>
+                    ^{panel member name description status}
