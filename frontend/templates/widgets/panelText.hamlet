@@ -2,6 +2,6 @@
   <div .panel .panel-default .center>
     <div .panel-heading>
       <div .panel-title>
-        ^{title}
+        #{preEscapedText title}
     <div .panel-body>
-      ^{body}
+      #{preEscapedText body}
