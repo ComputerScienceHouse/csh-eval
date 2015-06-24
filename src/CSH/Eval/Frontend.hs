@@ -13,6 +13,7 @@ Defines the web application layer of Evals
 {-# LANGUAGE TypeFamilies      #-}
 {-# LANGUAGE TemplateHaskell   #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE FlexibleContexts #-}
 
 module CSH.Eval.Frontend 
 ( evalFrontend
@@ -109,7 +110,23 @@ getEvalsMembershipOverviewR = defaultLayout $(whamletFile "frontend/templates/ev
 getProjectsR :: Handler Html
 getProjectsR = defaultLayout $(whamletFile "frontend/templates/projects/index.hamlet")
     where projects :: [(String, String, String, String, Int)]
-          projects = (take 100 . cycle) 
+          projects = (take 100 . cycle)
                      [("Harlan Haskins", "CSH Eval Stubs", "Stubbed out the projects page.", "In Progress", 4)
-                     ,("DuWayne Theroc-Johnson", "Bloodline", "A 1-900 hotline for blood deliveries", "Completed", 5)
+                     ,("DuWayne Theroc-Johnson", "Bloodline", "A 1-900 hotline for blood deliveries. Uses the MEAN stack -- Mongo, Express.js, Angular and Node.js. That means this project is truly web scale.", "Completed", 5)
                      ] 
+          panel member name description status = widgetPanel 4 (title name member status) (contentPanel description)
+          title name member status = [whamlet| 
+              <strong> 
+                  #{name} 
+              <span .project-status>
+                  #{status}
+              <br />
+              <span .project-author>
+                  by 
+                  <strong>
+                      #{member}
+          |]
+          contentPanel description = [whamlet|
+              <div .project-content>
+                  #{description}
+          |]

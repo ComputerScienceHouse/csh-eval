@@ -4,14 +4,4 @@ $if null projects
 $else
     $forall (member, name, description, status, id) <- projects
         <a href="/projects/#{id}">
-            <div .wordwrap .col-md-4 .col-s-6 .col-xs-12>
-                <div .project-content>
-                    <h3>#{name}
-                    <p>
-                        by 
-                        <strong>
-                            #{member}
-                        <br />
-                        #{description}
-                        <br />
-                        #{status}
+            ^{panel member name description status}
