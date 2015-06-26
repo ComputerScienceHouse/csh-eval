@@ -33,29 +33,3 @@ body {
 td {
     font-style: bold;
 }
-
-.project-content {
-   font-size: 12pt;
-   background: #fff;
-   color: #000;
-   height: auto;
-}
-
-.project-author {
-  font-size: 10pt;
-}
-
-.project-status {
-  float: right;
-  color: #aaa;
-  font-size: 8pt;
-  position: relative;
-  margin-top: 2px;
-}
-
-#no-projects {
-    color: #888;
-    text-align: center;
-    margin: 100px 0px;
-}
-
