@@ -56,6 +56,8 @@ library
                       ,CSH.Eval.DB.Statements
                       ,CSH.Eval.Frontend
                       ,CSH.Eval.Routes
+                      ,CSH.Eval.Cacheable
+                      ,CSH.Eval.Model
                       ,CSH.LDAP
   hs-source-dirs:      src
   build-depends:       base                 >=4.7      && <4.9
