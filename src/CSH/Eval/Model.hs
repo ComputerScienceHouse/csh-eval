@@ -379,7 +379,7 @@ instance Show Question where
         ]
 
 data Term = Term {
-    termID :: Word64
+    termID        :: Word64
   , termStartDate :: Day
   , termEndDate   :: Maybe Day
   }
