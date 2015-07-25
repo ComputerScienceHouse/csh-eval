@@ -49,6 +49,7 @@ mkYesod "EvalFrontend" [parseRoutes|
 /api                        EvalSubsiteR WaiSubsite  getEvalAPI
 /static                     StaticR Static           getStatic
 /projects                   ProjectsR                GET
+!/projects/create           CreateProjectR           GET
 /projects/#Int              ProjectR                 GET
 |]
 
@@ -90,7 +91,10 @@ widgetPanel :: Integer -- horizontal size of the panel
             -> Widget  -- widget for the title of the panel
             -> Widget  -- widget for the body of the panel
             -> Widget
-widgetPanel mdsize title body = $(whamletFile "frontend/templates/widgets/panel.hamlet")
+widgetPanel mdsize title body = widgetPanelOffset mdsize 0 title body
+
+widgetPanelOffset :: Integer -> Integer -> Widget -> Widget -> Widget
+widgetPanelOffset mdsize mdoffset title body = $(whamletFile "frontend/templates/widgets/panel.hamlet")
 
 -- | A basic widget for a panel that takes text as arguments instead of widgets
 widgetPanelText :: Integer -- horizontal size of the panel
@@ -115,10 +119,12 @@ projects = (take 100 . cycle)
     ,("DuWayne Theroc-Johnson", "Bloodline", "A 1-900 hotline for blood deliveries. Uses the MEAN stack -- Mongo, Express.js, Angular and Node.js. That means this project is truly web scale.", "Completed", 5)
     ] 
 
+projectsCSS = toWidget $(luciusFile "frontend/templates/projects/projects.lucius")
+
 -- | The page for a overview of CSH projects.
 getProjectsR :: Handler Html
 getProjectsR = defaultLayout $ do
-    toWidget $(luciusFile "frontend/templates/projects/projects.lucius")
+    projectsCSS
     $(whamletFile "frontend/templates/projects/index.hamlet")
     where panel member name description status = widgetPanel 6 (title name member status) (contentPanel description)
 
@@ -133,15 +139,25 @@ title name member status = [whamlet|
       <strong>
           #{member}
 |]
+
 contentPanel description = [whamlet|
   <div .project-content>
       #{description}
 |]
 
 getProjectR id = defaultLayout $ do
-    toWidget $(luciusFile "frontend/templates/projects/projects.lucius")
+    projectsCSS
     $(whamletFile "frontend/templates/projects/project.hamlet")
     where fromID = find (\(_, _, _, _, id') -> id == id') projects
           panel = case fromID of
                     Nothing -> notFound
                     Just (member, name, description, status, _) -> widgetPanel 12 (title name member status) (contentPanel description)
+
+committees :: [T.Text]
+committees = ["Evaluations", "Financial", "OpComm", "House History", "House Improvements", "Research and Development", "Social", "Chairman"]
+
+projectForm = $(whamletFile "frontend/templates/projects/create.hamlet")
+
+getCreateProjectR = defaultLayout $ do
+    projectsCSS
+    widgetPanelOffset 8 2 [whamlet|New Project|] projectForm

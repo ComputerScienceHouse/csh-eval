@@ -1,4 +1,4 @@
-<div .col-md-#{toText mdsize} .col-sm-12>
+<div .col-md-offset-#{toText mdoffset} .col-md-#{toText mdsize} .col-sm-12>
   <div .panel .panel-default .center>
     <div .panel-heading>
       <div .panel-title>
