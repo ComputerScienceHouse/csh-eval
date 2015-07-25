@@ -28,6 +28,7 @@ import Text.Lucius (luciusFile)
 import Text.Blaze  (preEscapedText)
 import Yesod
 import Yesod.Static
+import Yesod.Markdown
 import Data.List (unfoldr, find)
 
 -- Declaration of location of static files
@@ -113,10 +114,10 @@ getHomeR = defaultLayout $(whamletFile "frontend/templates/index.hamlet")
 getEvalsMembershipOverviewR :: Handler Html
 getEvalsMembershipOverviewR = defaultLayout $(whamletFile "frontend/templates/evals/membership/overview.hamlet")
 
-projects :: [(String, String, String, String, Int)]
+projects :: [(T.Text, T.Text, T.Text, T.Text, Int)]
 projects = (take 100 . cycle)
     [("Harlan Haskins", "CSH Eval Stubs", "Stubbed out the projects page.", "In Progress", 4)
-    ,("DuWayne Theroc-Johnson", "Bloodline", "A 1-900 hotline for blood deliveries. Uses the MEAN stack -- Mongo, Express.js, Angular and Node.js. That means this project is truly web scale.", "Completed", 5)
+    ,("DuWayne Theroc-Johnson", "Bloodline", "# Bloodline\nA 1-900 hotline for blood deliveries. Uses the `MEAN` stack -- `MongoDB`, `Express.js`, `Angularjs` and `Node.js`. That means this project is **truly** web scale.", "Completed", 5)
     ] 
 
 projectsCSS = toWidget $(luciusFile "frontend/templates/projects/projects.lucius")
@@ -140,10 +141,12 @@ title name member status = [whamlet|
           #{member}
 |]
 
+contentPanel :: T.Text -> Widget
 contentPanel description = [whamlet|
   <div .project-content>
-      #{description}
+      ^{htmlDescription}
 |]
+    where htmlDescription = markdownToHtml $ Markdown description
 
 getProjectR id = defaultLayout $ do
     projectsCSS
