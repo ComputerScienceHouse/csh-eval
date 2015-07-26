@@ -57,6 +57,8 @@ library
                       ,CSH.Eval.DB.Statements
                       ,CSH.Eval.Frontend
                       ,CSH.Eval.Frontend.Data
+                      ,CSH.Eval.Frontend.Projects
+                      ,CSH.Eval.Frontend.Widgets
                       ,CSH.Eval.Routes
                       ,CSH.Eval.Cacheable
                       ,CSH.Eval.Model

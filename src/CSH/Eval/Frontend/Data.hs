@@ -67,4 +67,3 @@ evalLayout widget = do
 -- | The Yesod instance for the EvalFrontend
 instance Yesod EvalFrontend where
     defaultLayout = evalLayout
-
