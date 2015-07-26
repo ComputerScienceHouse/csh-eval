@@ -154,7 +154,7 @@ contentPanel description = [whamlet|
 
 getProjectR id = defaultLayout $ do
     projectsCSS
-    $(whamletFile "frontend/templates/projects/project.hamlet")
+    panel
     where fromID = find (\(_, _, _, _, id') -> id == id') projects
           panel = case fromID of
                     Nothing -> notFound
