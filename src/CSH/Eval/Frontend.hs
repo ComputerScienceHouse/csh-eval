@@ -121,7 +121,7 @@ getEvalsMembershipOverviewR = defaultLayout $(whamletFile "frontend/templates/ev
 projects :: [(T.Text, T.Text, T.Text, T.Text, Int)]
 projects = (take 100 . cycle)
     [("Harlan Haskins", "Punctual.swift", "## Punctual.swift\n\nPunctual.swift is a set of extensions to `NSDate`, `Int`, `NSTimeInterval`, `NSCalendar`, and `NSDateComponents`.\n```rust\n1.day.until(NSDate())\n```", "In Progress", 4)
-    ,("DuWayne Theroc-Johnson", "Bloodline", "# Bloodline\nA 1-900 hotline for blood deliveries. Uses the `MEAN` stack -- `MongoDB`, `Express.js`, `Angularjs` and `Node.js`. That means this project is **truly** web scale.", "Completed", 5)
+    ,("DuWayne Theroc-Johnson", "Bloodline", "# Bloodline\nA 1-900 hotline for blood deliveries. Uses the `MEAN` stack -- `MongoDB`, `Express.js`, `Angularjs` and `Node.js`. That means this project is **truly** web scale.\n```javascript\nfunction thing() {\n  console.log('hello');\n}\n```", "Completed", 5)
     ,("Matt Gambogi", "tyle", "TYped Language Evaluator", "In Progress", 6)
     ] 
 

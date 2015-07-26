@@ -1,8 +1,8 @@
 .project-content {
-   font-size: 12pt;
-   background: #fff;
-   color: #000;
-   height: auto;
+  font-size: 12pt;
+  background: #fff;
+  color: #000;
+  height: auto;
 }
 
 .project-author {
@@ -18,7 +18,7 @@
 }
 
 #no-projects {
-    color: #888;
-    text-align: center;
-    margin: 100px 0px;
+  color: #888;
+  text-align: center;
+  margin: 100px 0px;
 }
