@@ -18,6 +18,9 @@ Defines the web application layer of Evals
 
 module CSH.Eval.Frontend 
 ( evalFrontend
+ ,widgetPanel
+ ,widgetPanelOffset
+ ,widgetPanelText
 ) where
 
 import qualified Data.Text as T
@@ -63,6 +66,7 @@ evalLayout widget = do
         addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
         addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"
         addStylesheet $ StaticR csh_bootstrap_min_css
+        addStylesheet $ StaticR syntax_css
         toWidget $(luciusFile "frontend/templates/csh-eval.lucius")
     withUrlRenderer $(hamletFile "frontend/templates/base.hamlet")
 
@@ -116,8 +120,9 @@ getEvalsMembershipOverviewR = defaultLayout $(whamletFile "frontend/templates/ev
 
 projects :: [(T.Text, T.Text, T.Text, T.Text, Int)]
 projects = (take 100 . cycle)
-    [("Harlan Haskins", "CSH Eval Stubs", "Stubbed out the projects page.", "In Progress", 4)
+    [("Harlan Haskins", "Punctual.swift", "## Punctual.swift\n\nPunctual.swift is a set of extensions to `NSDate`, `Int`, `NSTimeInterval`, `NSCalendar`, and `NSDateComponents`.\n```rust\n1.day.until(NSDate())\n```", "In Progress", 4)
     ,("DuWayne Theroc-Johnson", "Bloodline", "# Bloodline\nA 1-900 hotline for blood deliveries. Uses the `MEAN` stack -- `MongoDB`, `Express.js`, `Angularjs` and `Node.js`. That means this project is **truly** web scale.", "Completed", 5)
+    ,("Matt Gambogi", "tyle", "TYped Language Evaluator", "In Progress", 6)
     ] 
 
 projectsCSS = toWidget $(luciusFile "frontend/templates/projects/projects.lucius")
@@ -144,9 +149,8 @@ title name member status = [whamlet|
 contentPanel :: T.Text -> Widget
 contentPanel description = [whamlet|
   <div .project-content>
-      ^{htmlDescription}
+      ^{markdownToHtml $ Markdown description}
 |]
-    where htmlDescription = markdownToHtml $ Markdown description
 
 getProjectR id = defaultLayout $ do
     projectsCSS
@@ -154,7 +158,7 @@ getProjectR id = defaultLayout $ do
     where fromID = find (\(_, _, _, _, id') -> id == id') projects
           panel = case fromID of
                     Nothing -> notFound
-                    Just (member, name, description, status, _) -> widgetPanel 12 (title name member status) (contentPanel description)
+                    Just (member, name, description, status, _) -> widgetPanelOffset 8 2 (title name member status) (contentPanel description)
 
 committees :: [T.Text]
 committees = ["Evaluations", "Financial", "OpComm", "House History", "House Improvements", "Research and Development", "Social", "Chairman"]

@@ -1,0 +1,14 @@
+<form role="form">
+    <div .form-group .col-md-6>
+        <label for="name">Project Name
+        <input type="text" .form-control placeholder="HEROIN" id="name">
+    <div .form-group .col-md-6>
+        <label for="committee">Committee
+        <select .form-control>
+            $forall committee <- committees
+                <option value=#{committee}>#{committee}
+    <div .form-group .col-md-12>
+        <label for="description">Description
+        <textarea rows="10" .form-control id="description" placeholder="A robot to fetch drinks from DRINK and deliver them to a room...">
+    <div .form-group .col-md-3>
+        <button type="submit" .btn .btn-primary>Submit
