@@ -1,18 +1,21 @@
 machine:
     timezone: America/New_York
     ghc:
-        version: 7.8.3
+        version: 7.10.1
 
 dependencies:
+    cache_directories:
+        - "~/.stack"
     override:
-        - cabal update
-        - cabal install -j --dependencies-only --enable-tests --reorder-goals
+        - cabal install stack
     post:
         - echo "create role pvals with password 'circleci';" | psql -U postgres
         - createdb pvals -O pvals
-        - echo 'circleci' > cabal run csh-eval-db-init localhost 5432 pvals pvals
 
 test:
+    override:
+        - stack build
+	- echo 'circleci' > stack exec csh-eval-db-init localhost 5432 pvals pvals
+	- stack test
     post:
-        - cabal configure --builddir=$CIRCLE_ARTIFACTS
-        - cabal haddock --builddir=$CIRCLE_ARTIFACTS
+	- cp -r .stack_work/dist/*-linux/Cabal-*/doc $CIRCLE_ARTIFACTS/doc
