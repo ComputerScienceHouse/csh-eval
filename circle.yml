@@ -18,4 +18,4 @@ test:
         - echo 'circleci' > stack exec csh-eval-db-init localhost 5432 pvals pvals
         - stack test
     post:
-	- cp -r .stack_work/dist/*-linux/Cabal-*/doc $CIRCLE_ARTIFACTS/doc
+        - cp -r .stack_work/dist/*-linux/Cabal-*/doc $CIRCLE_ARTIFACTS/doc
