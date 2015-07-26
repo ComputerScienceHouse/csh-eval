@@ -1,6 +1,6 @@
 {-|
-Module      : CSH.Eval.Frontend
-Description : The top level routing of calls to the web viewer
+Module      : CSH.Eval.Frontend.Data
+Description : Yesod data declarations for the EvalFrontend site
 Copyright   : Stephen Demos, Matt Gambogi, Travis Whitaker, Computer Science House 2015
 License     : MIT
 Maintainer  : pvals@csh.rit.edu
