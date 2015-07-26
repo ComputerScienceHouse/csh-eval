@@ -14,8 +14,8 @@ dependencies:
 
 test:
     override:
-        - stack build
-        - echo 'circleci' > stack exec csh-eval-db-init localhost 5432 pvals pvals
-        - stack test
+        - cabal run stack build
+        - echo 'circleci' > cabal exec stack exec csh-eval-db-init localhost 5432 pvals pvals
+        - cabal exec stack test
     post:
         - cp -r .stack_work/dist/*-linux/Cabal-*/doc $CIRCLE_ARTIFACTS/doc
