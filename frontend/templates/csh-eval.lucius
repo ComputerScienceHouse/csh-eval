@@ -16,6 +16,7 @@ body {
   width: 48px;
   height: 46px;
 }
+
 .navbar-brand .logo {
   width: 24px;
   height: 23px;
@@ -23,7 +24,12 @@ body {
   top: -2px;
   display: inline;
 }
+
 /* Decreasing panel-heading padding for mobile devices */
 .panel-heading {
   padding: 10px;
+}
+
+td {
+    font-style: bold;
 }
