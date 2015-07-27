@@ -22,7 +22,8 @@ module CSH.Eval.Frontend
 
 import CSH.Eval.Frontend.Data
 import CSH.Eval.Frontend.Projects
-import CSH.Evla.Frontend.Evals
+import CSH.Eval.Frontend.Evals
+import CSH.Eval.Frontend.Home
 import Text.Hamlet (hamletFile)
 import Text.Lucius (luciusFile)
 import Yesod

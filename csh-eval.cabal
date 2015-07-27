@@ -58,6 +58,8 @@ library
                       ,CSH.Eval.Frontend
                       ,CSH.Eval.Frontend.Data
                       ,CSH.Eval.Frontend.Projects
+                      ,CSH.Eval.Frontend.Evals
+                      ,CSH.Eval.Frontend.Home
                       ,CSH.Eval.Frontend.Widgets
                       ,CSH.Eval.Routes
                       ,CSH.Eval.Cacheable

@@ -14,7 +14,7 @@ Portability : POSIX
 {-# LANGUAGE FlexibleContexts  #-}
 {-# LANGUAGE ViewPatterns      #-}
 
-module CSH.Eval.Frontend.Projects
+module CSH.Eval.Frontend.Home
 ( getHomeR
 ) where
 
