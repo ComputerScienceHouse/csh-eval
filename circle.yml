@@ -22,4 +22,4 @@ test:
         - cabal exec -- stack test
     post:
         - mkdir $CIRCLE_ARTIFACTS/doc
-        - cabal exec -- stack exec -- haddock -h -o doc `find src -type f`
+        - cabal exec -- stack exec -- haddock -h -o $CIRCLE_ARTIFACTS/doc `find src -type f`
