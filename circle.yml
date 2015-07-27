@@ -17,5 +17,5 @@ dependencies:
 test:
     override:
         - cabal exec -- stack test
-    post:
-        - cp -r .stack_work/dist/*-linux/Cabal-*/doc $CIRCLE_ARTIFACTS/doc
+    # post:
+    #     - cp -r .stack_work/dist/*-linux/Cabal-*/doc $CIRCLE_ARTIFACTS/doc
