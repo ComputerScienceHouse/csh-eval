@@ -11,6 +11,8 @@ dependencies:
     post:
         - echo "create role pvals with password 'circleci';" | psql -U postgres
         - createdb pvals -O pvals
+        - git submodule init
+        - git submodule update
         - cabal exec -- stack build
         - cabal exec -- stack test --only-snapshot
         - echo 'circleci' > cabal exec -- stack exec -- csh-eval-db-init localhost 5432 pvals pvals
@@ -19,5 +21,5 @@ test:
     override:
         - cabal exec -- stack test
     post:
-        - cabal exec -- stack haddock
-        - cp -r .stack-work/dist/x86_64-linux/Cabal-1.22.2.0/doc/html $CIRCLE_ARTIFACTS/doc
+        - mkdir $CIRCLE_ARTIFACTS/doc
+        - cabal exec -- stack exec -- haddock -h -o $CIRCLE_ARTIFACTS/doc `find src -type f`

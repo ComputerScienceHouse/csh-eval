@@ -1,6 +1,10 @@
 flags: {}
 packages:
 - '.'
+- 'yesod-markdown'
+# - location:
+#     git: git@github.com:robgssp/yesod-markdown
+#     commit: 1860815cf5fe193e9593a9adc7211929e803a7d1
 extra-deps:
 - ldap-client-0.1.0
 resolver: nightly-2015-07-26

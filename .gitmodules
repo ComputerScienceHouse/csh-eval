@@ -1,0 +1,3 @@
+[submodule "yesod-markdown"]
+	path = yesod-markdown
+	url = git@github.com:robgssp/yesod-markdown.git

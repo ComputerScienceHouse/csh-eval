@@ -146,10 +146,11 @@ title name member status = [whamlet|
           #{member}
 |]
 
+-- TODO handle parse error correctly
 contentPanel :: T.Text -> Widget
 contentPanel description = [whamlet|
   <div .project-content>
-      ^{markdownToHtml $ Markdown description}
+      ^{either (error . show) id $ markdownToHtml $ Markdown description}
 |]
 
 getProjectR id = defaultLayout $ do
