@@ -15,6 +15,9 @@ __Note:__ Requires ghc version 7.8 or above
 
 - Install PostgreSQL (we have been using the latest stable: 9.4)
 - Initialize your cabal sandbox: `cabal sandbox init`
+- Temporary: install patched yesod-markdown:
+	- `git submodule update --init`
+	- `cabal install ./yesod-markdown`
 - Install the dependencies (with tests) `cabal install --enable-tests --only-dependencies --reorder-goals`
 - Build it. `cabal build`
 - Initialize the database:
