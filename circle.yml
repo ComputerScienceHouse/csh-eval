@@ -11,8 +11,6 @@ dependencies:
     post:
         - echo "create role pvals with password 'circleci';" | psql -U postgres
         - createdb pvals -O pvals
-        - git submodule init
-        - git submodule update
         - cabal exec -- stack build
         - cabal exec -- stack test --only-snapshot
         - echo 'circleci' > cabal exec -- stack exec -- csh-eval-db-init localhost 5432 pvals pvals
