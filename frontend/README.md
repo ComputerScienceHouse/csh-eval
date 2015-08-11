@@ -42,8 +42,6 @@ have to be added very often.
     If the route to the page needs arguments, see the [Yesod Routing][routing]
     page for more details.
 
-3.  Add the handler for the page at the bottom of the `src/CSH/Eval/Frontend.hs`
-    file. The handler is defined to be named
 3.  Add the handler to the relevant page definitions file under 
     `src/CSH/Eval/Frontend/`. This would be something like `Evals.hs` or 
     `Projects.hs`. The name of the file doesn't matter as long as it is clear
