@@ -12,8 +12,8 @@ changing the data that is needed for a page, no Haskell changes are needed.
 ## Changing a page
 
 All of the pages in the frontend for the evaluations database are written in
-the shakespearean templating language. Hamlet is the HTML template language for
-shakespeare. A good introduction to the language is in the [Yesod Book chapter
+the Shakespearean templating language. Hamlet is the HTML template language for
+Shakespeare. A good introduction to the language is in the [Yesod Book chapter
 on it][shakespeare]. 
 
 If you are just changing layout or styling, you won't have to touch any
@@ -31,28 +31,37 @@ have to be added very often.
     named well and placed under it's proper category (`voting/`, `packet/`,
     `evals/`, etc.).
 
-2.  Add the route to your new page in the `src/CSH/Eval/Frontend.hs` file under
-    the route definitions. The layout of the route definition is
-
+2.  Add the route to your new page in the `config/routes` file. The layout of
+    the route definition is
+    ```
         /route/to/page NameOfRouteR GET
-
+    ```
     The name of the route should have something do to with the route itself, 
     since all pages have names, and we want page names to be unambiguous. 
 
-    If the route to the page needs arguments, see the [Yesod Routing][routing] 
+    If the route to the page needs arguments, see the [Yesod Routing][routing]
     page for more details.
 
 3.  Add the handler for the page at the bottom of the `src/CSH/Eval/Frontend.hs`
     file. The handler is defined to be named
+3.  Add the handler to the relevant page definitions file under 
+    `src/CSH/Eval/Frontend/`. This would be something like `Evals.hs` or 
+    `Projects.hs`. The name of the file doesn't matter as long as it is clear
+    what handlers should go in the file, it is just a logical separation for
+    the developers.
+
+    The handler is a function that, in it's simplest form, should be defined
+    as
     ``` Haskell
         getNameOfRouteR :: Handler Html
+        getNameOfRouteR = defaultLayout $(whamletFile "frontend/templates/folder/folder/file.hamlet")
     ```
     for the above route example. 
 
-    The handler should be defined as
-    ```Haskell
-        getNameOfRouteR = defaultLayout $(whamletFile "frontend/templates/folder/folder/file.hamlet")
-    ```
+    You can also have arguments passed to this function that can be accessed
+    from within the hamlet file, see the shakespeare docs for more information
+    on how to define a route so that it takes arguments.
+
 4.  Make your page. See the [Yesod Shakespeare Templates][shakespeare] page for
     details on making pages using the hamlet templating language.
 
@@ -75,8 +84,8 @@ your data in hand!
 
 We provide a set of reusable widgets to be used our pages, to cut down on the
 volume of HTML that needs to be written, make everything cleaner looking,
-and reduce errors. Check out the Haddock for `CSH.Eval.Frontend` for an
-up-to-date listing of all of the widgets we provide. 
+and reduce errors. Check out the Haddock for `CSH.Eval.Frontend.Widgets` for
+an up-to-date listing of all of the widgets we provide. 
 
 It is simple to embed a widget into your page -
 ```Haskell
@@ -91,7 +100,7 @@ Adding a widget is similar to adding a page, except you don't specify a route.
 
 1.  Add a hamlet page under `frontend/templates/widgets`. 
 
-2.  Add a widget function.
+2.  Add a widget function in the `src/CSH/Eval/Frontend/Widgets.hs` file.
     ``` Haskell
         widgetName :: Widget
         widgetName = $(whamletFile "frontend/templates/widgets/name.hamlet")
