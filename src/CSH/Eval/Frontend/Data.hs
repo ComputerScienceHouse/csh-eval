@@ -32,20 +32,9 @@ data EvalFrontend = EvalFrontend
                   { getStatic :: Static
                   }
 
--- Route definition for the Evaluations Database Website
--- This is where you add new HTML pages
--- The EvalAPI is defined as a subsite of this website, under the /api route.
--- Static files are placed under the /static route, also as a subsite,
--- facilitated by the yesod-static package.
-mkYesodData "EvalFrontend" [parseRoutes|
-/                           HomeR                    GET
-/evals/membership/overview  EvalsMembershipOverviewR GET
-/api                        EvalSubsiteR WaiSubsite  getEvalAPI
-/static                     StaticR Static           getStatic
-/projects                   ProjectsR                GET
-!/projects/create           CreateProjectR           GET
-/projects/#Int              ProjectR                 GET
-|]
+-- This makes the datatypes for the evaluations frontend, for use by
+-- page hanlders in different files without having recursive importing.
+mkYesodData "EvalFrontend" $(parseRoutesFile "config/routes")
 
 -- | A Yesod subsite for the evalAPI defined using servant in "CSH.Eval.Routes"
 getEvalAPI :: EvalFrontend -> WaiSubsite
