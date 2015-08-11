@@ -26,6 +26,6 @@ import Text.Hamlet (hamletFile)
 import Text.Lucius (luciusFile)
 import Yesod
 
--- | An example Html handler for the frontend
+-- | The handler for the Evaluations Database index page
 getHomeR :: Handler Html
 getHomeR = defaultLayout $(whamletFile "frontend/templates/index.hamlet")
