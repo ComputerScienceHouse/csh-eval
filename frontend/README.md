@@ -48,6 +48,10 @@ have to be added very often.
     what handlers should go in the file, it is just a logical separation for
     the developers.
 
+    If you do add a handlers file, you will need to add the module name under
+    the `csh-eval.cabal` file and import it into the `src/CSH/Eval/Frontend.hs`
+    file. Use the `src/CSH/Eval/Frontend/Home.hs` file as a template.
+
     The handler is a function that, in it's simplest form, should be defined
     as
     ``` Haskell
