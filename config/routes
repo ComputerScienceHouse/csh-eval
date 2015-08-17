@@ -1,0 +1,31 @@
+-- Route definitions for the Evaluations Database frontend
+-- This is where you add the routes for new HTML pages
+-- The EvalAPI is defined as a subsite of this website, under the /api route.
+-- Static files are placed under the /static route, also a subsite,
+-- facilitated by the yesod-static package.
+
+-- Before you add a new route here, check out the `frontend/README.md` file
+-- for information on the full process of adding pages.
+
+-- An example of a basic route definition is
+--      /route/to/page NameOfRouteR GET
+-- For more information on the syntax of route definitions, see the yesod book
+-- chapter on routing (http://www.yesodweb.com/book/routing-and-handlers)
+
+-- Sort your routes underneath the header for the file that the routes
+-- corresponding headers will go, for clarity.
+
+-- Subsites
+/api                        EvalSubsiteR WaiSubsite  getEvalAPI
+/static                     StaticR Static           getStatic
+
+-- Home.hs
+/                           HomeR                    GET
+
+-- Evals.hs
+/evals/membership/overview  EvalsMembershipOverviewR GET
+
+-- Projects.hs
+/projects                   ProjectsR                GET
+!/projects/create           CreateProjectR           GET
+/projects/#Int              ProjectR                 GET

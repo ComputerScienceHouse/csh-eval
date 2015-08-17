@@ -1,13 +1,11 @@
 {-|
-Module      : CSH.Eval.Frontend
-Description : The top level routing of calls to the web viewer
+Module      : CSH.Eval.Frontend.Home
+Description : The route handler for the home page
 Copyright   : Stephen Demos, Matt Gambogi, Travis Whitaker, Computer Science House 2015
 License     : MIT
 Maintainer  : pvals@csh.rit.edu
 Stability   : Provisional
 Portability : POSIX
-
-Defines the web application layer of Evals
 -}
 {-# LANGUAGE QuasiQuotes       #-}
 {-# LANGUAGE TypeFamilies      #-}
@@ -16,23 +14,18 @@ Defines the web application layer of Evals
 {-# LANGUAGE FlexibleContexts  #-}
 {-# LANGUAGE ViewPatterns      #-}
 
-module CSH.Eval.Frontend 
-( evalFrontend
+module CSH.Eval.Frontend.Home
+( getHomeR
 ) where
 
+import qualified Data.Text as T
+
 import CSH.Eval.Frontend.Data
-import CSH.Eval.Frontend.Projects
-import CSH.Eval.Frontend.Evals
-import CSH.Eval.Frontend.Home
+import CSH.Eval.Frontend.Widgets
 import Text.Hamlet (hamletFile)
 import Text.Lucius (luciusFile)
 import Yesod
-import Yesod.Static
 
-mkYesodDispatch "EvalFrontend" resourcesEvalFrontend
-
--- | Defines the WAI Application for the eval Yesod app
-evalFrontend :: IO Application
-evalFrontend = do
-    s <- static "frontend/static"
-    toWaiApp $ EvalFrontend s
+-- | The handler for the Evaluations Database index page
+getHomeR :: Handler Html
+getHomeR = defaultLayout $(whamletFile "frontend/templates/index.hamlet")
