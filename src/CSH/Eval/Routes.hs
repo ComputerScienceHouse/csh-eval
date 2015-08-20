@@ -15,11 +15,7 @@ import Servant
 
 -- | The Evaluations Database API WAI application 
 evalAPI :: Application
-evalAPI = serve evalAPIProxy server
-
--- | API Proxy for servant
-evalAPIProxy :: Proxy EvalAPI
-evalAPIProxy = Proxy
+evalAPI = serve (Proxy :: Proxy EvalAPI) server
 
 -- | The definition of the API for the Evaluations Database. 
 -- Additional API calls should be added here, and their handlers put in
