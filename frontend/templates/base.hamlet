@@ -15,13 +15,17 @@ $doctype 5
             <span .icon-bar>
             <span .icon-bar>
             <span .icon-bar>
-          <a .navbar-brand href="#">
+          <a .navbar-brand href="/">
             <img .logo src=@{StaticR csh_logo_white_svg} alt="CSH">
             <img .logo src=@{StaticR scales_png} alt="evals">
         <div .collapse .navbar-collapse>
           <ul .nav .navbar-nav .navbar-right>
-            <li .active>
-              <a href="#">Placeholder
+            <li>
+              <a href="/projects">Projects
+            <li>
+              <a href="/members">Members
+            <li>
+              <a href="/evals">Evals
     <div #content>
       <div .container>
         ^{pageBody pc}
