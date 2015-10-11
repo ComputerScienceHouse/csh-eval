@@ -76,7 +76,15 @@ getProjectR id = defaultLayout $ do
                     Just (member, name, description, status, _) -> widgetPanelOffset 8 2 (title name member status) (contentPanel description)
 
 committees :: [T.Text]
-committees = ["Evaluations", "Financial", "OpComm", "House History", "House Improvements", "Research and Development", "Social", "Chairman"]
+committees = [ "Evaluations"
+             , "Financial"
+             , "OpComm"
+             , "History"
+             , "House Improvements"
+             , "R&D"
+             , "Social"
+             , "Chairman"
+             ]
 
 projectForm = $(whamletFile "frontend/templates/projects/create.hamlet")
 

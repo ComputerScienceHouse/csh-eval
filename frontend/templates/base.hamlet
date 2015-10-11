@@ -17,7 +17,7 @@ $doctype 5
             <span .icon-bar>
           <a .navbar-brand href="#">
             <img .logo src=@{StaticR csh_logo_white_svg} alt="CSH">
-              <span> Evaluations
+            <img .logo src=@{StaticR scales_png} alt="evals">
         <div .collapse .navbar-collapse>
           <ul .nav .navbar-nav .navbar-right>
             <li .active>

@@ -103,12 +103,16 @@ getEvaluationIDP = [H.stmt|select * from "evaluation" where "id" = ?|]
 -- | Fetch all evaluation(s) associated with a specific member.
 getEvaluationsMemberIDP :: Word64 -- ^ ID of member subject to evaluation
                         -> H.Stmt HP.Postgres
-getEvaluationsMemberIDP = [H.stmt|select * from "evaluation" where "member_id" = ?|]
+getEvaluationsMemberIDP = [H.stmt|select *
+                                  from "evaluation"
+                                  where "member_id" = ?|]
 
 -- | Fetch all evaluation(s) with a given status.
 getEvaluationsStatusP :: T.Text -- ^ Evaluation status
                       -> H.Stmt HP.Postgres
-getEvaluationsStatusP = [H.stmt|select * from "evaluation" where "eval_type" = ?|]
+getEvaluationsStatusP = [H.stmt|select *
+                                from "evaluation"
+                                where "eval_type" = ?|]
 
 -- *** Conditional
 
@@ -120,7 +124,9 @@ getConditionalIDP = [H.stmt|select * from "conditional" where "id" = ?|]
 -- | Fetch all conditional(s) associated with a specific evaluation.
 getConditionalEvaluationIDP :: Word64 -- ^ Evaluation ID
                             -> H.Stmt HP.Postgres
-getConditionalEvaluationIDP = [H.stmt|select * from "conditional" where "evaluation_id" = ?|]
+getConditionalEvaluationIDP = [H.stmt|select *
+                                      from "conditional"
+                                      where "evaluation_id" = ?|]
 
 -- *** Freshman Project
 

@@ -56,3 +56,6 @@ evalLayout widget = do
 -- | The Yesod instance for the EvalFrontend
 instance Yesod EvalFrontend where
     defaultLayout = evalLayout
+    makeSessionBackend _ = sslOnlySessions
+                         (fmap Just (defaultClientSessionBackend 120 "key.aes"))
+    yesodMiddleware = (sslOnlyMiddleware 120) . defaultYesodMiddleware
