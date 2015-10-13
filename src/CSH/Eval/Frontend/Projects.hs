@@ -20,6 +20,7 @@ module CSH.Eval.Frontend.Projects
 ( getProjectR
 , getProjectsR
 , getCreateProjectR
+, projectForm
 ) where
 
 import qualified Data.Text as T
