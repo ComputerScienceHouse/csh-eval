@@ -11,6 +11,8 @@ import System.IO
 import System.Environment
 
 import Control.Exception
+import Data.Word (Word16)
+import Options.Applicative
 
 import CSH.Eval.DB.Schema
 
@@ -60,33 +62,32 @@ withEcho e a = hGetEcho stdin
                                (hSetEcho stdin o)
                                a)
 
-getArguments :: IO [String]
-getArguments = do
-    args <- getArgs
-    if length args /= 4
-    then putStr "usage: DBInitMain host port user db\n\n"
-    else putStr "initializing evaluations database..."
-    return args
+data DBInitOpts = DBInitOpts
+                { host :: C.ByteString
+                , port :: Word16
+                , user :: C.ByteString
+                , db   :: C.ByteString
+                }
 
-getPassword :: IO String
+getPassword :: IO C.ByteString
 getPassword = do
     putStr "Password: "
     hFlush stdout
     passwd <- withEcho False getLine
     putChar '\n'
     hFlush stdout
-    return passwd
+    return (C.pack passwd)
 
 main :: IO ()
 main = do
-    [host, port, user, db] <- getArguments
-    passwd                 <- getPassword
-
-    let pgs = HP.ParamSettings (C.pack host)
-                               (read port)
-                               (C.pack user)
-                               (C.pack passwd)
-                               (C.pack db)
+    opts   <- execParser (info parser mempty)
+    passwd <- getPassword
+    putStr "Initializing evaluations database..."
+    let pgs = HP.ParamSettings (host opts)
+                               (port opts)
+                               (user opts)
+                               (passwd)
+                               (db opts)
     poolSettings <- maybe (fail "Malformed settings.") return (H.poolSettings 1 1)
     pool         <- H.acquirePool pgs poolSettings
 
@@ -95,3 +96,29 @@ main = do
     print r
 
     H.releasePool pool
+  where
+    parser = DBInitOpts
+          <$> optHost
+          <*> optPort
+          <*> optUser
+          <*> optDb
+
+    optHost = argument auto
+            (  metavar "<HOST>"
+            <> help    "The hostname of the postgres database to connect to"
+            )
+
+    optPort = argument auto
+            (  metavar "<PORT>"
+            <> help    "The port to connect on"
+            )
+
+    optUser = argument auto
+            (  metavar "<USER>"
+            <> help    "The name of the eval user"
+            )
+
+    optDb = argument auto
+          (  metavar "<DB>"
+          <> help    "The name of the eval database"
+          )

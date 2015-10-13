@@ -50,6 +50,7 @@ executable csh-eval-db-init
                       ,hasql                >=0.7.3    && <0.7.4
                       ,hasql-postgres       >=0.10.3   && <0.10.4
                       ,bytestring           >=0.10.4   && <0.10.7
+                      ,optparse-applicative
                       ,text                 >=1.2.0.6  && <1.3
                       ,uuid                 >=1.3.10   && <1.3.11
                       ,csh-eval
