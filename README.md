@@ -11,24 +11,21 @@ An evaluations platform for the Computer Science House at RIT.
 
 ## Setup for development
 
-__Note:__ Requires ghc version 7.8 or above
-
-- Install PostgreSQL (we have been using the latest stable: 9.4)
-- Initialize your cabal sandbox: `cabal sandbox init`
-- Install the dependencies (with tests) `cabal install --enable-tests --only-dependencies --reorder-goals`
-- Build it. `cabal build`
+- Add `~/.local/bin` to your `PATH`
+- Install PostgreSQL (we have been using 9.4)
 - Initialize the database:
 	- Create a user called "pvals": `createuser pvals`
 	- Create a database called "pvals" owned by the pvals user: `createdb pvals -O pvals`
-	- Initialize the schema: `cabal run csh-eval-db-init`
-- `cabal test`
-- Try starting the site: `cabal run csh-eval`. You should find it running on
+	- Initialize the schema: `csh-eval-db-init`
+- `stack build`
+- `stack test`
+- Try starting the site: `csh-eval`. You should find it running on
   `localhost:8000`
 
 ## Contributing
 
 ### Discussion
-General coordination and discussion takes place in #pvals on cshfreshmen.slack.com.
+General coordination and discussion takes place in #pvals on cshrit.slack.com.
 An `@*rit.edu` address is required to chat. Longer form discussion for specific
 features will occur under issues on the ComputerScienceHouse Github.
 Bugs and feature requests may also be made through Github issues.

@@ -22,6 +22,7 @@ import qualified Data.Text as T
 
 import CSH.Eval.Frontend.Data
 import CSH.Eval.Frontend.Widgets
+import CSH.Eval.Frontend.Projects
 import Text.Hamlet (hamletFile)
 import Text.Lucius (luciusFile)
 import Yesod
