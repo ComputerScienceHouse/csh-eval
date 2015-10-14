@@ -17,7 +17,8 @@ cabal-version:         >=1.10
 
 executable csh-eval
   main-is:             Main.hs
-  build-depends:       base                 >=4.7      && <4.9
+  build-depends:      ansi-wl-pprint
+                      ,base                 >=4.7      && <4.9
                       ,blaze-markup         >=0.7      && <0.8
                       ,bytestring           >=0.10.4   && <0.10.7
                       ,csh-eval
