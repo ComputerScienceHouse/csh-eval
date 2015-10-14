@@ -39,21 +39,40 @@ optWithTLS = switch
 -- This runs the evaluations databse frontend defined in "CSH.Eval.Frontend"
 -- using warp, running on the port defined the the PORT environment variable
 -- (defaulting to running on port 8000)
-main = execParser opts >>= runWithOptions 
+main = customExecParser pprefs opts >>= runWithOptions 
    where
-     parser =  helper
-           <*> subparser
-               (command "member"
-                      (info (ServerOpts <$> optPort
-                                        <*> optWithTLS)
-                            mempty))
+     pprefs = ParserPrefs { prefMultiSuffix     = " | "
+                          , prefDisambiguate    = False
+                          , prefShowHelpOnError = True
+                          , prefBacktrack       = True
+                          , prefColumns         = 80
+                          }
+
      opts = info parser (  fullDesc
                         <> headerDoc (Just (text cshlogo))
                         )
-     cshlogo =  "\n\r"
-             ++ "   ╔═══╗ ╗\n"
-             ++ "   ║╔═╗╦ ║ Computer\n"
-             ++ "   ║╚═╗╠═╣ Science\n"
-             ++ "   ║╚═╝╩ ║ House\n"
-             ++ "   ╚═══╝ ╝\n\n"
-             ++ " Evaluations Database"
+
+     parser =  helper
+           <*> subparser
+               (  members
+               <> intro
+               )
+
+     members = command "member"
+                       (info (ServerOpts <$> optPort
+                                         <*> optWithTLS)
+                             (progDesc "Run evals for current members"))
+     intro = command "intro"
+                     (info (ServerOpts <$> optPort
+                                       <*> optWithTLS)
+                           (progDesc "Run evals for intro members"))
+
+
+     cshlogo =  "╔═══════════════════════╗\n\r"
+             ++ "║   ╔═══╗ ╗             ║\n"
+             ++ "║   ║╔═╗╦ ║ Computer    ║\n"
+             ++ "║   ║╚═╗╠═╣ Science     ║\n"
+             ++ "║   ║╚═╝╩ ║ House       ║\n"
+             ++ "║   ╚═══╝ ╝             ║\n"
+             ++ "║ Evaluations Database  ║\n"
+             ++ "╚═══════════════════════╝"
