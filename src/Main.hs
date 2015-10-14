@@ -6,6 +6,7 @@ import Network.Wai.Handler.WarpTLS (runTLS, tlsSettings)
 import CSH.Eval.Routes (evalAPI)
 import CSH.Eval.Frontend (evalFrontend)
 import Options.Applicative
+import Text.PrettyPrint.ANSI.Leijen (text)
 
 data ServerOpts = ServerOpts { port :: Port
                              , withTLS :: Bool
@@ -17,18 +18,6 @@ runWithOptions opts = evalFrontend
                       then runTLS (tlsSettings "server.crt" "server.key")
                                   (setPort (port opts) defaultSettings)
                       else runEnv (port opts)
-
-
--- | Main function for running the Evaluations Database website
--- This runs the evaluations databse frontend defined in "CSH.Eval.Frontend"
--- using warp, running on the port defined the the PORT environment variable
--- (defaulting to running on port 8000)
-main = execParser opts >>= runWithOptions 
-   where
-     parser = ServerOpts <$> optPort
-                         <*> optWithTLS
-     opts = info parser mempty
-
 optPort :: Parser Port
 optPort = option auto
         (  long "port"
@@ -44,3 +33,46 @@ optWithTLS = switch
            <> short 's'
            <> help "Enable TLS support."
            )
+
+
+-- | Main function for running the Evaluations Database website
+-- This runs the evaluations databse frontend defined in "CSH.Eval.Frontend"
+-- using warp, running on the port defined the the PORT environment variable
+-- (defaulting to running on port 8000)
+main = customExecParser pprefs opts >>= runWithOptions 
+   where
+     pprefs = ParserPrefs { prefMultiSuffix     = " | "
+                          , prefDisambiguate    = False
+                          , prefShowHelpOnError = True
+                          , prefBacktrack       = True
+                          , prefColumns         = 80
+                          }
+
+     opts = info parser (  fullDesc
+                        <> headerDoc (Just (text cshlogo))
+                        )
+
+     parser =  helper
+           <*> subparser
+               (  members
+               <> intro
+               )
+
+     members = command "member"
+                       (info (ServerOpts <$> optPort
+                                         <*> optWithTLS)
+                             (progDesc "Run evals for current members"))
+     intro = command "intro"
+                     (info (ServerOpts <$> optPort
+                                       <*> optWithTLS)
+                           (progDesc "Run evals for intro members"))
+
+
+     cshlogo =  "╔═══════════════════════╗\n\r"
+             ++ "║   ╔═══╗ ╗             ║\n"
+             ++ "║   ║╔═╗╦ ║ Computer    ║\n"
+             ++ "║   ║╚═╗╠═╣ Science     ║\n"
+             ++ "║   ║╚═╝╩ ║ House       ║\n"
+             ++ "║   ╚═══╝ ╝             ║\n"
+             ++ "║ Evaluations Database  ║\n"
+             ++ "╚═══════════════════════╝"
