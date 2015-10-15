@@ -1,0 +1,30 @@
+# Configuration file for csh-eval
+
+site {
+    crtpath = "./server.crt"
+    keypath = "./server.key"
+
+    # Port to run the intro member version on
+    intro {
+        port = 8000
+    }
+
+    # Port to run the members verion on
+    members {
+        port = 8080
+    }
+}
+
+db {
+    user     = "db.user"
+    host     = "localhost"
+    port     = "db.port"
+    database = "db.name"
+}
+
+ldap {
+    user     = "ldapusr"
+    password = "ldappass"
+    host     = "ldaphost"
+    port     = LDAPPORT
+}

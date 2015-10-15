@@ -21,6 +21,7 @@ module CSH.LDAP (
 , appDn
 , userDn
 , withCSH
+, module Ldap.Client
 ) where
 import Ldap.Client
 import Safe
