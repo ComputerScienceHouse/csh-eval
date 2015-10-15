@@ -26,5 +26,5 @@ ldap {
     user     = "ldapusr"
     password = "ldappass"
     host     = "ldaphost"
-    port     = LDAPPORT
+    port     = 636
 }
