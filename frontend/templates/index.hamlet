@@ -1,6 +1,13 @@
 <div .row>
-  ^{widgetPanelText 3 "<strong>Example Title</strong>" "<p>Welcome to the CSH Evaluations Database, written in <strike>perl</strike> <strike>python</strike> haskell!</p>"}
-
+  <div .col-md-3 .col-sm-12>
+    <div .panel .panel-default .center>
+      <div .panel-heading>
+        <div .panel-title>
+          <a href="/member/#{B.unpack usr}">
+            <strong>#{name}
+      <div .panel-body>
+        <p>Welcome to the CSH Evaluations Database, written 
+            in <strike>perl</strike> <strike>python</strike> haskell!
   <div .col-offset-3 .col-md-6 .col-sm-12>
     <div .panel .panel-default .center>
       <div .panel-heading>

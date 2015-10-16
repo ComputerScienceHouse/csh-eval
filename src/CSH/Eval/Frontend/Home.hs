@@ -19,14 +19,24 @@ module CSH.Eval.Frontend.Home
 ) where
 
 import qualified Data.Text as T
-
+import qualified Data.ByteString.Char8 as B
+import CSH.Eval.Config
 import CSH.Eval.Frontend.Data
-import CSH.Eval.Frontend.Widgets
 import CSH.Eval.Frontend.Projects
+import CSH.Eval.Frontend.Widgets
+import CSH.Eval.LDAP
+import CSH.Eval.LDAP
+import Network.Wai
+import Data.Maybe
+import qualified Data.List as L (lookup)
 import Text.Hamlet (hamletFile)
 import Text.Lucius (luciusFile)
 import Yesod
 
 -- | The handler for the Evaluations Database index page
 getHomeR :: Handler Html
-getHomeR = defaultLayout $(whamletFile "frontend/templates/index.hamlet")
+getHomeR = do 
+           req <- waiRequest
+           let usr = fromJust $ L.lookup "X-WEBAUTH-USER" (requestHeaders req)
+           name <- fmap B.unpack (liftIO $ lookupCN usr)
+           defaultLayout $(whamletFile "frontend/templates/index.hamlet")
