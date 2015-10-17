@@ -19,6 +19,7 @@ Defines the web application layer of Evals
 module CSH.Eval.Frontend.Data where
 
 import CSH.Eval.Routes (evalAPI)
+import CSH.Eval.Config (ServerCmd (..))
 import Text.Hamlet (hamletFile)
 import Text.Lucius (luciusFile)
 import Yesod
@@ -30,6 +31,7 @@ staticFiles "frontend/static"
 -- | datatype for Yesod
 data EvalFrontend = EvalFrontend
                   { getStatic :: Static
+                  , getConfig :: ServerCmd
                   }
 
 data AccessLvl = Freshman
@@ -62,7 +64,12 @@ evalLayout widget = do
 -- | The Yesod instance for the EvalFrontend
 instance Yesod EvalFrontend where
     defaultLayout = evalLayout
-    makeSessionBackend _ = sslOnlySessions
-                         (fmap Just (defaultClientSessionBackend 120 "key.aes"))
-    yesodMiddleware = (sslOnlyMiddleware 120) . defaultYesodMiddleware
-
+    makeSessionBackend s = if tls then ssl "key.aes" else nossl
+        where tls   = withTLS (getConfig s)
+              ssl   = sslOnlySessions . fmap Just . defaultClientSessionBackend 120
+              nossl = return Nothing
+    yesodMiddleware = ssl . defaultYesodMiddleware
+        where ssl s = withTLS . getConfig <$> getYesod >>=
+                      (\x -> if x
+                      then sslOnlyMiddleware 120 s
+                      else s)
