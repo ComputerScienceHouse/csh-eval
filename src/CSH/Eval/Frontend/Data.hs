@@ -19,9 +19,9 @@ Defines the web application layer of Evals
 module CSH.Eval.Frontend.Data where
 
 import CSH.Eval.Routes (evalAPI)
-import CSH.Eval.Config (ServerCmd (..))
 import Text.Hamlet (hamletFile)
 import Text.Lucius (luciusFile)
+import CSH.Eval.Config (ServerCmd (..))
 import Yesod
 import Yesod.Static
 
@@ -58,6 +58,7 @@ evalLayout widget = do
         addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"
         addStylesheet $ StaticR csh_bootstrap_min_css
         addStylesheet $ StaticR syntax_css
+        addScript     $ StaticR salvattore_min_js
         toWidget $(luciusFile "frontend/templates/csh-eval.lucius")
     withUrlRenderer $(hamletFile "frontend/templates/base.hamlet")
 
@@ -73,3 +74,4 @@ instance Yesod EvalFrontend where
                       (\x -> if x
                       then sslOnlyMiddleware 120 s
                       else s)
+
