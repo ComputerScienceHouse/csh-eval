@@ -58,7 +58,7 @@ evalLayout widget = do
         addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"
         addStylesheet $ StaticR csh_bootstrap_min_css
         addStylesheet $ StaticR syntax_css
-        toWidget $(luciusFile "frontend/templates/csh-eval.lucius")
+        addStylesheet EvalCssR
     withUrlRenderer $(hamletFile "frontend/templates/base.hamlet")
 
 -- | The Yesod instance for the EvalFrontend

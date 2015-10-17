@@ -16,6 +16,7 @@ Portability : POSIX
 
 module CSH.Eval.Frontend.Home
 ( getHomeR
+, getEvalCssR
 ) where
 
 import qualified Data.Text as T
@@ -30,7 +31,7 @@ import Network.Wai
 import Data.Maybe
 import qualified Data.List as L (lookup)
 import Text.Hamlet (hamletFile)
-import Text.Lucius (luciusFile)
+import Text.Lucius (luciusFile, Css)
 import Yesod
 
 -- | The handler for the Evaluations Database index page
@@ -44,3 +45,6 @@ getHomeR = do
            let showHousingF = False
            let access = Member
            defaultLayout $(whamletFile "frontend/templates/index.hamlet")
+
+getEvalCssR :: Handler Css
+getEvalCssR = withUrlRenderer $(luciusFile "frontend/templates/csh-eval.lucius")
