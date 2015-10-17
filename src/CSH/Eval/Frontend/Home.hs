@@ -35,8 +35,12 @@ import Yesod
 
 -- | The handler for the Evaluations Database index page
 getHomeR :: Handler Html
-getHomeR = do 
+getHomeR = do
            req <- waiRequest
            let usr = fromJust $ L.lookup "X-WEBAUTH-USER" (requestHeaders req)
            name <- fmap B.unpack (liftIO $ lookupCN usr)
+           let showIntroF = True
+           let showSpringF = True
+           let showHousingF = False
+           let access = Member
            defaultLayout $(whamletFile "frontend/templates/index.hamlet")
