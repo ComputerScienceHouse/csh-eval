@@ -5,13 +5,61 @@
         <div .panel-title>
           <a href="/member/#{B.unpack usr}">
             <strong>#{name}
+          <span .panel-status>Alumni
       <div .panel-body>
-        <p>Welcome to the CSH Evaluations Database, written 
-            in <strike>perl</strike> <strike>python</strike> haskell!
+        <dl>
+          <dt>Projects
+          <dd>1
+          <dt>Meetings
+          <dd>0
+          <dt>Missed House Meetings
+          <dd>1
   <div .col-offset-3 .col-md-6 .col-sm-12>
+
+    $if (>=) access Eboard
+      <div .panel .panel-default .center>
+        <div .panel-heading>
+          <div .panel-title>
+            <strong> Submit Attendance
+        <div .panel-body>
+          ^{projectForm}
+
+    $if showIntroF &&  ((==) access Freshman)
+      <div .panel .panel-default .center>
+        <div .panel-heading>
+          <div .panel-title>
+            <strong> Introductory Evaluations Form
+        <div .panel-body>
+          ^{projectForm}
+
+    $if showSpringF
+      <div .panel .panel-default .center>
+        <div .panel-heading>
+          <div .panel-title>
+            <strong> Membership Evaluations Form
+        <div .panel-body>
+          ^{projectForm}
+
+    $if showHousingF
+      <div .panel .panel-default .center>
+        <div .panel-heading>
+          <div .panel-title>
+            <strong> Housing Evaluations Form
+        <div .panel-body>
+          ^{projectForm}
+
     <div .panel .panel-default .center>
       <div .panel-heading>
         <div .panel-title>
           <strong> Submit a Project
       <div .panel-body>
         ^{projectForm}
+
+  $if ((==) access Admin)
+    <div .col-md-3 .col-offset-9>
+      <div .panel .panel-default>
+        <div .panel-heading>
+          <div .panel-title>
+            <strong> Admin Panel
+        <div .panel-body>
+          Admin panel body!

@@ -32,6 +32,12 @@ data EvalFrontend = EvalFrontend
                   { getStatic :: Static
                   }
 
+data AccessLvl = Freshman
+               | Member
+               | Eboard
+               | Admin
+               deriving (Eq, Ord)
+
 -- This makes the datatypes for the evaluations frontend, for use by
 -- page hanlders in different files without having recursive importing.
 mkYesodData "EvalFrontend" $(parseRoutesFile "config/routes")
@@ -59,3 +65,4 @@ instance Yesod EvalFrontend where
     makeSessionBackend _ = sslOnlySessions
                          (fmap Just (defaultClientSessionBackend 120 "key.aes"))
     yesodMiddleware = (sslOnlyMiddleware 120) . defaultYesodMiddleware
+

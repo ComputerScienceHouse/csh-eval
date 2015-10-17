@@ -33,3 +33,15 @@ body {
 td {
     font-style: bold;
 }
+
+.panel-status {
+  float: right;
+  color: #aaa;
+  font-size: 8pt;
+  position: relative;
+  margin-top: 2px;
+}
+
+a {
+    color: black
+}

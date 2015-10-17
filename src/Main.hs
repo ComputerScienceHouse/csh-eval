@@ -16,7 +16,8 @@ data ServerCmd = ServerCmd { withTLS :: Bool
                            }
 
 runWithOptions :: Command -> IO ()
-runWithOptions (Members opts) = evalFrontend
+runWithOptions (Members opts) = putStrLn cshlogo
+                             >> evalFrontend
                             >>= if withTLS opts
                                 then runTLS (tlsSettings "server.crt" "server.key")
                                             (setPort (port opts) defaultSettings)
@@ -77,11 +78,11 @@ main = customExecParser pprefs opts >>= runWithOptions
                         "WARNING: Unimplemented. Run evals for intro members"))
 
 
-     cshlogo =  "╔═══════════════════════╗\n\r"
-             ++ "║   ╔═══╗ ╗             ║\n"
-             ++ "║   ║╔═╗╦ ║ Computer    ║\n"
-             ++ "║   ║╚═╗╠═╣ Science     ║\n"
-             ++ "║   ║╚═╝╩ ║ House       ║\n"
-             ++ "║   ╚═══╝ ╝             ║\n"
-             ++ "║ Evaluations Database  ║\n"
-             ++ "╚═══════════════════════╝"
+cshlogo =  "╔═══════════════════════╗\n\r"
+        ++ "║   ╔═══╗ ╗             ║\n"
+        ++ "║   ║╔═╗╦ ║ Computer    ║\n"
+        ++ "║   ║╚═╗╠═╣ Science     ║\n"
+        ++ "║   ║╚═╝╩ ║ House       ║\n"
+        ++ "║   ╚═══╝ ╝             ║\n"
+        ++ "║ Evaluations Database  ║\n"
+        ++ "╚═══════════════════════╝"
