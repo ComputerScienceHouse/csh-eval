@@ -538,7 +538,7 @@ instance Show Answer where
 
 data Dues = Dues {
     duesStatus :: DuesStatus
-  , duesMember :: Member
+  , duesMember :: Cacheable Member
   , duesTerm   :: Term
   }
 
