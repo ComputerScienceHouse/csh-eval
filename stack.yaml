@@ -4,4 +4,4 @@ packages:
 extra-deps:
 - ldap-client-0.1.0
 - yesod-markdown-0.10.0
-resolver: nightly-2015-07-26
+resolver: lts-3.9
