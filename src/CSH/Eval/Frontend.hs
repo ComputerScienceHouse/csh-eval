@@ -24,6 +24,7 @@ import CSH.Eval.Frontend.Data
 import CSH.Eval.Frontend.Projects
 import CSH.Eval.Frontend.Evals
 import CSH.Eval.Frontend.Home
+import CSH.Eval.Config
 import Text.Hamlet (hamletFile)
 import Text.Lucius (luciusFile)
 import Yesod
@@ -32,7 +33,7 @@ import Yesod.Static
 mkYesodDispatch "EvalFrontend" resourcesEvalFrontend
 
 -- | Defines the WAI Application for the eval Yesod app
-evalFrontend :: IO Application
-evalFrontend = do
+evalFrontend :: ServerCmd -> IO Application
+evalFrontend config = do
     s <- static "frontend/static"
-    toWaiApp $ EvalFrontend s
+    toWaiApp $ EvalFrontend s config

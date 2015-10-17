@@ -5,19 +5,13 @@ import Network.Wai.Handler.Warp (defaultSettings
 import Network.Wai.Handler.WarpTLS (runTLS, tlsSettings)
 import CSH.Eval.Routes (evalAPI)
 import CSH.Eval.Frontend (evalFrontend)
+import CSH.Eval.Config (Command (..), ServerCmd (..))
 import Options.Applicative
 import Text.PrettyPrint.ANSI.Leijen (text)
 
-data Command = Members ServerCmd
-             | Intro ServerCmd
-
-data ServerCmd = ServerCmd { withTLS :: Bool
-                           , port    :: Port
-                           }
-
 runWithOptions :: Command -> IO ()
 runWithOptions (Members opts) = putStrLn cshlogo
-                             >> evalFrontend
+                             >> evalFrontend opts
                             >>= if withTLS opts
                                 then runTLS (tlsSettings "server.crt" "server.key")
                                             (setPort (port opts) defaultSettings)
