@@ -82,3 +82,7 @@ a {
     padding-bottom: 10px;
     padding-top: 10px;
 }
+
+.bottom-padded {
+    padding-bottom: 10px;
+}

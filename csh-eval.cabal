@@ -23,6 +23,8 @@ executable csh-eval
                       ,blaze-markup         >=0.7      && <0.8
                       ,bytestring           >=0.10     && <0.11
                       ,configurator         >=0.3      && <0.4
+                      ,containers           >=0.5      && <0.6
+                      ,either               >=4.4      && <4.5
                       ,hasql                >=0.7      && <0.8
                       ,hasql-postgres       >=0.10     && <0.11
                       ,ldap-client          >=0.1      && <0.2
@@ -71,6 +73,7 @@ library
                       ,CSH.Eval.Frontend.Evals
                       ,CSH.Eval.Frontend.Home
                       ,CSH.Eval.Frontend.Projects
+                      ,CSH.Eval.Frontend.Attendance
                       ,CSH.Eval.Frontend.Widgets
                       ,CSH.Eval.LDAP
                       ,CSH.Eval.Routes

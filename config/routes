@@ -29,3 +29,6 @@
 /projects                   ProjectsR                GET
 !/projects/create           CreateProjectR           GET
 /projects/#Int              ProjectR                 GET
+
+-- Attendance.hs
+/attendance                 AttendanceR              GET

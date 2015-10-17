@@ -19,19 +19,13 @@
         <div .panel .panel-default>
           <div .panel-heading>
             <div .panel-title>
-              <strong>Attendance
-          <div .panel-body .table-fill>
-            <table .table .table-striped .table-responsive .no-bottom-margin>
-              <tbody>
-                <tr>
-                  <th>Name
-                  <th>Type
-                  <th>Date
-                $forall (name, meetingType, date) <- attendance
-                  <tr>
-                    <td>#{B.unpack name}
-                    <td>#{B.unpack meetingType}
-                    <td>#{B.unpack date}
+              <strong>Projects
+          <div .panel-body>
+            <div .text-center .bottom-padded>
+                <h4 .text-muted>
+                  <strong>No Projects
+                <a .btn .btn-primary href=@{CreateProjectR}>
+                  Create One
         <div .panel .panel-default>
           <div .panel-heading>
             <div .panel-title>
@@ -61,6 +55,16 @@
         <div .panel .panel-default>
           <div .panel-heading>
             <div .panel-title>
-              <strong>Projects
-          <div .panel-body>
-            Got projects?
+              <strong>Attendance
+          <div .panel-body .table-fill>
+            <table .table .table-striped .table-responsive .no-bottom-margin>
+              <tbody>
+                <tr>
+                  <th>Name
+                  <th>Type
+                  <th>Date
+                $forall (name, meetingType, date) <- attendance
+                  <tr>
+                    <td>#{B.unpack name}
+                    <td>#{B.unpack meetingType}
+                    <td>#{B.unpack date}
