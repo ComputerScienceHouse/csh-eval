@@ -37,7 +37,7 @@ import Yesod
 getHomeR :: Handler Html
 getHomeR = do
            req <- waiRequest
-           let usr = fromJust $ L.lookup "X-WEBAUTH-USER" (requestHeaders req)
+           let usr = fromMaybe "" (L.lookup "X-WEBAUTH-USER" (requestHeaders req))
            name <- fmap B.unpack (liftIO $ lookupCN usr)
            let showIntroF = True
            let showSpringF = True
