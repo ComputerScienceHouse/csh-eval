@@ -63,18 +63,29 @@ library
                       ,CSH.Eval.DB.Schema
                       ,CSH.Eval.DB.Statements
                       ,CSH.Eval.Frontend
+<<<<<<< Updated upstream
                       ,CSH.Eval.Frontend.Data
                       ,CSH.Eval.Frontend.Evals
                       ,CSH.Eval.Frontend.Home
                       ,CSH.Eval.Frontend.Projects
                       ,CSH.Eval.Frontend.Widgets
                       ,CSH.Eval.LDAP
+=======
+                      ,CSH.Eval.Routes
+                      ,CSH.Eval.Cacheable.Fetch
+>>>>>>> Stashed changes
                       ,CSH.Eval.Model
                       ,CSH.Eval.Routes
                       ,CSH.LDAP
   hs-source-dirs:      src
   build-depends:       base                 >=4.7      && <4.9
+<<<<<<< Updated upstream
                       ,blaze-markup         >=0.7      && <0.8
+=======
+                      ,containers           >=0.5      && <0.6
+                      ,either               >=4.4      && <4.5
+                      ,transformers         >=0.4      && <0.5
+>>>>>>> Stashed changes
                       ,bytestring           >=0.10.4   && <0.10.7
                       ,configurator
                       ,hasql                >=0.7.3    && <0.7.4

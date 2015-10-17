@@ -49,7 +49,20 @@ module CSH.Eval.Model (
   , InterviewMetric(..)
   , Answer(..)
   , Dues(..)
+
+  -- * Cache
+  , IDCache
+  , Cache(..)
+  , defTxMode
+  , Cacheable(..)
+  , CacheError(..)
+  , runCacheable
+  , execCacheable
   ) where
+
+import Control.Concurrent.MVar
+
+import Control.Monad.Trans.Either
 
 import Data.Maybe
 
@@ -65,6 +78,11 @@ import Data.Word
 import qualified Data.ByteString as B
 
 import qualified Data.Text       as T
+
+import qualified Data.Map        as M
+
+import Hasql
+import Hasql.Postgres
 
 data Committee = Evals
                | RnD
@@ -527,3 +545,57 @@ instance Show Dues where
     show d = intercalate "\n"
         [ ("Dues Status: " ++ (show $ duesStatus d))
         ]
+
+type IDCache a = MVar (M.Map Word64 (MVar a))
+
+data Cache = Cache {
+    memberIDCache                         :: IDCache Member
+  , eventIDCache                          :: IDCache Event
+  , projectIDCache                        :: IDCache Project
+  , evaluationIDCache                     :: IDCache Evaluation
+  , conditionalIDCache                    :: IDCache Conditional
+  , freshmanProjectIDCache                :: IDCache FreshmanProject
+  , packetIDCache                         :: IDCache Packet
+  , queueIDCache                          :: IDCache Queue
+  , applicationIDCache                    :: IDCache Application
+  , metricIDCache                         :: IDCache Metric
+  , reviewIDCache                         :: IDCache Review
+  , interviewIDCache                      :: IDCache Interview
+  , questionIDCache                       :: IDCache Question
+  , termIDCache                           :: IDCache Term
+  , eboardMemberIDCache                   :: IDCache [Eboard]
+  , roomMemberIDCache                     :: IDCache [Room]
+  , membershipMemberIDCache               :: IDCache [Membership]
+  , eventAttendeeMemberIDCache            :: IDCache [EventAttendee]
+  , eventAttendeeEventIDCache             :: IDCache [EventAttendee]
+  , projectParticipantMemberIDCache       :: IDCache [ProjectParticipant]
+  , projectParticipantProjectIDCache      :: IDCache [ProjectParticipant]
+  , freshProjParticipantProjectIDCache    :: IDCache [FreshmanProjectParticipant]
+  , freshProjParticipantEvaluationIDCache :: IDCache [FreshmanProjectParticipant]
+  , signatureMemberIDCache                :: IDCache [Signature]
+  , signaturePacketIDCache                :: IDCache [Signature]
+  , reviewMetricMetricIDCache             :: IDCache [ReviewMetric]
+  , reviewMetricReviewIDCache             :: IDCache [ReviewMetric]
+  , interviewMetricMetricIDCache          :: IDCache [InterviewMetric]
+  , interviewMetricInterviewIDCache       :: IDCache [InterviewMetric]
+  , answerQuestionIDCache                 :: IDCache [Answer]
+  , answerApplicationIDCache              :: IDCache [Answer]
+  , duesMemberIDCache                     :: IDCache [Dues]
+  , pool                                  :: Pool Postgres
+  }
+
+defTxMode :: TxMode
+defTxMode = Just (Serializable, (Just True))
+
+type Cacheable a = Cache -> EitherT CacheError IO a
+
+data CacheError = HasqlError (SessionError Postgres)
+                | CacheError  String
+                | Nonexistent String
+                | Constraint  String
+
+runCacheable :: Cache -> Cacheable a -> EitherT CacheError IO a
+runCacheable c m = m c
+
+execCacheable :: Cache -> Cacheable a -> IO (Either CacheError a)
+execCacheable c m = runEitherT (m c)
