@@ -59,7 +59,8 @@ executable csh-eval-db-init
                       ,csh-eval
 
 library
-  exposed-modules:     CSH.Eval.Config
+  exposed-modules:     CSH.Eval.Cacheable.Prim
+                      ,CSH.Eval.Config
                       ,CSH.Eval.DB.Schema
                       ,CSH.Eval.DB.Statements
                       ,CSH.Eval.Frontend
@@ -70,9 +71,7 @@ library
                       ,CSH.Eval.Frontend.Widgets
                       ,CSH.Eval.LDAP
                       ,CSH.Eval.Routes
-                      ,CSH.Eval.Cacheable.Fetch
                       ,CSH.Eval.Model
-                      ,CSH.Eval.Routes
                       ,CSH.LDAP
   hs-source-dirs:      src
   build-depends:       base                 >=4.7      && <4.9

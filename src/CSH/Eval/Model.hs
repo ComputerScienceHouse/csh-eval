@@ -54,6 +54,7 @@ module CSH.Eval.Model (
   , IDCache
   , Cache(..)
   , defTxMode
+  , CacheM(..)
   , Cacheable(..)
   , CacheError(..)
   , runCacheable
@@ -139,14 +140,14 @@ data Member = Member {
   , memberToken         :: Maybe B.ByteString
   , memberHousingPoints :: Int
   , memberOnfloorStatus :: Bool
-  , memberEboards       :: [Eboard]
-  , memberRooms         :: [Room]
-  , memberMemberships   :: [Membership]
-  , memberEvaluations   :: [Evaluation]
-  , memberPackets       :: [Packet]
-  , memberQueues        :: [Queue]
-  , memberApplications  :: [Application]
-  , memberDues          :: [Dues]
+  , memberEboards       :: Cacheable [Eboard]
+  , memberRooms         :: Cacheable [Room]
+  , memberMemberships   :: Cacheable [Membership]
+  , memberEvaluations   :: Cacheable [Evaluation]
+  , memberPackets       :: Cacheable [Packet]
+  , memberQueues        :: Cacheable [Queue]
+  , memberApplications  :: Cacheable [Application]
+  , memberDues          :: Cacheable [Dues]
   }
 
 instance Eq Member where
@@ -170,7 +171,7 @@ data Event = Event {
   , eventCategory    :: EventType
   , eventCommittee   :: Committee
   , eventDescription :: T.Text
-  , eventAttendees   :: [EventAttendee]
+  , eventAttendees   :: Cacheable [EventAttendee]
   }
 
 instance Eq Event where
@@ -196,7 +197,7 @@ data Project = Project {
   , projectType         :: ProjectType
   , projectComments     :: T.Text
   , projectStatus       :: EvaluationStatus
-  , projectParticipants :: [ProjectParticipant]
+  , projectParticipants :: Cacheable [ProjectParticipant]
   }
 
 instance Eq Project where
@@ -223,8 +224,8 @@ data Evaluation = Evaluation {
   , evaluationStatus       :: EvaluationStatus
   , evaluationType         :: EvaluationType
   , evaluationMember       :: Member
-  , evaluationConditionals :: [Conditional]
-  , evaluationFreshProject :: [FreshmanProjectParticipant]
+  , evaluationConditionals :: Cacheable [Conditional]
+  , evaluationFreshProject :: Cacheable [FreshmanProjectParticipant]
   }
 
 instance Eq Evaluation where
@@ -263,7 +264,7 @@ data FreshmanProject = FreshmanProject {
   , freshmanProjectDescription  :: T.Text
   , freshmanProjectTerm         :: Term
   , freshmanProjectEvent        :: Event
-  , freshmanProjectParticipants :: [FreshmanProjectParticipant]
+  , freshmanProjectParticipants :: Cacheable [FreshmanProjectParticipant]
   }
 
 instance Eq FreshmanProject where
@@ -280,7 +281,7 @@ data Packet = Packet {
   , packetDueDate    :: Day
   , packetPercentReq :: Integer
   , packetMember     :: Member
-  , packetSignatures :: [Signature]
+  , packetSignatures :: Cacheable [Signature]
   }
 
 instance Eq Packet where
@@ -311,9 +312,9 @@ data Application = Application {
   , applicationCreated   :: UTCTime
   , applicationStatus    :: EvaluationStatus
   , applicationMember    :: Member
-  , applicationReviews   :: [Review]
-  , applicationInterview :: [Interview]
-  , applicationAnswers   :: [Answer]
+  , applicationReviews   :: Cacheable [Review]
+  , applicationInterview :: Cacheable [Interview]
+  , applicationAnswers   :: Cacheable [Answer]
   }
 
 instance Eq Application where
@@ -348,7 +349,7 @@ data Review = Review {
   , reviewSubmit      :: UTCTime
   , reviewMember      :: Member
   , reviewApplication :: Application
-  , reviewMetrics     :: [ReviewMetric]
+  , reviewMetrics     :: Cacheable [ReviewMetric]
   }
 
 instance Eq Review where
@@ -366,7 +367,7 @@ data Interview = Interview {
   , interviewDate        :: UTCTime
   , interviewMember      :: Member
   , interviewApplication :: Application
-  , interviewMetrics     :: [InterviewMetric]
+  , interviewMetrics     :: Cacheable [InterviewMetric]
   }
 
 instance Eq Interview where
@@ -546,8 +547,11 @@ instance Show Dues where
         [ ("Dues Status: " ++ (show $ duesStatus d))
         ]
 
+-- | A cache segment from database IDs to objects.
 type IDCache a = MVar (M.Map Word64 (MVar a))
 
+-- | A cache state, consisting of all cache segments and a database connection
+--   pool for fallbacks (this must be accessible within the 'Cacheable' monad).
 data Cache = Cache {
     memberIDCache                         :: IDCache Member
   , eventIDCache                          :: IDCache Event
@@ -584,18 +588,31 @@ data Cache = Cache {
   , pool                                  :: Pool Postgres
   }
 
+-- | Default Hasql transaction mode.
 defTxMode :: TxMode
 defTxMode = Just (Serializable, (Just True))
 
-type Cacheable a = Cache -> EitherT CacheError IO a
+-- | Interior transformer for operations directly on the cache state. Cache
+--   users should never be able to bind out of this.
+type CacheM a = EitherT CacheError IO a
 
+-- | Exterior transformer for cache operations. Cache API caller-facind
+--   functions /must/ return into this exterior transformer.
+type Cacheable a = Cache -> CacheM a
+
+-- | Cache error.
 data CacheError = HasqlError (SessionError Postgres)
                 | CacheError  String
                 | Nonexistent String
                 | Constraint  String
 
-runCacheable :: Cache -> Cacheable a -> EitherT CacheError IO a
+-- | Enables embedding the interior cache transformer within another
+--   transformer. This is only OK to use if you're embedding something
+--   'Cacheable' in a different exterior transformer. I'm not sure how to
+--   enforce that at the type level. You probably shouldn't use this.
+runCacheable :: Cache -> Cacheable a -> CacheM a
 runCacheable c m = m c
 
+-- | Hoist 'Cacheable' into IO.
 execCacheable :: Cache -> Cacheable a -> IO (Either CacheError a)
 execCacheable c m = runEitherT (m c)
