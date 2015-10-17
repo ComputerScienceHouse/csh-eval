@@ -3,7 +3,7 @@
     <div .panel-body>
       <div .page-header .row>
         <div .col-md-2 .profile-col-fix .col-sm-12>
-            <img .thumbnail .profile-image src="data:image/png;base64,#{preEscapedToMarkup profileURL}">
+            <img .thumbnail .profile-image src="@{ProfilePhotoR (B.unpack usr)}">
         <div .col-md-10 .col-sm-12>
           <h2>
             <a href="/member/#{B.unpack usr}">#{name}

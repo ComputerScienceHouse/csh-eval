@@ -23,6 +23,7 @@ import qualified Data.ByteString.Char8 as B
 import CSH.Eval.Config
 import CSH.Eval.Frontend.Data
 import CSH.Eval.Frontend.Projects
+import CSH.Eval.Frontend.ProfilePhoto
 import CSH.Eval.Frontend.Widgets
 import qualified CSH.Eval.LDAP as LD
 import Network.Wai
@@ -38,10 +39,6 @@ getHomeR = do
            req <- waiRequest
            let usr = fromMaybe "" (L.lookup "X-WEBAUTH-USER" (requestHeaders req))
            name <- fmap B.unpack (liftIO $ LD.lookup LD.cn usr)
-           profileURL <- fmap B.unpack (liftIO $ LD.lookup LD.profilePhoto usr)
            let attendance = [("Evals", "Committee", "10/13/2015"), ("Financial", "Committee", "10/13/2015")]
-           let showIntroF = True
-           let showSpringF = True
-           let showHousingF = False
            let access = Member
            defaultLayout $(whamletFile "frontend/templates/index.hamlet")

@@ -72,6 +72,7 @@ library
                       ,CSH.Eval.Frontend.Data
                       ,CSH.Eval.Frontend.Evals
                       ,CSH.Eval.Frontend.Home
+                      ,CSH.Eval.Frontend.ProfilePhoto
                       ,CSH.Eval.Frontend.Projects
                       ,CSH.Eval.Frontend.Attendance
                       ,CSH.Eval.Frontend.Widgets

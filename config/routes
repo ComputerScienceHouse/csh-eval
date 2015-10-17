@@ -32,3 +32,6 @@
 
 -- Attendance.hs
 /attendance                 AttendanceR              GET
+
+-- ProfilePhoto.hs
+/photos/#String             ProfilePhotoR            GET

@@ -36,14 +36,12 @@ lookup f uid = do
 
 cn = lookupAttr "cn"
 
-profilePhoto usr pass uid = do
-    n <- lookupAttr "jpegPhoto" usr pass uid
-    return $ B64.encode n
+profilePhoto usr pass uid = lookupAttr "jpegPhoto" usr pass uid
 
 lookupAttr :: Text -> Text -> B.ByteString -> AttrValue -> IO B.ByteString
 lookupAttr attr usr pass uid = either (B.pack . show) id <$> val
    where val = withCSH $ \l -> do
-            bind  l (appDn usr) (Password pass)
+            bind l (appDn usr) (Password pass)
             ((SearchEntry _ ((_,(n:_)):_)):_) <- search l (Dn userBaseTxt)
                                                           (typesOnly False)
                                                           (Attr "uid" := uid)
