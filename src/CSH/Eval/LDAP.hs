@@ -13,9 +13,8 @@ LDAP instance involving the evaluations process.
 
 module CSH.Eval.LDAP
 ( module CSH.LDAP
-, lookupCN
 , lookup
-, profilePicture
+, profilePhoto
 , cn
 ) where
 import Prelude hiding (lookup)
@@ -27,8 +26,6 @@ import Data.Text
 import Data.Either
 import Safe
 
-lookupCN = CSH.Eval.LDAP.lookup cn
-
 lookup f uid = do
             cfg <- Cfg.evalConfig
             usr <- (fmap (fromJustNote "ldap.user DNE in config.")
@@ -37,23 +34,18 @@ lookup f uid = do
                                         (Cfg.lookup cfg "ldap.password"))
             f usr pass uid
 
-cn :: Text -> B.ByteString -> AttrValue -> IO B.ByteString
-cn usr pass uid = either (B.pack . show) id <$> val
-   where val = withCSH $ \l -> do
-            bind  l (appDn usr) (Password pass)
-            ((SearchEntry _ ((_,(n:_)):_)):_) <- search l (Dn userBaseTxt)
-                                                          (typesOnly False)
-                                                          (Attr "uid" := uid)
-                                                          [Attr "cn"]
-            return n
+cn = lookupAttr "cn"
 
-profilePicture :: Text -> B.ByteString -> AttrValue -> IO B.ByteString
-profilePicture usr pass uid = either (B.pack . show) id <$> val
+profilePhoto usr pass uid = do
+    n <- lookupAttr "jpegPhoto" usr pass uid
+    return $ B64.encode n
+
+lookupAttr :: Text -> Text -> B.ByteString -> AttrValue -> IO B.ByteString
+lookupAttr attr usr pass uid = either (B.pack . show) id <$> val
    where val = withCSH $ \l -> do
             bind  l (appDn usr) (Password pass)
             ((SearchEntry _ ((_,(n:_)):_)):_) <- search l (Dn userBaseTxt)
                                                           (typesOnly False)
                                                           (Attr "uid" := uid)
-                                                          [Attr "jpegPhoto"]
-            print $ B64.encode n
-            return $ B64.encode n
+                                                          [Attr attr]
+            return n

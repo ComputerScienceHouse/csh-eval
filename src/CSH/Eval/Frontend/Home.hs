@@ -24,7 +24,7 @@ import CSH.Eval.Config
 import CSH.Eval.Frontend.Data
 import CSH.Eval.Frontend.Projects
 import CSH.Eval.Frontend.Widgets
-import CSH.Eval.LDAP
+import qualified CSH.Eval.LDAP as LD
 import Network.Wai
 import Data.Maybe
 import qualified Data.List as L (lookup)
@@ -36,9 +36,9 @@ import Yesod
 getHomeR :: Handler Html
 getHomeR = do
            req <- waiRequest
-           let usr = fromMaybe "harlan" (L.lookup "X-WEBAUTH-USER" (requestHeaders req))
-           name <- fmap B.unpack (liftIO $ lookupCN usr)
-           profileURL <- fmap B.unpack (liftIO $ CSH.Eval.LDAP.lookup profilePicture usr)
+           let usr = fromMaybe "" (L.lookup "X-WEBAUTH-USER" (requestHeaders req))
+           name <- fmap B.unpack (liftIO $ LD.lookup LD.cn usr)
+           profileURL <- fmap B.unpack (liftIO $ LD.lookup LD.profilePhoto usr)
            let attendance = [("Evals", "Committee", "10/13/2015"), ("Financial", "Committee", "10/13/2015")]
            let showIntroF = True
            let showSpringF = True
