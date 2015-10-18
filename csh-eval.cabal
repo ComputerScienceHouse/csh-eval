@@ -61,6 +61,7 @@ executable csh-eval-db-init
 
 library
   exposed-modules:     CSH.Eval.Cacheable.Prim
+                      ,CSH.Eval.Cacheable.Fetch
                       ,CSH.Eval.Config
                       ,CSH.Eval.DB.Schema
                       ,CSH.Eval.DB.Statements
