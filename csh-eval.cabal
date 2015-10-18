@@ -19,7 +19,6 @@ executable csh-eval
   main-is:             Main.hs
   build-depends:       ansi-wl-pprint
                       ,base                 >=4.7      && <4.9
-                      ,base64-bytestring    >=1.0      && <1.1
                       ,blaze-markup         >=0.7      && <0.8
                       ,bytestring           >=0.10     && <0.11
                       ,configurator         >=0.3      && <0.4
@@ -72,6 +71,7 @@ library
                       ,CSH.Eval.Frontend.Data
                       ,CSH.Eval.Frontend.Evals
                       ,CSH.Eval.Frontend.Home
+                      ,CSH.Eval.Frontend.Members
                       ,CSH.Eval.Frontend.ProfilePhoto
                       ,CSH.Eval.Frontend.Projects
                       ,CSH.Eval.Frontend.Attendance
@@ -82,7 +82,6 @@ library
                       ,CSH.LDAP
   hs-source-dirs:      src
   build-depends:       base                 >=4.7      && <4.9
-                      ,base64-bytestring    >=1.0      && <1.1
                       ,blaze-markup         >=0.7      && <0.8
                       ,containers           >=0.5      && <0.6
                       ,either               >=4.4      && <4.5

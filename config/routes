@@ -35,3 +35,7 @@
 
 -- ProfilePhoto.hs
 /photos/#String             ProfilePhotoR            GET
+
+-- Members.hs
+/members                    MembersR                 GET
+-- /members/#String            MemberR                  GET

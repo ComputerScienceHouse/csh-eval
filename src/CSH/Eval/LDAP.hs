@@ -21,7 +21,6 @@ import Prelude hiding (lookup)
 import CSH.LDAP
 import qualified CSH.Eval.Config as Cfg
 import qualified Data.ByteString.Char8 as B
-import qualified Data.ByteString.Base64 as B64
 import Data.Text
 import Data.Either
 import Safe

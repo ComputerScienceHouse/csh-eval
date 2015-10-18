@@ -86,3 +86,7 @@ a {
 .bottom-padded {
     padding-bottom: 10px;
 }
+
+.no-float {
+    float: none;
+}
