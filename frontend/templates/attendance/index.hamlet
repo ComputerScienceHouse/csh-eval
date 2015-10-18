@@ -15,6 +15,10 @@
                         <input type="text" .form-control placeholder="Name" id="name">
                 <div .form-group .col-md-6>
                     <label for="description">Notes
-                    <textarea rows="10" .form-control id="description" placeholder="A robot to fetch drinks from DRINK and deliver them to a room...">
+                    <textarea rows="10" .form-control id="description">
                 <div .form-group .col-md-3>
                     <button type="submit" .btn .btn-primary>Submit
+                    &nbsp;
+                    <label>
+                        <input type="checkbox" name="post_to_webnews" checked>
+                        Post to WebNews

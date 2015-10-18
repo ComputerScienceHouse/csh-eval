@@ -23,6 +23,8 @@ $doctype 5
                 <a href=@{ProjectsR}>Projects
             <li>
                 <a href=@{MembersR}>Members
+            <li>
+                <a href=@{AttendanceR}>Attendance
             <!--
             <li>
                 <a href=@{EvalsR}>Evals
