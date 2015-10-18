@@ -7,7 +7,8 @@
         <div .col-md-10 .col-sm-12>
           <h2>
             <a href="/member/#{B.unpack usr}">#{name}
-          <span .label .label-success>Alumni
+          <span .label .label-success>Active
+          <span .label .label-success>Eboard
       $if ((==) access Admin)
         <div .panel .panel-default>
           <div .panel-heading>
@@ -16,16 +17,6 @@
           <div .panel-body>
             Admin panel body!
       <div #grid data-columns>
-        <div .panel .panel-default>
-          <div .panel-heading>
-            <div .panel-title>
-              <strong>Projects
-          <div .panel-body>
-            <div .text-center .bottom-padded>
-                <h4 .text-muted>
-                  <strong>No Projects
-                <a .btn .btn-primary href=@{CreateProjectR}>
-                  Create One
         <div .panel .panel-default>
           <div .panel-heading>
             <div .panel-title>
@@ -52,6 +43,16 @@
             <strong>Notes
             <br>
             None
+        <div .panel .panel-default>
+          <div .panel-heading>
+            <div .panel-title>
+              <strong>Projects
+          <div .panel-body>
+            <div .text-center .bottom-padded>
+                <h4 .text-muted>
+                  <strong>No Projects
+                <a .btn .btn-primary href=@{CreateProjectR}>
+                  Create One
         <div .panel .panel-default>
           <div .panel-heading>
             <div .panel-title>
