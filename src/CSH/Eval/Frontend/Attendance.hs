@@ -1,6 +1,6 @@
 {-|
-Module      : CSH.Eval.Frontend.Home
-Description : The route handler for the home page
+Module      : CSH.Eval.Frontend.Attendance
+Description : The route handler for the attendance page
 Copyright   : Stephen Demos, Matt Gambogi, Travis Whitaker, Computer Science House 2015
 License     : MIT
 Maintainer  : pvals@csh.rit.edu
@@ -14,16 +14,16 @@ Portability : POSIX
 {-# LANGUAGE FlexibleContexts  #-}
 {-# LANGUAGE ViewPatterns      #-}
 
-module CSH.Eval.Frontend.Home
-( getHomeR
+module CSH.Eval.Frontend.Attendance
+( getAttendanceR
 ) where
 
 import qualified Data.Text as T
 import qualified Data.ByteString.Char8 as B
+import CSH.Eval.Model
 import CSH.Eval.Config
 import CSH.Eval.Frontend.Data
 import CSH.Eval.Frontend.Projects
-import CSH.Eval.Frontend.ProfilePhoto
 import CSH.Eval.Frontend.Widgets
 import qualified CSH.Eval.LDAP as LD
 import Network.Wai
@@ -34,11 +34,9 @@ import Text.Lucius (luciusFile)
 import Yesod
 
 -- | The handler for the Evaluations Database index page
-getHomeR :: Handler Html
-getHomeR = do
+getAttendanceR :: Handler Html
+getAttendanceR = do
            req <- waiRequest
            let usr = fromMaybe "" (L.lookup "X-WEBAUTH-USER" (requestHeaders req))
-           name <- fmap B.unpack (liftIO $ LD.lookup LD.cn usr)
-           let attendance = [("Evals", "Committee", "10/13/2015"), ("Financial", "Committee", "10/13/2015")]
-           let access = Member
-           defaultLayout $(whamletFile "frontend/templates/index.hamlet")
+           let committees = ["Evaluations", "Research and Development", "House Improvements", "Social", "Financial", "House History", "Operational Communications"] :: [String]
+           defaultLayout $(whamletFile "frontend/templates/attendance/index.hamlet")

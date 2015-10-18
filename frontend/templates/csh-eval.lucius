@@ -42,6 +42,53 @@ td {
   margin-top: 2px;
 }
 
+.page-header {
+    margin-top: 0px;
+    margin-bottom: 10px;
+    padding-bottom: 20px;
+}
+
+#grid[data-columns]::before {
+    content: '2 .col-md-6';
+}
+
+.table-fill {
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.no-bottom-margin {
+    margin-bottom: 0px;
+}
+
 a {
     color: black
+}
+
+.profile-col-fix {
+    width: 10%;
+}
+
+.profile-image {
+    height: 100px;
+    width: 100px;
+    margin-bottom: 0px;
+    margin-left: 15px;
+}
+
+.panel-inner-padding {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.bottom-padded {
+    padding-bottom: 10px;
+}
+
+.no-float {
+    float: none;
 }

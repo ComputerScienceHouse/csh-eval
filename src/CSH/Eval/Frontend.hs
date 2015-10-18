@@ -21,6 +21,9 @@ module CSH.Eval.Frontend
 ) where
 
 import CSH.Eval.Frontend.Data
+import CSH.Eval.Frontend.Attendance
+import CSH.Eval.Frontend.Members
+import CSH.Eval.Frontend.ProfilePhoto
 import CSH.Eval.Frontend.Projects
 import CSH.Eval.Frontend.Evals
 import CSH.Eval.Frontend.Home

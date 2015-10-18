@@ -6,11 +6,10 @@ $doctype 5
     <meta name="viewport" content="width=device-width,initial-scale=1">
     ^{pageHead pc}
   <body>
-    <navbar><!-- Navbar -->
-    <div .navbar .navbar-fixed-top .navbar-inverse role="navigation">
+    <nav .navbar .navbar-inverse .navbar-fixed-top>
       <div .container>
         <div .navbar-header>
-          <button type="button" .navbar-toggle .collapsed data-toggle="collapse" data-target=".navbar-collapse">
+          <button type="button" .navbar-toggle .collapsed data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span .sr-only>Toggle navigation
             <span .icon-bar>
             <span .icon-bar>
@@ -18,14 +17,18 @@ $doctype 5
           <a .navbar-brand href="/">
             <img .logo src=@{StaticR csh_logo_white_svg} alt="CSH">
             <img .logo src=@{StaticR scales_png} alt="evals">
-        <div .collapse .navbar-collapse>
-          <ul .nav .navbar-nav .navbar-right>
+        <div #navbar .navbar-collapse .collapse>
+          <ul .nav .navbar-nav>
             <li>
-              <a href="/projects">Projects
+                <a href=@{ProjectsR}>Projects
             <li>
-              <a href="/members">Members
+                <a href=@{MembersR}>Members
             <li>
-              <a href="/evals">Evals
+                <a href=@{AttendanceR}>Attendance
+            <!--
+            <li>
+                <a href=@{EvalsR}>Evals
+            -->
     <div #content>
       <div .container>
         ^{pageBody pc}
