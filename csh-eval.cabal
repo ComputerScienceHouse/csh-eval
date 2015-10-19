@@ -23,6 +23,7 @@ executable csh-eval
                       ,bytestring           >=0.10     && <0.11
                       ,configurator         >=0.3      && <0.4
                       ,containers           >=0.5      && <0.6
+                      ,cryptohash           >=0.11     && <0.12
                       ,either               >=4.4      && <4.5
                       ,hasql                >=0.7      && <0.8
                       ,hasql-postgres       >=0.10     && <0.11
@@ -91,6 +92,7 @@ library
                       ,transformers         >=0.4      && <0.5
                       ,bytestring           >=0.10     && <0.11
                       ,configurator         >=0.3      && <0.4
+                      ,cryptohash           >=0.11     && <0.12
                       ,hasql                >=0.7      && <0.8
                       ,hasql-postgres       >=0.10     && <0.11
                       ,ldap-client          >=0.1      && <0.2
