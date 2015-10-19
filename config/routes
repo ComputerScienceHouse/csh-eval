@@ -38,4 +38,4 @@
 
 -- Members.hs
 /members                    MembersR                 GET
--- /members/#String            MemberR                  GET
+/members/#String            MemberR                  GET

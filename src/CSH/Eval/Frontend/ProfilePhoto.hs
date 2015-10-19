@@ -28,5 +28,7 @@ import Yesod
 -- | The handler for the Evaluations Database index page
 getProfilePhotoR :: String -> Handler Html
 getProfilePhotoR usr = do
-           photoData <- liftIO $ LD.lookup LD.profilePhoto (B.pack usr)
-           sendResponse (typePng, toContent photoData)
+           photoData <- liftIO $ LD.lookup "jpegPhoto" (B.pack usr)
+           case photoData of
+               (Left err) -> notFound
+               (Right photo) -> sendResponse (typePng, toContent photo)
