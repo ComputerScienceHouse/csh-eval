@@ -50,8 +50,8 @@ getMemberR user = do
            let usr = B.pack user 
            nameEither <- liftIO $ LD.lookup "cn" usr
            let name = B.unpack $ case nameEither of
-                       (Left _) -> usr
-                       (Right n) -> n
+                       (Just n) -> n
+                       Nothing -> usr
            let attendance = [("Evals", "Committee", "10/13/2015"), ("Financial", "Committee", "10/13/2015")]
            let access = Member
            defaultLayout $(whamletFile "frontend/templates/index.hamlet")

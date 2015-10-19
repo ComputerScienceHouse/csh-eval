@@ -25,23 +25,21 @@ import Data.Either
 import Safe
 
 lookup attr uid = do
-            cfg <- Cfg.evalConfig
-            usr <- (fmap (fromJustNote "ldap.user DNE in config.")
-                                       (Cfg.lookup cfg "ldap.user"))
+            cfg  <- Cfg.evalConfig
+            usr  <- (fmap (fromJustNote "ldap.user DNE in config.")
+                                        (Cfg.lookup cfg "ldap.user"))
             pass <- (fmap (fromJustNote "ldap.password DNE in config.")
                                         (Cfg.lookup cfg "ldap.password"))
             lookupAttr attr usr pass uid
 
-extractValue ((SearchEntry _ ((_,(n:_)):_)):_) = n
+extractValue :: [SearchEntry] -> Maybe B.ByteString
+extractValue ((SearchEntry _ ((_,(n:_)):_)):_) = Just n
+extractValue _                                 = Nothing
 
-lookupAttr :: Text -> Text -> B.ByteString -> AttrValue -> IO (Either B.ByteString B.ByteString)
-lookupAttr attr usr pass uid = do
-    v <- val
-    return $ case v of
-        (Left ldapErr) -> (Left $ (B.pack . show) ldapErr)
-        (Right r) -> case r of
-            (Left responseErr) -> (Left $ (B.pack . show) responseErr)
-            (Right r') -> (Right $ extractValue r')
+lookupAttr :: Text -> Text -> B.ByteString -> AttrValue -> IO (Maybe B.ByteString)
+lookupAttr attr usr pass uid = val >>= \v -> return $ case v of
+            (Right (Right r)) -> extractValue r
+            _                 -> Nothing
     where val = withCSH $ \l -> do
                     bind l (appDn usr) (Password pass)
                     searchEither l (Dn userBaseTxt)    (typesOnly False)

@@ -30,5 +30,5 @@ getProfilePhotoR :: String -> Handler Html
 getProfilePhotoR usr = do
            photoData <- liftIO $ LD.lookup "jpegPhoto" (B.pack usr)
            case photoData of
-               (Left err) -> notFound
-               (Right photo) -> sendResponse (typePng, toContent photo)
+               (Just photo) -> sendResponse (typePng, toContent photo)
+               Nothing      -> notFound
