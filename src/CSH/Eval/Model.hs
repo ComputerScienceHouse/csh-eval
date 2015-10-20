@@ -89,7 +89,7 @@ data Committee = Evals
                | RnD
                | Social
                | History
-               | OpCOmm
+               | OpComm
                | Imps
                | Financial
                | Chairman
@@ -223,7 +223,7 @@ data Evaluation = Evaluation {
   , evaluationAvailable    :: Bool
   , evaluationStatus       :: EvaluationStatus
   , evaluationType         :: EvaluationType
-  , evaluationMember       :: Member
+  , evaluationMember       :: Cacheable Member
   , evaluationConditionals :: Cacheable [Conditional]
   , evaluationFreshProject :: Cacheable [FreshmanProjectParticipant]
   }
@@ -280,7 +280,7 @@ data Packet = Packet {
     packetID         :: Word64
   , packetDueDate    :: Day
   , packetPercentReq :: Integer
-  , packetMember     :: Member
+  , packetMember     :: Cacheable Member
   , packetSignatures :: Cacheable [Signature]
   }
 
@@ -298,7 +298,7 @@ instance Show Packet where
 data Queue = Queue {
     queueEntered :: UTCTime
   , queueExited  :: Maybe UTCTime
-  , queueMember  :: Member
+  , queueMember  :: Cacheable Member
   }
 
 instance Show Queue where
@@ -311,7 +311,7 @@ data Application = Application {
     applicationID        :: Word64
   , applicationCreated   :: UTCTime
   , applicationStatus    :: EvaluationStatus
-  , applicationMember    :: Member
+  , applicationMember    :: Cacheable Member
   , applicationReviews   :: Cacheable [Review]
   , applicationInterview :: Cacheable [Interview]
   , applicationAnswers   :: Cacheable [Answer]
@@ -347,8 +347,8 @@ data Review = Review {
     reviewID          :: Word64
   , reviewStart       :: UTCTime
   , reviewSubmit      :: UTCTime
-  , reviewMember      :: Member
-  , reviewApplication :: Application
+  , reviewMember      :: Cacheable Member
+  , reviewApplication :: Cacheable Application
   , reviewMetrics     :: Cacheable [ReviewMetric]
   }
 
@@ -365,8 +365,8 @@ instance Show Review where
 data Interview = Interview {
     interviewID          :: Word64
   , interviewDate        :: UTCTime
-  , interviewMember      :: Member
-  , interviewApplication :: Application
+  , interviewMember      :: Cacheable Member
+  , interviewApplication :: Cacheable Application
   , interviewMetrics     :: Cacheable [InterviewMetric]
   }
 
