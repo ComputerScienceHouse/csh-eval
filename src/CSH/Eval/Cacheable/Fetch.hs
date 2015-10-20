@@ -11,6 +11,8 @@ CSH.Eval.Cacheable.Fetch defines 'Cacheable' computations for fetching state
 objects.
 -}
 
+{-# LANGUAGE OverloadedStrings #-}
+
 module CSH.Eval.Cacheable.Fetch (
     -- * Object Fetching Functions
     -- ** Member
@@ -299,51 +301,117 @@ projectFromRow (i, t, d, s, p, c, pt, co, st) = Project
     (evaluationStatusFromVal st)
     (getProjectProjectParticipants i)
 
-evaluationFromRow :: (Word64, Word64, T.Text, UTCTime, Bool, T.Text, T.Text) -> Evaluation
-evaluationFromRow = undefined
+evaluationFromRow :: (Word64, T.Text, UTCTime, Bool, T.Text, T.Text) -> Evaluation
+evaluationFromRow (i, c, t, a, s, ty) = Evaluation
+    i
+    c
+    t
+    a
+    s
+    ty
+    (getEvaluationMember i)
+    (getEvaluationConditionals i)
+    (getEvaluationFreshProj i)
 
 conditionalFromRow :: (Word64, Word64, UTCTime, T.Text, T.Text) -> Conditional
-conditionalFromRow = undefined
+conditionalFromRow (i, t, d, c) = Conditional
+    i
+    t
+    d
+    c
 
 freshmanProjectFromRow :: (Word64, T.Text, Word64, Word64) -> FreshmanProject
-freshmanProjectFromRow = undefined
+freshmanProjectFromRow (i, d, t, e)= FreshmanProject
+    i
+    d
+    t
+    e
+    (getFreshProjParticipants i)
 
-packetFromRow :: (Word64, Word64, Day, Int) -> Packet
-packetFromRow = undefined
+packetFromRow :: (Word64, Day, Int) -> Packet
+packetFromRow (i, d, f) = Packet
+    i
+    d
+    f
+    (getPacketMember i)
+    (getPacketSignatures i)
 
-queueFromRow :: (Word64, UTCTime, UTCTime) -> Queue
-queueFromRow = undefined
+queueFromRow :: (Word64, UTCTime) -> Queue
+queueFromRow (i, t) = Queue
+    i
+    t
+    (getQueueMember i)
 
-applicationFromRow :: (Word64, Word64, UTCTime, T.Text) -> Application
-applicationFromRow = undefined
+applicationFromRow :: (Word64, UTCTime, T.Text) -> Application
+applicationFromRow (i, t, s) = Application
+    i
+    t
+    s
+    (getApplicationMember i)
+    (getApplicationReviews i)
+    (getApplicationInterviews i)
+    (getApplicationAnswers i)
 
 metricFromRow :: (Word64, T.Text, Bool) -> Metric
-metricFromRow = undefined
+metricFromRow (i, n, a) = Metric
+    i
+    n
+    a
 
-reviewFromRow :: (Word64, Word64, Word64, UTCTime, UTCTime) -> Review
-reviewFromRow = undefined
+reviewFromRow :: (Word64, UTCTime, UTCTime) -> Review
+reviewFromRow (i, s, f) = Review
+    i
+    s
+    f
+    (getReviewMember i)
+    (getReviewApplication i)
+    (getReviewMetrics i)
 
-interviewFromRow :: (Word64, Word64, Word64, UTCTime) -> Interview
-interviewFromRow = undefined
+interviewFromRow :: (Word64, UTCTime) -> Interview
+interviewFromRow (i, t) = Interview
+    i
+    t
+    (getInterviewMember i)
+    (getInterviewApplication i)
+    (getInterviewMetrics i)
 
 questionFromRow :: (Word64, Bool, T.Text) -> Question
-questionFromRow = undefined
+questionFromRow (i, t, a) = Question
+    i
+    t
+    a
 
 termFromRow :: (Word64, Day, Maybe Day) -> Term
-termFromRow = undefined
+termFromRow (i, s, e) =Term
+    i
+    s
+    e
 
 -- | This function is partial! Explain why...
 eventTypeFromVal :: T.Text -> EventType
-eventTypeFromVal = undefined
+eventTypeFromVal "house"       = HouseMeeting
+eventTypeFromVal "social"      = SocialEvent
+eventTypeFromVal "committee"   = CommitteeMeeting
+eventTypeFromVal "seminar"     = Seminar
+eventTypeFromVal "orientation" = Orientation
 
 -- | This function is partial! Explain why...
 committeeFromVal :: T.Text -> Committee
-committeeFromVal = undefined
+committeeFromVal "evals"     = Evals
+committeeFromVal "rnd"       = RnD
+committeeFromVal "social"    = Social
+committeeFromVal "history"   = History
+committeeFromVal "opcomm"    = OpCom
+committeeFromVal "imps"      = Imps
+committeeFromVal "financial" = Imps
+committeeFromVal "chairmam"  = Chairman
 
 -- | This function is partial! Explain why...
 projectTypeFromVal :: T.Text -> ProjectType
-projectTypeFromVal = undefined
+projectTypeFromVal "major" = Major
 
 -- | This function is partial! Explain why...
 evaluationStatusFromVal :: T.Text -> EvaluationStatus
-evaluationStatusFromVal = undefined
+evaluationStatusFromVal "pending" = Pending
+evaluationStatusFromVal "passed"  = Passed
+evaluationStatusFromVal "failed"  = Failed
