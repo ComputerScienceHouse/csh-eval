@@ -16,6 +16,7 @@ Portability : POSIX
 
 module CSH.Eval.Frontend.Members
 ( getMembersR
+, getMemberR
 ) where
 
 import qualified Data.ByteString.Char8 as B
@@ -43,7 +44,18 @@ charFor :: Bool -> String
 charFor True = "✅"
 charFor False = "❌"
 
--- | The handler for the Evaluations Database index page
+-- | The handler for a single member's page
+getMemberR :: String -> Handler Html
+getMemberR user = do
+           let usr = B.pack user 
+           nameEither <- liftIO $ LD.lookup "cn" usr
+           let name = B.unpack $ case nameEither of
+                       (Just n) -> n
+                       Nothing -> usr
+           let attendance = [("Evals", "Committee", "10/13/2015"), ("Financial", "Committee", "10/13/2015")]
+           let access = Member
+           defaultLayout $(whamletFile "frontend/templates/index.hamlet")
+
 getMembersR :: Handler Html
 getMembersR = do
            defaultLayout $(whamletFile "frontend/templates/members/index.hamlet")

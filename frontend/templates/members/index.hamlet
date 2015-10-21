@@ -14,7 +14,7 @@
                     $forall (usr, name, points, onfloor, eboard) <- dummyMembers
                             <tr>
                                 <td>
-                                    <a href="#">
+                                    <a href=@{MemberR usr}>
                                         #{name}
                                         <br>
                                         <span .text-muted .small>#{usr}
