@@ -6,7 +6,7 @@
             <img .thumbnail .profile-image src="@{ProfilePhotoR (B.unpack usr)}">
         <div .col-md-10 .col-sm-12>
           <h2>
-            <a href="/member/#{B.unpack usr}">#{name}
+            <a href=@{MemberR $ B.unpack usr}">#{name}
           <span .label .label-success>Active
           <span .label .label-success>Eboard
       $if ((==) access Admin)

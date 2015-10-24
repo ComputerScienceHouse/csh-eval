@@ -23,6 +23,7 @@ import qualified Data.ByteString.Char8 as B
 import CSH.Eval.Config
 import CSH.Eval.Frontend.Data
 import CSH.Eval.Frontend.Projects
+import CSH.Eval.Frontend.Members
 import CSH.Eval.Frontend.ProfilePhoto
 import CSH.Eval.Frontend.Widgets
 import qualified CSH.Eval.LDAP as LD
@@ -36,9 +37,7 @@ import Yesod
 -- | The handler for the Evaluations Database index page
 getHomeR :: Handler Html
 getHomeR = do
-           req <- waiRequest
-           let usr = fromMaybe "" (L.lookup "X-WEBAUTH-USER" (requestHeaders req))
-           name <- fmap B.unpack (liftIO $ LD.lookup LD.cn usr)
-           let attendance = [("Evals", "Committee", "10/13/2015"), ("Financial", "Committee", "10/13/2015")]
-           let access = Member
-           defaultLayout $(whamletFile "frontend/templates/index.hamlet")
+    req <- waiRequest
+    let usr = fromMaybe "" (L.lookup "X-WEBAUTH-USER" (requestHeaders req))
+    getMemberR $ B.unpack usr
+
