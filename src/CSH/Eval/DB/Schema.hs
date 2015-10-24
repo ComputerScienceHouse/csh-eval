@@ -282,7 +282,7 @@ member = mapM_ H.unitEx
        , "commonname"      varchar    not null
        , "password_hash"   bytea      default null
        , "password_salt"   bytea      default null
-       , "housing_points"  integer    not null default 0
+       , "housing_points"  int8    not null default 0
        , "onfloor_status"  boolean    not null default false
     )|]
    ]
@@ -541,7 +541,7 @@ packet = mapM_ H.unitEx
        ( "id"           bigserial  primary key
        , "member_id"    bigint     not null
        , "due_date"     date       not null
-       , "percent_req"  integer    not null
+       , "percent_req"  int8    not null
        , constraint "no_simultaneous_packets" unique ("member_id", "due_date")
     )|]
    ]
@@ -638,7 +638,7 @@ review_metric = mapM_ H.unitEx
    , [H.stmt|create table "review_metric"
        ( "metric_id"    bigint   not null
        , "review_id"    bigint   not null
-       , "score"        integer  not null
+       , "score"        int8  not null
        , constraint "one_score_per_review_per_metric" unique ("metric_id", "review_id")
     )|]
    ]
@@ -654,7 +654,7 @@ interview_metric = mapM_ H.unitEx
    , [H.stmt|create table "interview_metric"
        ( "metric_id"       bigint   not null
        , "interview_id"    bigint   not null
-       , "score"           integer  not null
+       , "score"           int8  not null
        , constraint "one_score_per_interview_per_metric" unique ("metric_id", "interview_id")
     )|]
    ]
