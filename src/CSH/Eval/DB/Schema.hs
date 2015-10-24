@@ -498,7 +498,7 @@ freshman_project = mapM_ H.unitEx
        ( "id"            bigserial  primary key
        , "description"   varchar    not null
        , "term_id"       bigint     not null
-       , "event_id"      bigint     default null
+       , "event_id"      bigint     not null
     )|]
    ]
 
@@ -637,7 +637,7 @@ review_metric = mapM_ H.unitEx
    [ [H.stmt|drop table if exists "review_metric" cascade|]
    , [H.stmt|create table "review_metric"
        ( "metric_id"    bigint   not null
-       , "review_id"  bigint   not null
+       , "review_id"    bigint   not null
        , "score"        integer  not null
        , constraint "one_score_per_review_per_metric" unique ("metric_id", "review_id")
     )|]
@@ -653,7 +653,7 @@ interview_metric = mapM_ H.unitEx
    [ [H.stmt|drop table if exists "interview_metric" cascade|]
    , [H.stmt|create table "interview_metric"
        ( "metric_id"       bigint   not null
-       , "interview_id"  bigint   not null
+       , "interview_id"    bigint   not null
        , "score"           integer  not null
        , constraint "one_score_per_interview_per_metric" unique ("metric_id", "interview_id")
     )|]
