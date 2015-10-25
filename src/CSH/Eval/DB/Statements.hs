@@ -203,27 +203,27 @@ getReviewIDP :: Word64 -- ^ Review ID
 getReviewIDP = [H.stmt|select * from "review" where "id" = ?|]
 
 -- | Fetch all reviewer(s) associated with a specific member.
-getReviewersMemberIDP :: Word64 -- ^ Member ID
-                      -> H.Stmt HP.Postgres
-getReviewersMemberIDP = [H.stmt|select * from "review" where "member_id" = ?|]
+getReviewsMemberIDP :: Word64 -- ^ Member ID
+                    -> H.Stmt HP.Postgres
+getReviewsMemberIDP = [H.stmt|select * from "review" where "member_id" = ?|]
 
 -- | Fetch all reviewer(s) associated with a specific application.
-getReviewersApplicationIDP :: Word64 -- ^ Application ID
-                           -> H.Stmt HP.Postgres
-getReviewersApplicationIDP = [H.stmt|select * from "review" where "application_id" = ?|]
+getReviewsApplicationIDP :: Word64 -- ^ Application ID
+                         -> H.Stmt HP.Postgres
+getReviewsApplicationIDP = [H.stmt|select * from "review" where "application_id" = ?|]
 
 -- | Fetch the reviewer associated with a specific member and a specific
 --   application.
-getReviewerMemberIDApplicationIDP :: Word64 -- ^ Member ID
-                                  -> Word64 -- ^ Application ID
-                                  -> H.Stmt HP.Postgres
-getReviewerMemberIDApplicationIDP = [H.stmt|select * from "review" where "member_id" = ? and "application_id" = ?|]
+getReviewMemberIDApplicationIDP :: Word64 -- ^ Member ID
+                                -> Word64 -- ^ Application ID
+                                -> H.Stmt HP.Postgres
+getReviewMemberIDApplicationIDP = [H.stmt|select * from "review" where "member_id" = ? and "application_id" = ?|]
 
--- *** Interviewer
+-- *** Interview
 
 -- | Fetch an interviewer by ID.
-getInterviewIDP :: Word64 -- ^ Interviewer ID
-                  -> H.Stmt HP.Postgres
+getInterviewIDP :: Word64 -- ^ Interview ID
+                -> H.Stmt HP.Postgres
 getInterviewIDP = [H.stmt|select * from "interview" where "id" = ?|]
 
 -- | Fetch all interviewer(s) associated with a specific member.
@@ -337,9 +337,9 @@ getEventAttendeesEventIDP :: Word64 -- ^ Member ID
 getEventAttendeesEventIDP = [H.stmt|select * from "event_attendee" where "member_id" = ?|]
 
 -- | Fetch all event attendee records associated with a specific member.
-getEventAttendeeMemberIDP :: Word64 -- ^ Event ID
+getEventAttendeesMemberIDP :: Word64 -- ^ Event ID
                           -> H.Stmt HP.Postgres
-getEventAttendeeMemberIDP = [H.stmt|select * from "event_attendee" where "event_id" = ?|]
+getEventAttendeesMemberIDP = [H.stmt|select * from "event_attendee" where "event_id" = ?|]
 
 -- *** Project Participant
 
@@ -395,29 +395,29 @@ getSignaturesSignedP :: Word64 -- ^ Packet ID
                      -> H.Stmt HP.Postgres
 getSignaturesSignedP = [H.stmt|select * from "signatures" where "packet_id" = ? and "signed" is not null|]
 
--- *** Reviewer Metric
+-- *** Review Metric
 
 -- | Fetch all reviewer metric scores associated with a specific metric.
-getReviewerMetricsMetricIDP :: Word64 -- ^ Metric ID
-                            -> H.Stmt HP.Postgres
-getReviewerMetricsMetricIDP = [H.stmt|select * from "review_metric" where "metric_id" = ?|]
+getReviewMetricsMetricIDP :: Word64 -- ^ Metric ID
+                          -> H.Stmt HP.Postgres
+getReviewMetricsMetricIDP = [H.stmt|select * from "review_metric" where "metric_id" = ?|]
 
 -- | Fetch all reviewer metric scores associated with a specific reviewer.
-getReviewerMetricsReviewerIDP :: Word64 -- ^ Reviewer ID
-                              -> H.Stmt HP.Postgres
-getReviewerMetricsReviewerIDP = [H.stmt|select * from "review_metric" where "reviewer_id" = ?|]
+getReviewMetricsReviewIDP :: Word64 -- ^ Review ID
+                          -> H.Stmt HP.Postgres
+getReviewMetricsReviewIDP = [H.stmt|select * from "review_metric" where "reviewer_id" = ?|]
 
--- *** Interviewer Metric
+-- *** Interview Metric
 
 -- | Fetch all interviewer metric scores associated with a specific metric.
 getInterviewMetricsMetricIDP :: Word64 -- ^ Metric ID
-                               -> H.Stmt HP.Postgres
+                             -> H.Stmt HP.Postgres
 getInterviewMetricsMetricIDP = [H.stmt|select * from "interview_metric" where "metric_id" = ?|]
 
 -- | Fetch all interviewer metric scores associated with a specific interviewer.
-getInterviewMetricsInterviewerIDP :: Word64 -- ^ Interviewer ID
-                                    -> H.Stmt HP.Postgres
-getInterviewMetricsInterviewerIDP = [H.stmt|select * from "interview_metric" where "interview_id" = ?|]
+getInterviewMetricsInterviewIDP :: Word64 -- ^ Interview ID
+                                -> H.Stmt HP.Postgres
+getInterviewMetricsInterviewIDP = [H.stmt|select * from "interview_metric" where "interview_id" = ?|]
 
 -- *** Answer
 
@@ -576,24 +576,24 @@ mkMetricP :: T.Text -- ^ Name
           -> H.Stmt HP.Postgres
 mkMetricP = [H.stmt|insert into "metric" ("name") values (?)|]
 
--- *** Reviewer
+-- *** Review
 
 -- | Instantiate a reviewer.
-mkReviewerP :: Word64  -- ^ Member ID
+mkReviewP :: Word64  -- ^ Member ID
             -> Word64  -- ^ Application ID
             -> UTCTime -- ^ Start time
             -> UTCTime -- ^ Submission time
             -> H.Stmt HP.Postgres
-mkReviewerP = [H.stmt|inset into "reviewer" ("member_id", "application_id", "review_start", "review_submit") values (?, ?, ?, ?)|]
+mkReviewP = [H.stmt|inset into "reviewer" ("member_id", "application_id", "review_start", "review_submit") values (?, ?, ?, ?)|]
 
--- *** Interviewer
+-- *** Interview
 
 -- | Instantiate an interviewer.
-mkInterviewerP :: Word64  -- ^ Member ID
-               -> Word64  -- ^ Application ID
-               -> UTCTime -- ^ Interview time
-               -> H.Stmt HP.Postgres
-mkInterviewerP = [H.stmt|insert into "interviewer" ("member_id", "application_id", "interview_date") values (?, ?, ?)|]
+mkInterviewP :: Word64  -- ^ Member ID
+             -> Word64  -- ^ Application ID
+             -> UTCTime -- ^ Interview time
+             -> H.Stmt HP.Postgres
+mkInterviewP = [H.stmt|insert into "interviewer" ("member_id", "application_id", "interview_date") values (?, ?, ?)|]
 
 -- *** Question
 
@@ -695,25 +695,25 @@ grSignatureP :: Word64 -- ^ Member ID
              -> H.Stmt HP.Postgres
 grSignatureP = [H.stmt|insert into "signature" ("member_id", "packet_id", "required") values (?, ?, ?)|]
 
--- *** Reviewer Metric
+-- *** Review Metric
 
 -- | Grant a reviewer metric context to the given metric for the given reviewer,
 --   including the score.
-grReviewerMetricP :: Word64 -- ^ Metric ID
-                  -> Word64 -- ^ Reviewer ID
-                  -> Int    -- ^ Score
-                  -> H.Stmt HP.Postgres
-grReviewerMetricP = [H.stmt|insert into "review_metric" ("metric_id", "reviewer_id", "score") values (?, ?, ?)|]
+grReviewMetricP :: Word64 -- ^ Metric ID
+                -> Word64 -- ^ Review ID
+                -> Int    -- ^ Score
+                -> H.Stmt HP.Postgres
+grReviewMetricP = [H.stmt|insert into "review_metric" ("metric_id", "reviewer_id", "score") values (?, ?, ?)|]
 
--- *** Interviewer Metric
+-- *** Interview Metric
 
 -- | Grant an interviewer metric context to the given metric for the given
 --   interviewer, including the score.
-grInterviewerMetricP :: Word64 -- ^ Metric ID
-                     -> Word64 -- ^ Interviewer ID
-                     -> Int    -- ^ Score
-                     -> H.Stmt HP.Postgres
-grInterviewerMetricP = [H.stmt|insert into "interviewer_metric" ("metric_id", "interviewer_id", "score") values (?, ?, ?)|]
+grInterviewMetricP :: Word64 -- ^ Metric ID
+                   -> Word64 -- ^ Interview ID
+                   -> Int    -- ^ Score
+                   -> H.Stmt HP.Postgres
+grInterviewMetricP = [H.stmt|insert into "interviewer_metric" ("metric_id", "interviewer_id", "score") values (?, ?, ?)|]
 
 -- *** Answer
 
@@ -992,27 +992,27 @@ upMetricActiveP :: Bool   -- ^ Metric activity
                 -> H.Stmt HP.Postgres
 upMetricActiveP = [H.stmt|update "metric" set "active" = ? where "id" = ?|]
 
--- *** Reviewer
+-- *** Review
 
 -- | Update a given review's start date.
-upReviewerReviewStartP :: UTCTime -- ^ Start time
-                       -> Word64  -- ^ Reviewer ID
-                       -> H.Stmt HP.Postgres
-upReviewerReviewStartP = [H.stmt|update "review" set "review_start" = ? where "id" = ?|]
+upReviewReviewStartP :: UTCTime -- ^ Start time
+                     -> Word64  -- ^ Review ID
+                     -> H.Stmt HP.Postgres
+upReviewReviewStartP = [H.stmt|update "review" set "review_start" = ? where "id" = ?|]
 
 -- | Update a given review's submission date.
-upReviewerReviewSubmitP :: UTCTime -- ^ Submission time
-                        -> Word64  -- ^ Reviewer ID
-                        -> H.Stmt HP.Postgres
-upReviewerReviewSubmitP = [H.stmt|update "review" set "review_submit" = ? where "id" = ?|]
+upReviewReviewSubmitP :: UTCTime -- ^ Submission time
+                      -> Word64  -- ^ Review ID
+                      -> H.Stmt HP.Postgres
+upReviewReviewSubmitP = [H.stmt|update "review" set "review_submit" = ? where "id" = ?|]
 
--- *** Interviewer
+-- *** Interview
 
 -- | Update a given interview's date.
-upInterviewerDateP :: UTCTime -- ^ Date
-                   -> Word64  -- ^ Interviewer ID
-                   -> H.Stmt HP.Postgres
-upInterviewerDateP = [H.stmt|update "interviewer" set "interview_date" = ? where "id" = ?|]
+upInterviewDateP :: UTCTime -- ^ Date
+                 -> Word64  -- ^ Interview ID
+                 -> H.Stmt HP.Postgres
+upInterviewDateP = [H.stmt|update "interviewer" set "interview_date" = ? where "id" = ?|]
 
 -- *** Question
 
@@ -1131,23 +1131,23 @@ upSignatureSignedP :: Bool   -- ^ Signed
                    -> H.Stmt HP.Postgres
 upSignatureSignedP = [H.stmt|update "signature" set "signed" = ? where "member_id" = ? and "packet_id" = ?|]
 
--- *** Reviewer Metric
+-- *** Review Metric
 
 -- | Update a given reviewer's score with respect to a given metric.
-upReviewerMetricScoreP :: Int    -- ^ Score
-                       -> Word64 -- ^ Metric ID
-                       -> Word64 -- ^ Reviewer ID
-                       -> H.Stmt HP.Postgres
-upReviewerMetricScoreP = [H.stmt|update "review_metric" set "score" = ? where "metric_id" = ? and "reviewer_id" = ?|]
+upReviewMetricScoreP :: Int    -- ^ Score
+                     -> Word64 -- ^ Metric ID
+                     -> Word64 -- ^ Review ID
+                     -> H.Stmt HP.Postgres
+upReviewMetricScoreP = [H.stmt|update "review_metric" set "score" = ? where "metric_id" = ? and "reviewer_id" = ?|]
 
--- *** Interviewer Metric
+-- *** Interview Metric
 
 -- | Update a given interviewer's score with respect to a given metric.
-upInterviewerMetricScoreP :: Int    -- ^ Score
+upInterviewMetricScoreP :: Int    -- ^ Score
                           -> Word64 -- ^ Metric ID
-                          -> Word64 -- ^ Interviewer ID
+                          -> Word64 -- ^ Interview ID
                           -> H.Stmt HP.Postgres
-upInterviewerMetricScoreP = [H.stmt|update "interviewer_metric" set "score" = ? where "metric_id" = ? and "interviewer_id" = ?|]
+upInterviewMetricScoreP = [H.stmt|update "interviewer_metric" set "score" = ? where "metric_id" = ? and "interviewer_id" = ?|]
 
 -- *** Answer
 
