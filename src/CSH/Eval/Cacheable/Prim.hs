@@ -22,6 +22,7 @@ module CSH.Eval.Cacheable.Prim (
   , hitRecordFallback
     -- * Fallback Combinators
   , maybeFallback
+  , listFallback
     -- * Error Reporting
   , noSuchID
     -- * Ghosts
@@ -93,6 +94,13 @@ initCache cs ps = let newIDCache = newMVar M.empty
        newIDCache <*>
        newIDCache <*>
        newIDCache <*>
+       newIDCache <*>
+       newIDCache <*>
+       newIDCache <*>
+       newIDCache <*>
+       newIDCache <*>
+       newIDCache <*>
+       newIDCache <*>
        acquirePool cs ps
 
 -- | Release the 'Pool' enclosed in a 'Cache'.
@@ -128,6 +136,15 @@ maybeFallback s dbe fr c = do
               (Right Nothing)  -> left dbe
               (Right (Just v)) -> right $ fr v
 
+listFallback :: CxRow Postgres t
+             => Stmt Postgres
+             -> (t -> r)
+             -> Cacheable [r]
+listFallback s fr c = do
+    r <- session (pool c) (tx defTxMode (listEx s))
+    case r of (Left e)   -> left $ HasqlError e
+              (Right ts) -> right $ map fr ts
+
 -- | Report that a record with the given id in the given table doesn't exist.
 noSuchID :: String -> Word64 -> CacheError
 noSuchID t i = Nonexistent $ t ++ " with id " ++ (show i) ++ " does not exist."
@@ -138,38 +155,46 @@ reaper :: Cacheable ()
 reaper c = liftIO reapAll
     where reap = (flip swapMVar) M.empty
           reapAll = (reap $ memberIDCache c)
-              >> (reap $ eventIDCache c)
-              >> (reap $ projectIDCache c)
-              >> (reap $ evaluationIDCache c)
-              >> (reap $ conditionalIDCache c)
-              >> (reap $ freshmanProjectIDCache c)
-              >> (reap $ packetIDCache c)
-              >> (reap $ queueIDCache c)
-              >> (reap $ applicationIDCache c)
-              >> (reap $ metricIDCache c)
-              >> (reap $ reviewIDCache c)
-              >> (reap $ interviewIDCache c)
-              >> (reap $ questionIDCache c)
-              >> (reap $ termIDCache c)
-              >> (reap $ eboardMemberIDCache c)
-              >> (reap $ roomMemberIDCache c)
-              >> (reap $ membershipMemberIDCache c)
-              >> (reap $ eventAttendeeMemberIDCache c)
-              >> (reap $ eventAttendeeEventIDCache c)
-              >> (reap $ projectParticipantMemberIDCache c)
-              >> (reap $ projectParticipantProjectIDCache c)
-              >> (reap $ freshProjParticipantProjectIDCache c)
-              >> (reap $ freshProjParticipantEvaluationIDCache c)
-              >> (reap $ signatureMemberIDCache c)
-              >> (reap $ signaturePacketIDCache c)
-              >> (reap $ reviewMetricMetricIDCache c)
-              >> (reap $ reviewMetricReviewIDCache c)
-              >> (reap $ interviewMetricMetricIDCache c)
-              >> (reap $ interviewMetricInterviewIDCache c)
-              >> (reap $ answerQuestionIDCache c)
-              >> (reap $ answerApplicationIDCache c)
-              >> (reap $ duesMemberIDCache c)
-              >> return ()
+                 >> (reap $ eventIDCache c)
+                 >> (reap $ projectIDCache c)
+                 >> (reap $ evaluationIDCache c)
+                 >> (reap $ conditionalIDCache c)
+                 >> (reap $ freshmanProjectIDCache c)
+                 >> (reap $ packetIDCache c)
+                 >> (reap $ queueIDCache c)
+                 >> (reap $ applicationIDCache c)
+                 >> (reap $ metricIDCache c)
+                 >> (reap $ reviewIDCache c)
+                 >> (reap $ interviewIDCache c)
+                 >> (reap $ questionIDCache c)
+                 >> (reap $ termIDCache c)
+                 >> (reap $ eboardMemberIDCache c)
+                 >> (reap $ evaluationMemberIDCache c)
+                 >> (reap $ conditionalEvaluationIDCache c)
+                 >> (reap $ roomMemberIDCache c)
+                 >> (reap $ queueMemberIDCache c)
+                 >> (reap $ membershipMemberIDCache c)
+                 >> (reap $ eventAttendeeMemberIDCache c)
+                 >> (reap $ eventAttendeeEventIDCache c)
+                 >> (reap $ projectParticipantMemberIDCache c)
+                 >> (reap $ projectParticipantProjectIDCache c)
+                 >> (reap $ freshProjParticipantProjectIDCache c)
+                 >> (reap $ freshProjParticipantEvaluationIDCache c)
+                 >> (reap $ packetMemberIDCache c)
+                 >> (reap $ signatureMemberIDCache c)
+                 >> (reap $ signaturePacketIDCache c)
+                 >> (reap $ applicationMemberIDCache c)
+                 >> (reap $ reviewApplicationIDCache c)
+                 >> (reap $ interviewApplicationIDCache c)
+                 >> (reap $ reviewMetricMetricIDCache c)
+                 >> (reap $ reviewMetricReviewIDCache c)
+                 >> (reap $ interviewMetricMetricIDCache c)
+                 >> (reap $ interviewMetricInterviewIDCache c)
+                 >> (reap $ answerQuestionIDCache c)
+                 >> (reap $ answerApplicationIDCache c)
+                 >> (reap $ duesMemberIDCache c)
+                 >> (reap $ duesTermIDCache c)
+                 >> return ()
 
 -- | Add a single previously uncached value to the cache. This is done by a new
 --   thread that discards any exceptions, to prevent any cache corruption from
