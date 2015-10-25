@@ -152,43 +152,38 @@ import CSH.Eval.Cacheable.Prim
 getMemberID :: Word64 -> Cacheable Member
 getMemberID i c = do
     mc <- hitSegment memberIDCache c
-    m  <- hitRecordFallback i mc db
-    singletonGhost memberIDCache i m c
+    m  <- hitRecordFallback i mc (sneakyGhostM memberIDCache i db c)
     right m
     where db = maybeFallback (getMemberIDP i) (noSuchID "Member" i) memberFromRow c
 
 getEventID :: Word64 -> Cacheable Event
 getEventID i c = do
     ec <- hitSegment eventIDCache c
-    e  <- hitRecordFallback i ec db
-    singletonGhost eventIDCache i e c
+    e  <- hitRecordFallback i ec (sneakyGhostM eventIDCache i db c)
     right e
     where db = maybeFallback (getEventIDP i) (noSuchID "Event" i) eventFromRow c
 
 getProjectID :: Word64 -> Cacheable Project
 getProjectID i c = do
     pc <- hitSegment projectIDCache c
-    p  <- hitRecordFallback i pc db
-    singletonGhost projectIDCache i p c
+    p  <- hitRecordFallback i pc (sneakyGhostM projectIDCache i db c)
     right p
     where db = maybeFallback (getProjectIDP i) (noSuchID "Project" i) projectFromRow c
 
 getEvaluationID :: Word64 -> Cacheable Evaluation
 getEvaluationID i c = do
     ec <- hitSegment evaluationIDCache c
-    e  <- hitRecordFallback i ec db
-    singletonGhost evaluationIDCache i e c
+    e  <- hitRecordFallback i ec (sneakyGhostM evaluationIDCache i db c)
     right e
     where db = maybeFallback (getEvaluationIDP i) (noSuchID "Evaluation" i) evaluationFromRow c
 
 getMemberEvaluations :: Word64 -> Cacheable [Evaluation]
-getMemberEvaluations = undefined
+getMemberEvaluations i c = undefined
 
 getConditionalID :: Word64 -> Cacheable Conditional
 getConditionalID i c = do
     cc <- hitSegment conditionalIDCache c
-    c' <- hitRecordFallback i cc db
-    singletonGhost conditionalIDCache i c' c
+    c' <- hitRecordFallback i cc (sneakyGhostM conditionalIDCache i db c)
     right c'
     where db = maybeFallback (getConditionalIDP i) (noSuchID "Conditional" i) conditionalFromRow c
 
@@ -198,16 +193,14 @@ getEvaluationConditionals = undefined
 getFreshmanProjectID :: Word64 -> Cacheable FreshmanProject
 getFreshmanProjectID i c = do
     fc <- hitSegment freshmanProjectIDCache c
-    f  <- hitRecordFallback i fc db
-    singletonGhost freshmanProjectIDCache i f c
+    f  <- hitRecordFallback i fc (sneakyGhostM freshmanProjectIDCache i db c)
     right f
     where db = maybeFallback (getFreshmanProjectIDP i) (noSuchID "FreshmanProject" i) freshmanProjectFromRow c
 
 getPacketID :: Word64 -> Cacheable Packet
 getPacketID i c = do
     pc <- hitSegment packetIDCache c
-    p  <- hitRecordFallback i pc db
-    singletonGhost packetIDCache i p c
+    p  <- hitRecordFallback i pc (sneakyGhostM packetIDCache i db c)
     right p
     where db = maybeFallback (getPacketIDP i) (noSuchID "Packet" i) packetFromRow c
 
@@ -217,8 +210,7 @@ getMemberPackets = undefined
 getApplicationID :: Word64 -> Cacheable Application
 getApplicationID i c = do
     ac <- hitSegment applicationIDCache c
-    a  <- hitRecordFallback i ac db
-    singletonGhost applicationIDCache i a c
+    a  <- hitRecordFallback i ac (sneakyGhostM applicationIDCache i db c)
     right a
     where db = maybeFallback (getApplicationIDP i) (noSuchID "Application" i) applicationFromRow c
 
@@ -228,16 +220,14 @@ getMemberApplications = undefined
 getMetricID :: Word64 -> Cacheable Metric
 getMetricID i c = do
     mc <- hitSegment metricIDCache c
-    m  <- hitRecordFallback i mc db
-    singletonGhost metricIDCache i m c
+    m  <- hitRecordFallback i mc (sneakyGhostM metricIDCache i db c)
     right m
     where db = maybeFallback (getMetricIDP i) (noSuchID "Metric" i) metricFromRow c
 
 getReviewID :: Word64 -> Cacheable Review
 getReviewID i c = do
     rc <- hitSegment reviewIDCache c
-    r <- hitRecordFallback i rc db
-    singletonGhost reviewIDCache i r c
+    r <- hitRecordFallback i rc (sneakyGhostM reviewIDCache i db c)
     right r
     where db = maybeFallback (getReviewIDP i) (noSuchID "Review" i) reviewFromRow c
 
@@ -247,8 +237,7 @@ getApplicationReviews = undefined
 getInterviewID :: Word64 -> Cacheable Interview
 getInterviewID i c = do
     ic <- hitSegment interviewIDCache c
-    i' <- hitRecordFallback i ic db
-    singletonGhost interviewIDCache i i' c
+    i' <- hitRecordFallback i ic (sneakyGhostM interviewIDCache i db c)
     right i'
     where db = maybeFallback (getInterviewIDP i) (noSuchID "Interview" i) interviewFromRow c
 
@@ -258,16 +247,14 @@ getApplicationInterviews = undefined
 getQuestionID :: Word64 -> Cacheable Question
 getQuestionID i c = do
     qc <- hitSegment questionIDCache c
-    q  <- hitRecordFallback i qc db
-    singletonGhost questionIDCache i q c
+    q  <- hitRecordFallback i qc (sneakyGhostM questionIDCache i db c)
     right q
     where db = maybeFallback (getQuestionIDP i) (noSuchID "Question" i) questionFromRow c
 
 getTermID :: Word64 -> Cacheable Term
 getTermID i c = do
     tc <- hitSegment termIDCache c
-    t  <- hitRecordFallback i tc db
-    singletonGhost termIDCache i t c
+    t  <- hitRecordFallback i tc (sneakyGhostM termIDCache i db c)
     right t
     where db = maybeFallback (getTermIDP i) (noSuchID "Question" i) termFromRow c
 
@@ -280,8 +267,7 @@ getMemberRooms = undefined
 getQueueID :: Word64 -> Cacheable Queue
 getQueueID i c = do
     qc <- hitSegment queueIDCache c
-    q  <- hitRecordFallback i qc db
-    singletonGhost queueIDCache i q c
+    q  <- hitRecordFallback i qc (sneakyGhostM queueIDCache i db c)
     right q
     where db = maybeFallback (getQueueIDP i) (noSuchID "Queue" i) queueFromRow c
 

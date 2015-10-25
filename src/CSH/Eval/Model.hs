@@ -569,6 +569,7 @@ data Cache = Cache {
   , questionIDCache                       :: IDCache Question
   , termIDCache                           :: IDCache Term
   , eboardMemberIDCache                   :: IDCache [Eboard]
+  , evaluationMemberIDCache               :: IDCache [Evaluation]
   , roomMemberIDCache                     :: IDCache [Room]
   , membershipMemberIDCache               :: IDCache [Membership]
   , eventAttendeeMemberIDCache            :: IDCache [EventAttendee]

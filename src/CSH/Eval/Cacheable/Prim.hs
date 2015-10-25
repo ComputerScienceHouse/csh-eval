@@ -27,6 +27,8 @@ module CSH.Eval.Cacheable.Prim (
     -- * Ghosts
   , reaper
   , singletonGhost
+  , sneakyGhostM
+  , sneakyGhostC
   ) where
 
 import Control.Applicative ((<$>), (<*>))
@@ -58,6 +60,7 @@ initCache :: Settings
           -> IO Cache
 initCache cs ps = let newIDCache = newMVar M.empty
     in Cache <$>
+       newIDCache <*>
        newIDCache <*>
        newIDCache <*>
        newIDCache <*>
@@ -183,3 +186,19 @@ singletonGhost a k v c = liftIO $ forkFinally insrt1 (\_ -> putStrLn "singletonG
           insrt2 m2 = case M.lookup k m2 of
                         Nothing   -> newMVar v >>= (\v' -> putMVar m1 (M.insert k v' m2))
                         (Just m3) -> swapMVar m3 v >> return ()
+
+-- | Create a ghost that replays the effects of an action in the 'Cacheable'
+--   monad immediately before returning control to the exterior transformer.
+sneakyGhostM :: (Cache -> IDCache a)
+            -> Word64
+            -> CacheM a
+            -> Cacheable a
+sneakyGhostM a k vM c = vM >>= (\v -> singletonGhost a k v c >> return v)
+
+-- | Create a ghost that replays the effects of an action in the 'Cacheable'
+--   monad immediately before returning control to the exterior transformer.
+sneakyGhostC :: (Cache -> IDCache a)
+            -> Word64
+            -> Cacheable a
+            -> Cacheable a
+sneakyGhostC a k vM c = vM c >>= (\v -> singletonGhost a k v c >> return v)
