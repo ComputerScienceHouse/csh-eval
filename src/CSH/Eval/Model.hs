@@ -29,7 +29,6 @@ module CSH.Eval.Model (
   , Conditional(..)
   , FreshmanProject(..)
   , Packet(..)
-  , Queue(..)
   , Application(..)
   , Metric(..)
   , Review(..)
@@ -40,6 +39,7 @@ module CSH.Eval.Model (
     -- * Contexts
   , Eboard(..)
   , Room(..)
+  , Queue(..)
   , Membership(..)
   , EventAttendee(..)
   , ProjectParticipant(..)
@@ -89,7 +89,7 @@ data Committee = Evals
                | RnD
                | Social
                | History
-               | OpCOmm
+               | OpComm
                | Imps
                | Financial
                | Chairman
@@ -223,7 +223,7 @@ data Evaluation = Evaluation {
   , evaluationAvailable    :: Bool
   , evaluationStatus       :: EvaluationStatus
   , evaluationType         :: EvaluationType
-  , evaluationMember       :: Member
+  , evaluationMember       :: Cacheable Member
   , evaluationConditionals :: Cacheable [Conditional]
   , evaluationFreshProject :: Cacheable [FreshmanProjectParticipant]
   }
@@ -246,6 +246,7 @@ data Conditional = Conditional {
   , conditionalDeadline    :: UTCTime
   , conditionalDescription :: T.Text
   , conditionalComments    :: T.Text
+  , conditionalEvaluation  :: Cacheable Evaluation
   }
 
 instance Eq Conditional where
@@ -262,8 +263,8 @@ instance Show Conditional where
 data FreshmanProject = FreshmanProject {
     freshmanProjectID           :: Word64
   , freshmanProjectDescription  :: T.Text
-  , freshmanProjectTerm         :: Term
-  , freshmanProjectEvent        :: Event
+  , freshmanProjectTerm         :: Cacheable Term
+  , freshmanProjectEvent        :: Cacheable Event
   , freshmanProjectParticipants :: Cacheable [FreshmanProjectParticipant]
   }
 
@@ -279,8 +280,8 @@ instance Show FreshmanProject where
 data Packet = Packet {
     packetID         :: Word64
   , packetDueDate    :: Day
-  , packetPercentReq :: Integer
-  , packetMember     :: Member
+  , packetPercentReq :: Int
+  , packetMember     :: Cacheable Member
   , packetSignatures :: Cacheable [Signature]
   }
 
@@ -298,7 +299,7 @@ instance Show Packet where
 data Queue = Queue {
     queueEntered :: UTCTime
   , queueExited  :: Maybe UTCTime
-  , queueMember  :: Member
+  , queueMember  :: Cacheable Member
   }
 
 instance Show Queue where
@@ -311,7 +312,7 @@ data Application = Application {
     applicationID        :: Word64
   , applicationCreated   :: UTCTime
   , applicationStatus    :: EvaluationStatus
-  , applicationMember    :: Member
+  , applicationMember    :: Cacheable Member
   , applicationReviews   :: Cacheable [Review]
   , applicationInterview :: Cacheable [Interview]
   , applicationAnswers   :: Cacheable [Answer]
@@ -347,8 +348,8 @@ data Review = Review {
     reviewID          :: Word64
   , reviewStart       :: UTCTime
   , reviewSubmit      :: UTCTime
-  , reviewMember      :: Member
-  , reviewApplication :: Application
+  , reviewMember      :: Cacheable Member
+  , reviewApplication :: Cacheable Application
   , reviewMetrics     :: Cacheable [ReviewMetric]
   }
 
@@ -365,8 +366,8 @@ instance Show Review where
 data Interview = Interview {
     interviewID          :: Word64
   , interviewDate        :: UTCTime
-  , interviewMember      :: Member
-  , interviewApplication :: Application
+  , interviewMember      :: Cacheable Member
+  , interviewApplication :: Cacheable Application
   , interviewMetrics     :: Cacheable [InterviewMetric]
   }
 
@@ -415,7 +416,7 @@ data Eboard = Eboard {
     eboardCommittee :: Committee
   , eboardStartDate :: Day
   , eboardEndDate   :: Maybe Day
-  , eboardMember    :: Member
+  , eboardMember    :: Cacheable Member
   }
 
 instance Show Eboard where
@@ -429,7 +430,7 @@ data Room = Room {
     roomNumber    :: T.Text
   , roomStartDate :: Day
   , roomEndDate   :: Day
-  , roomMember    :: Member
+  , roomMember    :: Cacheable Member
   }
 
 instance Show Room where
@@ -443,7 +444,7 @@ data Membership = Membership {
     membershipStatus    :: MemberStatus
   , membershipStartDate :: Day
   , membershipEndDate   :: Maybe Day
-  , membershipMember    :: Member
+  , membershipMember    :: Cacheable Member
   }
 
 instance Show Membership where
@@ -455,8 +456,8 @@ instance Show Membership where
 
 data EventAttendee = EventAttendee {
    eventAttendeeHost   :: Bool
- , eventAttendeeMember :: Member
- , eventAttendeeEvent  :: Event
+ , eventAttendeeMember :: Cacheable Member
+ , eventAttendeeEvent  :: Cacheable Event
  }
 
 instance Show EventAttendee where
@@ -466,8 +467,8 @@ instance Show EventAttendee where
 
 data ProjectParticipant = ProjectParticipant {
     projectParticipantDescription :: T.Text
-  , projectParticipantMember      :: Member
-  , projectParticipantProject     :: Project
+  , projectParticipantMember      :: Cacheable Member
+  , projectParticipantProject     :: Cacheable Project
   }
 
 instance Show ProjectParticipant where
@@ -479,8 +480,8 @@ data FreshmanProjectParticipant = FreshmanProjectParticipant {
     freshmanProjectParticipantEboard     :: Bool
   , freshmanProjectParticipantStatus     :: EvaluationStatus
   , freshmanProjectParticipantComments   :: T.Text
-  , freshmanProjectParticipantFreshProj  :: FreshmanProject
-  , freshmanProjectParticipantEvaluation :: Evaluation
+  , freshmanProjectParticipantFreshProj  :: Cacheable FreshmanProject
+  , freshmanProjectParticipantEvaluation :: Cacheable Evaluation
   }
 
 instance Show FreshmanProjectParticipant where
@@ -493,8 +494,8 @@ instance Show FreshmanProjectParticipant where
 data Signature = Signature {
     signatureRequired :: Bool
   , signatureSigned   :: Maybe UTCTime
-  , signatureMember   :: Member
-  , signaturePacket   :: Packet
+  , signatureMember   :: Cacheable Member
+  , signaturePacket   :: Cacheable Packet
   }
 
 instance Show Signature where
@@ -504,9 +505,9 @@ instance Show Signature where
         ]
 
 data ReviewMetric = ReviewMetric {
-    reviewMetricScore  :: Integer
-  , reviewMetricMetric :: Metric
-  , reviewMetricReview :: Review
+    reviewMetricScore  :: Int
+  , reviewMetricMetric :: Cacheable Metric
+  , reviewMetricReview :: Cacheable Review
   }
 
 instance Show ReviewMetric where
@@ -515,9 +516,9 @@ instance Show ReviewMetric where
         ]
 
 data InterviewMetric = InterviewMetric {
-    interviewMetricScore     :: Integer
-  , interviewMetricMetric    :: Metric
-  , interviewMetricInterview :: Interview
+    interviewMetricScore     :: Int
+  , interviewMetricMetric    :: Cacheable Metric
+  , interviewMetricInterview :: Cacheable Interview
   }
 
 instance Show InterviewMetric where
@@ -527,8 +528,8 @@ instance Show InterviewMetric where
 
 data Answer = Answer {
     answerResponse    :: T.Text
-  , answerQuestion    :: Question
-  , answerApplication :: Application
+  , answerQuestion    :: Cacheable Question
+  , answerApplication :: Cacheable Application
   }
 
 instance Show Answer where
@@ -539,7 +540,7 @@ instance Show Answer where
 data Dues = Dues {
     duesStatus :: DuesStatus
   , duesMember :: Cacheable Member
-  , duesTerm   :: Term
+  , duesTerm   :: Cacheable Term
   }
 
 instance Show Dues where
