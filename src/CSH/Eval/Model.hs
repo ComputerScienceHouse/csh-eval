@@ -570,7 +570,9 @@ data Cache = Cache {
   , termIDCache                           :: IDCache Term
   , eboardMemberIDCache                   :: IDCache [Eboard]
   , evaluationMemberIDCache               :: IDCache [Evaluation]
+  , conditionalEvaluationIDCache          :: IDCache [Conditional]
   , roomMemberIDCache                     :: IDCache [Room]
+  , queueMemberIDCache                    :: IDCache [Queue]
   , membershipMemberIDCache               :: IDCache [Membership]
   , eventAttendeeMemberIDCache            :: IDCache [EventAttendee]
   , eventAttendeeEventIDCache             :: IDCache [EventAttendee]
@@ -578,8 +580,12 @@ data Cache = Cache {
   , projectParticipantProjectIDCache      :: IDCache [ProjectParticipant]
   , freshProjParticipantProjectIDCache    :: IDCache [FreshmanProjectParticipant]
   , freshProjParticipantEvaluationIDCache :: IDCache [FreshmanProjectParticipant]
+  , packetMemberIDCache                   :: IDCache [Packet]
   , signatureMemberIDCache                :: IDCache [Signature]
   , signaturePacketIDCache                :: IDCache [Signature]
+  , applicationMemberIDCache              :: IDCache [Application]
+  , reviewApplicationIDCache              :: IDCache [Review]
+  , interviewApplicationIDCache           :: IDCache [Interview]
   , reviewMetricMetricIDCache             :: IDCache [ReviewMetric]
   , reviewMetricReviewIDCache             :: IDCache [ReviewMetric]
   , interviewMetricMetricIDCache          :: IDCache [InterviewMetric]
@@ -587,6 +593,7 @@ data Cache = Cache {
   , answerQuestionIDCache                 :: IDCache [Answer]
   , answerApplicationIDCache              :: IDCache [Answer]
   , duesMemberIDCache                     :: IDCache [Dues]
+  , duesTermIDCache                       :: IDCache [Dues]
   , pool                                  :: Pool Postgres
   }
 
