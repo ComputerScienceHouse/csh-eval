@@ -22,11 +22,14 @@ module CSH.Eval.Cacheable.Prim (
   , hitRecordFallback
     -- * Fallback Combinators
   , maybeFallback
+  , listFallback
     -- * Error Reporting
   , noSuchID
     -- * Ghosts
   , reaper
   , singletonGhost
+  , sneakyGhostM
+  , sneakyGhostC
   ) where
 
 import Control.Applicative ((<$>), (<*>))
@@ -58,6 +61,14 @@ initCache :: Settings
           -> IO Cache
 initCache cs ps = let newIDCache = newMVar M.empty
     in Cache <$>
+       newIDCache <*>
+       newIDCache <*>
+       newIDCache <*>
+       newIDCache <*>
+       newIDCache <*>
+       newIDCache <*>
+       newIDCache <*>
+       newIDCache <*>
        newIDCache <*>
        newIDCache <*>
        newIDCache <*>
@@ -125,6 +136,15 @@ maybeFallback s dbe fr c = do
               (Right Nothing)  -> left dbe
               (Right (Just v)) -> right $ fr v
 
+listFallback :: CxRow Postgres t
+             => Stmt Postgres
+             -> (t -> r)
+             -> Cacheable [r]
+listFallback s fr c = do
+    r <- session (pool c) (tx defTxMode (listEx s))
+    case r of (Left e)   -> left $ HasqlError e
+              (Right ts) -> right $ map fr ts
+
 -- | Report that a record with the given id in the given table doesn't exist.
 noSuchID :: String -> Word64 -> CacheError
 noSuchID t i = Nonexistent $ t ++ " with id " ++ (show i) ++ " does not exist."
@@ -135,38 +155,46 @@ reaper :: Cacheable ()
 reaper c = liftIO reapAll
     where reap = (flip swapMVar) M.empty
           reapAll = (reap $ memberIDCache c)
-              >> (reap $ eventIDCache c)
-              >> (reap $ projectIDCache c)
-              >> (reap $ evaluationIDCache c)
-              >> (reap $ conditionalIDCache c)
-              >> (reap $ freshmanProjectIDCache c)
-              >> (reap $ packetIDCache c)
-              >> (reap $ queueIDCache c)
-              >> (reap $ applicationIDCache c)
-              >> (reap $ metricIDCache c)
-              >> (reap $ reviewIDCache c)
-              >> (reap $ interviewIDCache c)
-              >> (reap $ questionIDCache c)
-              >> (reap $ termIDCache c)
-              >> (reap $ eboardMemberIDCache c)
-              >> (reap $ roomMemberIDCache c)
-              >> (reap $ membershipMemberIDCache c)
-              >> (reap $ eventAttendeeMemberIDCache c)
-              >> (reap $ eventAttendeeEventIDCache c)
-              >> (reap $ projectParticipantMemberIDCache c)
-              >> (reap $ projectParticipantProjectIDCache c)
-              >> (reap $ freshProjParticipantProjectIDCache c)
-              >> (reap $ freshProjParticipantEvaluationIDCache c)
-              >> (reap $ signatureMemberIDCache c)
-              >> (reap $ signaturePacketIDCache c)
-              >> (reap $ reviewMetricMetricIDCache c)
-              >> (reap $ reviewMetricReviewIDCache c)
-              >> (reap $ interviewMetricMetricIDCache c)
-              >> (reap $ interviewMetricInterviewIDCache c)
-              >> (reap $ answerQuestionIDCache c)
-              >> (reap $ answerApplicationIDCache c)
-              >> (reap $ duesMemberIDCache c)
-              >> return ()
+                 >> (reap $ eventIDCache c)
+                 >> (reap $ projectIDCache c)
+                 >> (reap $ evaluationIDCache c)
+                 >> (reap $ conditionalIDCache c)
+                 >> (reap $ freshmanProjectIDCache c)
+                 >> (reap $ packetIDCache c)
+                 >> (reap $ queueIDCache c)
+                 >> (reap $ applicationIDCache c)
+                 >> (reap $ metricIDCache c)
+                 >> (reap $ reviewIDCache c)
+                 >> (reap $ interviewIDCache c)
+                 >> (reap $ questionIDCache c)
+                 >> (reap $ termIDCache c)
+                 >> (reap $ eboardMemberIDCache c)
+                 >> (reap $ evaluationMemberIDCache c)
+                 >> (reap $ conditionalEvaluationIDCache c)
+                 >> (reap $ roomMemberIDCache c)
+                 >> (reap $ queueMemberIDCache c)
+                 >> (reap $ membershipMemberIDCache c)
+                 >> (reap $ eventAttendeeMemberIDCache c)
+                 >> (reap $ eventAttendeeEventIDCache c)
+                 >> (reap $ projectParticipantMemberIDCache c)
+                 >> (reap $ projectParticipantProjectIDCache c)
+                 >> (reap $ freshProjParticipantProjectIDCache c)
+                 >> (reap $ freshProjParticipantEvaluationIDCache c)
+                 >> (reap $ packetMemberIDCache c)
+                 >> (reap $ signatureMemberIDCache c)
+                 >> (reap $ signaturePacketIDCache c)
+                 >> (reap $ applicationMemberIDCache c)
+                 >> (reap $ reviewApplicationIDCache c)
+                 >> (reap $ interviewApplicationIDCache c)
+                 >> (reap $ reviewMetricMetricIDCache c)
+                 >> (reap $ reviewMetricReviewIDCache c)
+                 >> (reap $ interviewMetricMetricIDCache c)
+                 >> (reap $ interviewMetricInterviewIDCache c)
+                 >> (reap $ answerQuestionIDCache c)
+                 >> (reap $ answerApplicationIDCache c)
+                 >> (reap $ duesMemberIDCache c)
+                 >> (reap $ duesTermIDCache c)
+                 >> return ()
 
 -- | Add a single previously uncached value to the cache. This is done by a new
 --   thread that discards any exceptions, to prevent any cache corruption from
@@ -183,3 +211,19 @@ singletonGhost a k v c = liftIO $ forkFinally insrt1 (\_ -> putStrLn "singletonG
           insrt2 m2 = case M.lookup k m2 of
                         Nothing   -> newMVar v >>= (\v' -> putMVar m1 (M.insert k v' m2))
                         (Just m3) -> swapMVar m3 v >> return ()
+
+-- | Create a ghost that replays the effects of an action in the 'Cacheable'
+--   monad immediately before returning control to the exterior transformer.
+sneakyGhostM :: (Cache -> IDCache a)
+            -> Word64
+            -> CacheM a
+            -> Cacheable a
+sneakyGhostM a k vM c = vM >>= (\v -> singletonGhost a k v c >> return v)
+
+-- | Create a ghost that replays the effects of an action in the 'Cacheable'
+--   monad immediately before returning control to the exterior transformer.
+sneakyGhostC :: (Cache -> IDCache a)
+            -> Word64
+            -> Cacheable a
+            -> Cacheable a
+sneakyGhostC a k vM c = vM c >>= (\v -> singletonGhost a k v c >> return v)

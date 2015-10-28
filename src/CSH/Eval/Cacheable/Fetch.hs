@@ -65,7 +65,6 @@ module CSH.Eval.Cacheable.Fetch (
   , getMemberProjectParticipants
     -- ** FreshmanProjectParticipant
   , getFreshmanProjectFreshmanProjectParticipants
-  , getMemberFreshmanProjectParticipants
   , getEvaluationFreshmanProjectParticipants
     -- ** Signature
   , getPacketSignatures
@@ -152,195 +151,242 @@ import CSH.Eval.Cacheable.Prim
 getMemberID :: Word64 -> Cacheable Member
 getMemberID i c = do
     mc <- hitSegment memberIDCache c
-    m  <- hitRecordFallback i mc db
-    singletonGhost memberIDCache i m c
-    right m
+    hitRecordFallback i mc (sneakyGhostM memberIDCache i db c)
     where db = maybeFallback (getMemberIDP i) (noSuchID "Member" i) memberFromRow c
 
 getEventID :: Word64 -> Cacheable Event
 getEventID i c = do
     ec <- hitSegment eventIDCache c
-    e  <- hitRecordFallback i ec db
-    singletonGhost eventIDCache i e c
-    right e
+    hitRecordFallback i ec (sneakyGhostM eventIDCache i db c)
     where db = maybeFallback (getEventIDP i) (noSuchID "Event" i) eventFromRow c
 
 getProjectID :: Word64 -> Cacheable Project
 getProjectID i c = do
     pc <- hitSegment projectIDCache c
-    p  <- hitRecordFallback i pc db
-    singletonGhost projectIDCache i p c
-    right p
+    hitRecordFallback i pc (sneakyGhostM projectIDCache i db c)
     where db = maybeFallback (getProjectIDP i) (noSuchID "Project" i) projectFromRow c
 
 getEvaluationID :: Word64 -> Cacheable Evaluation
 getEvaluationID i c = do
     ec <- hitSegment evaluationIDCache c
-    e  <- hitRecordFallback i ec db
-    singletonGhost evaluationIDCache i e c
-    right e
+    hitRecordFallback i ec (sneakyGhostM evaluationIDCache i db c)
     where db = maybeFallback (getEvaluationIDP i) (noSuchID "Evaluation" i) evaluationFromRow c
 
 getMemberEvaluations :: Word64 -> Cacheable [Evaluation]
-getMemberEvaluations = undefined
+getMemberEvaluations i c = do
+    ec <- hitSegment evaluationMemberIDCache c
+    hitRecordFallback i ec (sneakyGhostM evaluationMemberIDCache i db c)
+    where db = listFallback (getEvaluationsMemberIDP i) evaluationFromRow c
 
 getConditionalID :: Word64 -> Cacheable Conditional
 getConditionalID i c = do
     cc <- hitSegment conditionalIDCache c
-    c' <- hitRecordFallback i cc db
-    singletonGhost conditionalIDCache i c' c
-    right c'
+    hitRecordFallback i cc (sneakyGhostM conditionalIDCache i db c)
     where db = maybeFallback (getConditionalIDP i) (noSuchID "Conditional" i) conditionalFromRow c
 
 getEvaluationConditionals :: Word64 -> Cacheable [Conditional]
-getEvaluationConditionals = undefined
+getEvaluationConditionals i c = do
+    cc <- hitSegment conditionalEvaluationIDCache c
+    hitRecordFallback i cc (sneakyGhostM conditionalEvaluationIDCache i db c)
+    where db = listFallback (getConditionalEvaluationIDP i) conditionalFromRow c
 
 getFreshmanProjectID :: Word64 -> Cacheable FreshmanProject
 getFreshmanProjectID i c = do
     fc <- hitSegment freshmanProjectIDCache c
-    f  <- hitRecordFallback i fc db
-    singletonGhost freshmanProjectIDCache i f c
-    right f
+    hitRecordFallback i fc (sneakyGhostM freshmanProjectIDCache i db c)
     where db = maybeFallback (getFreshmanProjectIDP i) (noSuchID "FreshmanProject" i) freshmanProjectFromRow c
 
 getPacketID :: Word64 -> Cacheable Packet
 getPacketID i c = do
     pc <- hitSegment packetIDCache c
-    p  <- hitRecordFallback i pc db
-    singletonGhost packetIDCache i p c
-    right p
+    hitRecordFallback i pc (sneakyGhostM packetIDCache i db c)
     where db = maybeFallback (getPacketIDP i) (noSuchID "Packet" i) packetFromRow c
 
 getMemberPackets :: Word64 -> Cacheable [Packet]
-getMemberPackets = undefined
+getMemberPackets i c = do
+    pc <- hitSegment packetMemberIDCache c
+    hitRecordFallback i pc (sneakyGhostM packetMemberIDCache i db c)
+    where db = listFallback (getPacketsMemberIDP i) packetFromRow c
 
 getApplicationID :: Word64 -> Cacheable Application
 getApplicationID i c = do
     ac <- hitSegment applicationIDCache c
-    a  <- hitRecordFallback i ac db
-    singletonGhost applicationIDCache i a c
-    right a
+    hitRecordFallback i ac (sneakyGhostM applicationIDCache i db c)
     where db = maybeFallback (getApplicationIDP i) (noSuchID "Application" i) applicationFromRow c
 
 getMemberApplications :: Word64 -> Cacheable [Application]
-getMemberApplications = undefined
+getMemberApplications i c = do
+    ac <- hitSegment applicationMemberIDCache c
+    hitRecordFallback i ac (sneakyGhostM applicationMemberIDCache i db c)
+    where db = listFallback (getApplicationsMemberIDP i) applicationFromRow c
 
 getMetricID :: Word64 -> Cacheable Metric
 getMetricID i c = do
     mc <- hitSegment metricIDCache c
-    m  <- hitRecordFallback i mc db
-    singletonGhost metricIDCache i m c
-    right m
+    hitRecordFallback i mc (sneakyGhostM metricIDCache i db c)
     where db = maybeFallback (getMetricIDP i) (noSuchID "Metric" i) metricFromRow c
 
 getReviewID :: Word64 -> Cacheable Review
 getReviewID i c = do
     rc <- hitSegment reviewIDCache c
-    r <- hitRecordFallback i rc db
-    singletonGhost reviewIDCache i r c
-    right r
+    hitRecordFallback i rc (sneakyGhostM reviewIDCache i db c)
     where db = maybeFallback (getReviewIDP i) (noSuchID "Review" i) reviewFromRow c
 
 getApplicationReviews :: Word64 -> Cacheable [Review]
-getApplicationReviews = undefined
+getApplicationReviews i c = do
+    rc <- hitSegment reviewApplicationIDCache c
+    hitRecordFallback i rc (sneakyGhostM reviewApplicationIDCache i db c)
+    where db = listFallback (getReviewsApplicationIDP i) reviewFromRow c
 
 getInterviewID :: Word64 -> Cacheable Interview
 getInterviewID i c = do
     ic <- hitSegment interviewIDCache c
-    i' <- hitRecordFallback i ic db
-    singletonGhost interviewIDCache i i' c
-    right i'
+    hitRecordFallback i ic (sneakyGhostM interviewIDCache i db c)
     where db = maybeFallback (getInterviewIDP i) (noSuchID "Interview" i) interviewFromRow c
 
 getApplicationInterviews :: Word64 -> Cacheable [Interview]
-getApplicationInterviews = undefined
+getApplicationInterviews i c = do
+    ic <- hitSegment interviewApplicationIDCache c
+    hitRecordFallback i ic (sneakyGhostM interviewApplicationIDCache i db c)
+    where db = listFallback (getInterviewsApplicationIDP i) interviewFromRow c
 
 getQuestionID :: Word64 -> Cacheable Question
 getQuestionID i c = do
     qc <- hitSegment questionIDCache c
-    q  <- hitRecordFallback i qc db
-    singletonGhost questionIDCache i q c
-    right q
+    hitRecordFallback i qc (sneakyGhostM questionIDCache i db c)
     where db = maybeFallback (getQuestionIDP i) (noSuchID "Question" i) questionFromRow c
 
 getTermID :: Word64 -> Cacheable Term
 getTermID i c = do
     tc <- hitSegment termIDCache c
-    t  <- hitRecordFallback i tc db
-    singletonGhost termIDCache i t c
-    right t
+    hitRecordFallback i tc (sneakyGhostM termIDCache i db c)
     where db = maybeFallback (getTermIDP i) (noSuchID "Question" i) termFromRow c
 
 getMemberEboards :: Word64 -> Cacheable [Eboard]
-getMemberEboards = undefined
+getMemberEboards i c = do
+    ec <- hitSegment eboardMemberIDCache c
+    hitRecordFallback i ec (sneakyGhostM eboardMemberIDCache i db c)
+    where db = listFallback (getEboardsMemberIDP i) eboardFromRow c
 
 getMemberRooms :: Word64 -> Cacheable [Room]
-getMemberRooms = undefined
+getMemberRooms i c = do
+    rc <- hitSegment roomMemberIDCache c
+    hitRecordFallback i rc (sneakyGhostM roomMemberIDCache i db c)
+    where db = listFallback (getRoomsMemberIDP i) roomFromRow c
 
 getQueueID :: Word64 -> Cacheable Queue
 getQueueID i c = do
     qc <- hitSegment queueIDCache c
-    q  <- hitRecordFallback i qc db
-    singletonGhost queueIDCache i q c
-    right q
+    hitRecordFallback i qc (sneakyGhostM queueIDCache i db c)
     where db = maybeFallback (getQueueIDP i) (noSuchID "Queue" i) queueFromRow c
 
 getMemberQueues :: Word64 -> Cacheable [Queue]
-getMemberQueues = undefined
+getMemberQueues i c = do
+    qc <- hitSegment queueMemberIDCache c
+    hitRecordFallback i qc (sneakyGhostM queueMemberIDCache i db c)
+    where db = listFallback (getQueuesMemberIDP i) queueFromRow c
 
 getMemberMemberships :: Word64 -> Cacheable [Membership]
-getMemberMemberships = undefined
+getMemberMemberships i c = do
+    mc <- hitSegment membershipMemberIDCache c
+    hitRecordFallback i mc (sneakyGhostM membershipMemberIDCache i db c)
+    where db = listFallback (getMembershipsMemberIDP i) membershipFromRow c
 
 getEventEventAttendees :: Word64 -> Cacheable [EventAttendee]
-getEventEventAttendees = undefined
+getEventEventAttendees i c = do
+    ec <- hitSegment eventAttendeeEventIDCache c
+    hitRecordFallback i ec (sneakyGhostM eventAttendeeMemberIDCache i db c)
+    where db = listFallback (getEventAttendeesEventIDP i) eventAttendeeFromRow c
 
 getMemberEventAttendees :: Word64 -> Cacheable [EventAttendee]
-getMemberEventAttendees = undefined
+getMemberEventAttendees i c = do
+    ec <- hitSegment eventAttendeeMemberIDCache c
+    hitRecordFallback i ec (sneakyGhostM eventAttendeeMemberIDCache i db c)
+    where db = listFallback (getEventAttendeesMemberIDP i) eventAttendeeFromRow c
 
 getProjectProjectParticipants :: Word64 -> Cacheable [ProjectParticipant]
-getProjectProjectParticipants = undefined
+getProjectProjectParticipants i c = do
+    pc <- hitSegment projectParticipantProjectIDCache c
+    hitRecordFallback i pc (sneakyGhostM projectParticipantProjectIDCache i db c)
+    where db = listFallback (getProjectParticipantsProjectIDP i) projectParticipantFromRow c
 
 getMemberProjectParticipants :: Word64 -> Cacheable [ProjectParticipant]
-getMemberProjectParticipants = undefined
+getMemberProjectParticipants i c = do
+    pc <- hitSegment projectParticipantMemberIDCache c
+    hitRecordFallback i pc (sneakyGhostM projectParticipantMemberIDCache i db c)
+    where db = listFallback (getProjectParticipantsMemberIDP i) projectParticipantFromRow c
 
 getFreshmanProjectFreshmanProjectParticipants :: Word64 -> Cacheable [FreshmanProjectParticipant]
-getFreshmanProjectFreshmanProjectParticipants = undefined
-
-getMemberFreshmanProjectParticipants :: Word64 -> Cacheable [FreshmanProjectParticipant]
-getMemberFreshmanProjectParticipants = undefined
+getFreshmanProjectFreshmanProjectParticipants i c = do
+    fc <- hitSegment freshProjParticipantProjectIDCache c
+    hitRecordFallback i fc (sneakyGhostM freshProjParticipantProjectIDCache i db c)
+    where db = listFallback (getFreshmanProjectParticipantsFreshmanProjectIDP i) freshmanProjectParticipantFromRow c
 
 getEvaluationFreshmanProjectParticipants :: Word64 -> Cacheable [FreshmanProjectParticipant]
-getEvaluationFreshmanProjectParticipants = undefined
+getEvaluationFreshmanProjectParticipants i c = do
+    fc <- hitSegment freshProjParticipantEvaluationIDCache c
+    hitRecordFallback i fc (sneakyGhostM freshProjParticipantEvaluationIDCache i db c)
+    where db = listFallback (getFreshmanProjectParticipantsEvaluationIDP i) freshmanProjectParticipantFromRow c
 
 getPacketSignatures :: Word64 -> Cacheable [Signature]
-getPacketSignatures = undefined
+getPacketSignatures i c = do
+    sc <- hitSegment signaturePacketIDCache c
+    hitRecordFallback i sc (sneakyGhostM signaturePacketIDCache i db c)
+    where db = listFallback (getSignaturesPacketIDP i) signatureFromRow c
 
 getMemberSignatures :: Word64 -> Cacheable [Signature]
-getMemberSignatures = undefined
+getMemberSignatures i c = do
+    sc <- hitSegment signatureMemberIDCache c
+    hitRecordFallback i sc (sneakyGhostM signatureMemberIDCache i db c)
+    where db = listFallback (getSignaturesMemberIDP i) signatureFromRow c
 
 getReviewReviewMetrics :: Word64 -> Cacheable [ReviewMetric]
-getReviewReviewMetrics = undefined
+getReviewReviewMetrics i c = do
+    rc <- hitSegment reviewMetricReviewIDCache c
+    hitRecordFallback i rc (sneakyGhostM reviewMetricReviewIDCache i db c)
+    where db = listFallback (getReviewMetricsReviewIDP i) reviewMetricFromRow c
 
 getMetricReviewMetrics :: Word64 -> Cacheable [ReviewMetric]
-getMetricReviewMetrics = undefined
+getMetricReviewMetrics i c = do
+    rc <- hitSegment reviewMetricMetricIDCache c
+    hitRecordFallback i rc (sneakyGhostM reviewMetricMetricIDCache i db c)
+    where db = listFallback (getReviewMetricsMetricIDP i) reviewMetricFromRow c
 
 getInterviewInterviewMetrics :: Word64 -> Cacheable [InterviewMetric]
-getInterviewInterviewMetrics = undefined
+getInterviewInterviewMetrics i c = do
+    ic <- hitSegment interviewMetricInterviewIDCache c
+    hitRecordFallback i ic (sneakyGhostM interviewMetricInterviewIDCache i db c)
+    where db = listFallback (getInterviewMetricsInterviewIDP i) interviewMetricFromRow c
 
 getMetricInterviewMetrics :: Word64 -> Cacheable [InterviewMetric]
-getMetricInterviewMetrics = undefined
+getMetricInterviewMetrics i c = do
+    ic <- hitSegment interviewMetricMetricIDCache c
+    hitRecordFallback i ic (sneakyGhostM interviewMetricMetricIDCache i db c)
+    where db = listFallback (getInterviewMetricsMetricIDP i) interviewMetricFromRow c
 
 getApplicationAnswers :: Word64 -> Cacheable [Answer]
-getApplicationAnswers = undefined
+getApplicationAnswers i c = do
+    ac <- hitSegment answerApplicationIDCache c
+    hitRecordFallback i ac (sneakyGhostM answerApplicationIDCache i db c)
+    where db = listFallback (getAnswersApplicationIDP i) answerFromRow c
 
 getQuestionAnswers :: Word64 -> Cacheable [Answer]
-getQuestionAnswers = undefined
+getQuestionAnswers i c = do
+    ac <- hitSegment answerQuestionIDCache c
+    hitRecordFallback i ac (sneakyGhostM answerQuestionIDCache i db c)
+    where db = listFallback (getAnswersQuestionIDP i) answerFromRow c
 
 getMemberDues :: Word64 -> Cacheable [Dues]
-getMemberDues = undefined
+getMemberDues i c = do
+    dc <- hitSegment duesMemberIDCache c
+    hitRecordFallback i dc (sneakyGhostM duesMemberIDCache i db c)
+    where db = listFallback (getDuesMemberIDP i) duesFromRow c
 
 getTermDues :: Word64 -> Cacheable [Dues]
-getTermDues = undefined
+getTermDues i c = do
+    dc <- hitSegment duesTermIDCache c
+    hitRecordFallback i dc (sneakyGhostM duesTermIDCache i db c)
+    where db = listFallback (getDuesTermIDP i) duesFromRow c
 
 memberFromRow :: (Word64, UUID, T.Text, T.Text, B.ByteString, B.ByteString, Int, Bool) -> Member
 memberFromRow (i, u, un, cn, _, _, hp, os) = Member
