@@ -7,7 +7,8 @@ Maintainer  : pvals@csh.rit.edu
 Stability   : Provisional
 Portability : POSIX
 
-Route handlers for the various Evaluations pages, such as Freshmen evals and membership evals
+Route handlers for the various Evaluations pages, such as Freshmen evals and
+membership evals.
 -}
 {-# LANGUAGE QuasiQuotes       #-}
 {-# LANGUAGE TypeFamilies      #-}
@@ -16,9 +17,9 @@ Route handlers for the various Evaluations pages, such as Freshmen evals and mem
 {-# LANGUAGE FlexibleContexts  #-}
 {-# LANGUAGE ViewPatterns      #-}
 
-module CSH.Eval.Frontend.Evals
-( getEvalsMembershipOverviewR
-) where
+module CSH.Eval.Frontend.Evals (
+    getEvalsMembershipOverviewR
+  ) where
 
 import qualified Data.Text as T
 

@@ -570,7 +570,6 @@ signature = mapM_ H.unitEx
     )|]
    ]
 
-
 -- | The Housing Queue.
 --   This represents the queue waiting to move on floor.
 --

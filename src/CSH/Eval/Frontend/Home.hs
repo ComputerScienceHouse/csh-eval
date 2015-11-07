@@ -6,6 +6,8 @@ License     : MIT
 Maintainer  : pvals@csh.rit.edu
 Stability   : Provisional
 Portability : POSIX
+
+DOCUMENT THIS.
 -}
 {-# LANGUAGE QuasiQuotes       #-}
 {-# LANGUAGE TypeFamilies      #-}
@@ -14,9 +16,9 @@ Portability : POSIX
 {-# LANGUAGE FlexibleContexts  #-}
 {-# LANGUAGE ViewPatterns      #-}
 
-module CSH.Eval.Frontend.Home
-( getHomeR
-) where
+module CSH.Eval.Frontend.Home (
+    getHomeR
+  ) where
 
 import qualified Data.Text as T
 import qualified Data.ByteString.Char8 as B
@@ -34,10 +36,9 @@ import Text.Hamlet (hamletFile)
 import Text.Lucius (luciusFile)
 import Yesod
 
--- | The handler for the Evaluations Database index page
+-- | The handler for the Evaluations Database index page.
 getHomeR :: Handler Html
 getHomeR = do
     req <- waiRequest
     let usr = fromMaybe "" (L.lookup "X-WEBAUTH-USER" (requestHeaders req))
     getMemberR $ B.unpack usr
-

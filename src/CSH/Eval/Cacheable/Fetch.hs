@@ -104,7 +104,7 @@ module CSH.Eval.Cacheable.Fetch (
     -- ** Dues
   , getMemberDues
   , getTermDues
-    -- * FromRow Functions (Probably shouldn't be exported...)
+    -- * FromRow Functions
   , memberFromRow
   , eventFromRow
   , projectFromRow
@@ -130,7 +130,7 @@ module CSH.Eval.Cacheable.Fetch (
   , interviewMetricFromRow
   , answerFromRow
   , duesFromRow
-    -- * FromVal Functions (Probably shouldn't be exported...)
+    -- * FromVal Functions
   , committeeFromVal
   , evaluationTypeFromVal
   , evaluationStatusFromVal
@@ -138,7 +138,7 @@ module CSH.Eval.Cacheable.Fetch (
   , duesStatusFromVal
   , eventTypeFromVal
   , projectTypeFromVal
-    -- * ToVal Functions (Move these somewhere else...)
+    -- * ToVal Functions
   , committeeToVal
   , evaluationTypeToVal
   , evaluationStatusToVal
@@ -179,324 +179,451 @@ import CSH.Eval.DB.Statements
 
 import CSH.Eval.Cacheable.Prim
 
-getMemberID :: Word64 -> Cacheable Member
+-- | Fetch a 'Member' by ID.
+getMemberID :: Word64 -- ^ Member ID.
+            -> Cacheable Member
 getMemberID i c = do
     mc <- hitSegment memberIDCache c
     hitRecordFallback i mc (sneakyGhostM memberIDCache i db c)
     where db = liftMaybeQ (getMemberIDP i) (noSuchID "Member" i) memberFromRow c
 
-getMemberUUID :: UUID -> Cacheable Member
+-- | Fetch a 'Member' by UUID.
+getMemberUUID :: UUID -- ^ Member UUID.
+              -> Cacheable Member
 getMemberUUID u c = liftMaybeQ (getMemberUUIDP u) (noSuchThing "member" "UUID" u) memberFromRow c
 
-getMemberUsername :: T.Text -> Cacheable Member
+-- | Fetch a 'Member' by username.
+getMemberUsername :: T.Text -- ^ Member username.
+                  -> Cacheable Member
 getMemberUsername u c = liftMaybeQ (getMemberUsernameP u) (noSuchThing "member" "username" u) memberFromRow c
 
-getMembersCommonname :: T.Text -> Cacheable [Member]
+-- | Fetch the 'Member'(s) with the provided common name.
+getMembersCommonname :: T.Text -- ^ Member common name.
+                     -> Cacheable [Member]
 getMembersCommonname cn c = liftListQ (getMembersCommonnameP cn) memberFromRow c
 
-getMembersOnfloor :: Bool -> Cacheable [Member]
+-- | Fetch all on-floor or off-floor 'Member's.
+getMembersOnfloor :: Bool -- ^ Onfloor status.
+                  -> Cacheable [Member]
 getMembersOnfloor o c = liftListQ (getMembersOnfloorP o) memberFromRow c
 
-getEventID :: Word64 -> Cacheable Event
+-- | Fetch an 'Event' by ID.
+getEventID :: Word64 -- ^ Event ID.
+           -> Cacheable Event
 getEventID i c = do
     ec <- hitSegment eventIDCache c
     hitRecordFallback i ec (sneakyGhostM eventIDCache i db c)
     where db = liftMaybeQ (getEventIDP i) (noSuchID "Event" i) eventFromRow c
 
-getEventsTitle :: T.Text -> Cacheable [Event]
+-- | Fetch the 'Event'(s) with the provided title.
+getEventsTitle :: T.Text -- ^ Event title.
+               -> Cacheable [Event]
 getEventsTitle t c = liftListQ (getEventsTitleP t) eventFromRow c
 
-getProjectID :: Word64 -> Cacheable Project
+-- | Fetch a 'Project' by ID.
+getProjectID :: Word64 -- ^ Project ID.
+             -> Cacheable Project
 getProjectID i c = do
     pc <- hitSegment projectIDCache c
     hitRecordFallback i pc (sneakyGhostM projectIDCache i db c)
     where db = liftMaybeQ (getProjectIDP i) (noSuchID "Project" i) projectFromRow c
 
-getProjectsTitle :: T.Text -> Cacheable [Project]
+-- | Fetch the 'Project'(s) with the provided title.
+getProjectsTitle :: T.Text -- ^ Project title.
+                 -> Cacheable [Project]
 getProjectsTitle t c = liftListQ (getProjectsTitleP t) projectFromRow c
 
-getProjectsStatus :: EvaluationStatus -> Cacheable [Project]
+-- | Fetch the 'Project'(s) with the provided 'EvlauationStatus'.
+getProjectsStatus :: EvaluationStatus -- ^ Project evaluation status.
+                  -> Cacheable [Project]
 getProjectsStatus e c = liftListQ (getProjectsStatusP (evaluationStatusToVal e)) projectFromRow c
 
-getEvaluationID :: Word64 -> Cacheable Evaluation
+-- | Fetch an 'Evaluation' by ID.
+getEvaluationID :: Word64 -- ^ Evaluation ID.
+                -> Cacheable Evaluation
 getEvaluationID i c = do
     ec <- hitSegment evaluationIDCache c
     hitRecordFallback i ec (sneakyGhostM evaluationIDCache i db c)
     where db = liftMaybeQ (getEvaluationIDP i) (noSuchID "Evaluation" i) evaluationFromRow c
 
-getMemberEvaluations :: Word64 -> Cacheable [Evaluation]
+-- | Fetch the 'Evaluation's associated with a provided 'Member'.
+getMemberEvaluations :: Word64 -- ^ Member ID.
+                     -> Cacheable [Evaluation]
 getMemberEvaluations i c = do
     ec <- hitSegment evaluationMemberIDCache c
     hitRecordFallback i ec (sneakyGhostM evaluationMemberIDCache i db c)
     where db = liftListQ (getEvaluationsMemberIDP i) evaluationFromRow c
 
-getEvaluationsStatus :: EvaluationStatus -> Cacheable [Evaluation]
+-- | Fetch the 'Evaluation's with a provided 'EvaluationStatus'.
+getEvaluationsStatus :: EvaluationStatus -- ^ Evaluation status.
+                     -> Cacheable [Evaluation]
 getEvaluationsStatus e c = liftListQ (getEvaluationsStatusP (evaluationStatusToVal e)) evaluationFromRow c
 
-getConditionalID :: Word64 -> Cacheable Conditional
+-- | Fetch a 'Conditional' by ID.
+getConditionalID :: Word64 -- ^ Conditional ID.
+                 -> Cacheable Conditional
 getConditionalID i c = do
     cc <- hitSegment conditionalIDCache c
     hitRecordFallback i cc (sneakyGhostM conditionalIDCache i db c)
     where db = liftMaybeQ (getConditionalIDP i) (noSuchID "Conditional" i) conditionalFromRow c
 
-getEvaluationConditionals :: Word64 -> Cacheable [Conditional]
+-- | Fetch the 'Conditional'(s) associated with a provided 'Evaluation'.
+getEvaluationConditionals :: Word64 -- ^ Evaluation ID.
+                          -> Cacheable [Conditional]
 getEvaluationConditionals i c = do
     cc <- hitSegment conditionalEvaluationIDCache c
     hitRecordFallback i cc (sneakyGhostM conditionalEvaluationIDCache i db c)
     where db = liftListQ (getConditionalEvaluationIDP i) conditionalFromRow c
 
-getFreshmanProjectID :: Word64 -> Cacheable FreshmanProject
+-- | Fetch a 'FreshmanProject' by ID.
+getFreshmanProjectID :: Word64 -- ^ Freshman project ID.
+                     -> Cacheable FreshmanProject
 getFreshmanProjectID i c = do
     fc <- hitSegment freshmanProjectIDCache c
     hitRecordFallback i fc (sneakyGhostM freshmanProjectIDCache i db c)
     where db = liftMaybeQ (getFreshmanProjectIDP i) (noSuchID "FreshmanProject" i) freshmanProjectFromRow c
 
-getPacketID :: Word64 -> Cacheable Packet
+-- | Fetch a 'Packet' by ID.
+getPacketID :: Word64 -- ^ Packet ID.
+            -> Cacheable Packet
 getPacketID i c = do
     pc <- hitSegment packetIDCache c
     hitRecordFallback i pc (sneakyGhostM packetIDCache i db c)
     where db = liftMaybeQ (getPacketIDP i) (noSuchID "Packet" i) packetFromRow c
 
-getMemberPackets :: Word64 -> Cacheable [Packet]
+-- | Fetch the 'Packet'(s) associated with a provided 'Member'.
+getMemberPackets :: Word64 -- ^ Member ID.
+                 -> Cacheable [Packet]
 getMemberPackets i c = do
     pc <- hitSegment packetMemberIDCache c
     hitRecordFallback i pc (sneakyGhostM packetMemberIDCache i db c)
     where db = liftListQ (getPacketsMemberIDP i) packetFromRow c
 
-getApplicationID :: Word64 -> Cacheable Application
+-- | Fetch an 'Application' by ID.
+getApplicationID :: Word64 -- ^ Application ID.
+                 -> Cacheable Application
 getApplicationID i c = do
     ac <- hitSegment applicationIDCache c
     hitRecordFallback i ac (sneakyGhostM applicationIDCache i db c)
     where db = liftMaybeQ (getApplicationIDP i) (noSuchID "Application" i) applicationFromRow c
 
-getMemberApplications :: Word64 -> Cacheable [Application]
+-- | Fetch the 'Application'(s) associated with a provided 'Member'.
+getMemberApplications :: Word64 -- ^ Member ID.
+                      -> Cacheable [Application]
 getMemberApplications i c = do
     ac <- hitSegment applicationMemberIDCache c
     hitRecordFallback i ac (sneakyGhostM applicationMemberIDCache i db c)
     where db = liftListQ (getApplicationsMemberIDP i) applicationFromRow c
 
-getApplicationsStatus :: EvaluationStatus -> Cacheable [Application]
+-- | Fetch the 'Appliation's with the provided 'EvaluationStatus'.
+getApplicationsStatus :: EvaluationStatus -- ^ Evaluation status.
+                      -> Cacheable [Application]
 getApplicationsStatus e c = liftListQ (getApplicationsStatusP (evaluationStatusToVal e)) applicationFromRow c
 
-getMemberStatusApplications :: Word64 -> EvaluationStatus -> Cacheable [Application]
+-- | Fetch the 'Application'(s) associated with a provided 'Member' and of a
+--   provided 'EvaluationStatus'.
+getMemberStatusApplications :: Word64           -- ^ Member ID.
+                            -> EvaluationStatus -- ^ Evaluation status.
+                            -> Cacheable [Application]
 getMemberStatusApplications m e c = liftListQ
                                     (getApplicationsMemberIDStatusP m (evaluationStatusToVal e))
                                     applicationFromRow
                                     c
 
-getMetricID :: Word64 -> Cacheable Metric
+-- | Fetch a 'Metric' by ID.
+getMetricID :: Word64 -- ^ Metric ID.
+            -> Cacheable Metric
 getMetricID i c = do
     mc <- hitSegment metricIDCache c
     hitRecordFallback i mc (sneakyGhostM metricIDCache i db c)
     where db = liftMaybeQ (getMetricIDP i) (noSuchID "Metric" i) metricFromRow c
 
-getMetricsActive :: Bool -> Cacheable [Metric]
+-- | Fetch all active or inactive 'Metric's.
+getMetricsActive :: Bool -- Whether or not a metric is active.
+                 -> Cacheable [Metric]
 getMetricsActive a c = liftListQ (getMetricsActiveP a) metricFromRow c
 
-getReviewID :: Word64 -> Cacheable Review
+-- | Fetch a 'Review' by ID.
+getReviewID :: Word64 -- ^ Review ID.
+            -> Cacheable Review
 getReviewID i c = do
     rc <- hitSegment reviewIDCache c
     hitRecordFallback i rc (sneakyGhostM reviewIDCache i db c)
     where db = liftMaybeQ (getReviewIDP i) (noSuchID "Review" i) reviewFromRow c
 
-getApplicationReviews :: Word64 -> Cacheable [Review]
+-- | Fetch the 'Review's associated with a provided 'Application'.
+getApplicationReviews :: Word64 -- ^ Application ID.
+                      -> Cacheable [Review]
 getApplicationReviews i c = do
     rc <- hitSegment reviewApplicationIDCache c
     hitRecordFallback i rc (sneakyGhostM reviewApplicationIDCache i db c)
     where db = liftListQ (getReviewsApplicationIDP i) reviewFromRow c
 
-getMemberReviews :: Word64 -> Cacheable [Review]
+-- | Fetch the 'Review's written by a provided 'Member'.
+getMemberReviews :: Word64 -- ^ Member ID.
+                 -> Cacheable [Review]
 getMemberReviews m c = liftListQ (getReviewsMemberIDP m) reviewFromRow c
 
-getMemberApplicationReview :: Word64 -> Word64 -> Cacheable Review
+-- | Fetch a particular 'Member's review of a particular 'Application'.
+getMemberApplicationReview :: Word64 -- ^ Member ID.
+                           -> Word64 -- ^ Application ID.
+                           -> Cacheable Review
 getMemberApplicationReview m a c = liftMaybeQ
     (getReviewMemberIDApplicationIDP m a)
     (Nonexistent ("no such application review by member " ++ (show m) ++ " for application " ++ (show a)))
     reviewFromRow
     c
 
-getInterviewID :: Word64 -> Cacheable Interview
+-- | Fetch an 'Interview' by ID.
+getInterviewID :: Word64 -- ^ Interview ID.
+               -> Cacheable Interview
 getInterviewID i c = do
     ic <- hitSegment interviewIDCache c
     hitRecordFallback i ic (sneakyGhostM interviewIDCache i db c)
     where db = liftMaybeQ (getInterviewIDP i) (noSuchID "Interview" i) interviewFromRow c
 
-getApplicationInterviews :: Word64 -> Cacheable [Interview]
+-- | Fetch the 'Interview's associated with a provided 'Applicatoin'.
+getApplicationInterviews :: Word64 -- ^ Application ID.
+                         -> Cacheable [Interview]
 getApplicationInterviews i c = do
     ic <- hitSegment interviewApplicationIDCache c
     hitRecordFallback i ic (sneakyGhostM interviewApplicationIDCache i db c)
     where db = liftListQ (getInterviewsApplicationIDP i) interviewFromRow c
 
-getMemberInterviews :: Word64 -> Cacheable [Interview]
+-- | Fetch the 'Interview's conducted by a provided 'Member'.
+getMemberInterviews :: Word64 -- ^ Member ID.
+                    -> Cacheable [Interview]
 getMemberInterviews m c = liftListQ (getInterviewsMemberIDP m) interviewFromRow c
 
-getMemberApplicationInterview :: Word64 -> Word64 -> Cacheable Interview
+-- | Fetch a particular 'Member's review of a particular 'Application'.
+getMemberApplicationInterview :: Word64 -- ^ Member ID.
+                              -> Word64 -- ^ Application ID.
+                              -> Cacheable Interview
 getMemberApplicationInterview m a c = liftMaybeQ
     (getInterviewMemberIDApplicationIDP m a)
     (Nonexistent ("no such application interview by member " ++ (show m) ++ " for application " ++ (show a)))
     interviewFromRow
     c
 
-getQuestionID :: Word64 -> Cacheable Question
+-- | Fetch a 'Question' by ID.
+getQuestionID :: Word64 -- ^ Question ID.
+              -> Cacheable Question
 getQuestionID i c = do
     qc <- hitSegment questionIDCache c
     hitRecordFallback i qc (sneakyGhostM questionIDCache i db c)
     where db = liftMaybeQ (getQuestionIDP i) (noSuchID "Question" i) questionFromRow c
 
-getQuestionsActive :: Bool -> Cacheable [Question]
+-- | Fetch all active or inactive 'Question's.
+getQuestionsActive :: Bool -- ^ Whether or not a question is active.
+                   -> Cacheable [Question]
 getQuestionsActive a c = liftListQ (getQuestionsActiveP a) questionFromRow c
 
-getTermID :: Word64 -> Cacheable Term
+-- | Fetch a 'Term' by ID.
+getTermID :: Word64 -- ^ Term ID.
+          -> Cacheable Term
 getTermID i c = do
     tc <- hitSegment termIDCache c
     hitRecordFallback i tc (sneakyGhostM termIDCache i db c)
     where db = liftMaybeQ (getTermIDP i) (noSuchID "Question" i) termFromRow c
 
-getMemberEboards :: Word64 -> Cacheable [Eboard]
+-- | Fetch a provided 'Member's 'Eboard' terms.
+getMemberEboards :: Word64 -- ^ Member ID.
+                 -> Cacheable [Eboard]
 getMemberEboards i c = do
     ec <- hitSegment eboardMemberIDCache c
     hitRecordFallback i ec (sneakyGhostM eboardMemberIDCache i db c)
     where db = liftListQ (getEboardsMemberIDP i) eboardFromRow c
 
+-- | Fetch the current 'Eboard's terms.
 getCurrentEboards :: Cacheable [Eboard]
 getCurrentEboards c = liftListQ getCurrentEboardsP eboardFromRow c
 
-getMemberRooms :: Word64 -> Cacheable [Room]
+-- | Fetch the 'Room' residences associated with a provided 'Member.
+getMemberRooms :: Word64 -- ^ Member ID.
+               -> Cacheable [Room]
 getMemberRooms i c = do
     rc <- hitSegment roomMemberIDCache c
     hitRecordFallback i rc (sneakyGhostM roomMemberIDCache i db c)
     where db = liftListQ (getRoomsMemberIDP i) roomFromRow c
 
-getRoomsRoomNumber :: T.Text -> Cacheable [Room]
+-- | Fetch the 'Room' residences associated with a provided room number.
+getRoomsRoomNumber :: T.Text -- ^ Room number.
+                   -> Cacheable [Room]
 getRoomsRoomNumber r c = liftListQ (getRoomsRoomNumberP r) roomFromRow c
 
+-- | Fetch the 'Room' residences of all members currently living on floor.
 getCurrentRooms :: Cacheable [Room]
 getCurrentRooms c = liftListQ getCurrentRoomsP roomFromRow c
 
-getQueueID :: Word64 -> Cacheable Queue
+-- | Fetch a 'Queue' by ID.
+getQueueID :: Word64 -- ^ Queue ID.
+           -> Cacheable Queue
 getQueueID i c = do
     qc <- hitSegment queueIDCache c
     hitRecordFallback i qc (sneakyGhostM queueIDCache i db c)
     where db = liftMaybeQ (getQueueIDP i) (noSuchID "Queue" i) queueFromRow c
 
-getMemberQueues :: Word64 -> Cacheable [Queue]
+-- | Fetch a provided 'Member's 'Queue' instantiations.
+getMemberQueues :: Word64 -- ^ Member ID.
+                -> Cacheable [Queue]
 getMemberQueues i c = do
     qc <- hitSegment queueMemberIDCache c
     hitRecordFallback i qc (sneakyGhostM queueMemberIDCache i db c)
     where db = liftListQ (getQueuesMemberIDP i) queueFromRow c
 
-getMemberMemberships :: Word64 -> Cacheable [Membership]
+-- | Fetch the 'Membership'(s) associated with a provided 'Member'.
+getMemberMemberships :: Word64 -- ^ Member ID.
+                     -> Cacheable [Membership]
 getMemberMemberships i c = do
     mc <- hitSegment membershipMemberIDCache c
     hitRecordFallback i mc (sneakyGhostM membershipMemberIDCache i db c)
     where db = liftListQ (getMembershipsMemberIDP i) membershipFromRow c
 
+-- | Fetch all currently relevant 'Membership's.
 getCurrentMemberships :: Cacheable [Membership]
 getCurrentMemberships c = liftListQ getCurrentMembershipsP membershipFromRow c
 
-getEventEventAttendees :: Word64 -> Cacheable [EventAttendee]
+-- | Fetch the 'EventAttendee's who attended a provided 'Event'.
+getEventEventAttendees :: Word64 -- ^ Event ID.
+                       -> Cacheable [EventAttendee]
 getEventEventAttendees i c = do
     ec <- hitSegment eventAttendeeEventIDCache c
     hitRecordFallback i ec (sneakyGhostM eventAttendeeMemberIDCache i db c)
     where db = liftListQ (getEventAttendeesEventIDP i) eventAttendeeFromRow c
 
-getMemberEventAttendees :: Word64 -> Cacheable [EventAttendee]
+-- | Fetch the events a 'Member has attended.
+getMemberEventAttendees :: Word64 -- ^ Member ID.
+                        -> Cacheable [EventAttendee]
 getMemberEventAttendees i c = do
     ec <- hitSegment eventAttendeeMemberIDCache c
     hitRecordFallback i ec (sneakyGhostM eventAttendeeMemberIDCache i db c)
     where db = liftListQ (getEventAttendeesMemberIDP i) eventAttendeeFromRow c
 
-getProjectProjectParticipants :: Word64 -> Cacheable [ProjectParticipant]
+-- | Fetch a 'Project's 'ProjectParticipant's.
+getProjectProjectParticipants :: Word64 -- ^ Project ID.
+                              -> Cacheable [ProjectParticipant]
 getProjectProjectParticipants i c = do
     pc <- hitSegment projectParticipantProjectIDCache c
     hitRecordFallback i pc (sneakyGhostM projectParticipantProjectIDCache i db c)
     where db = liftListQ (getProjectParticipantsProjectIDP i) projectParticipantFromRow c
 
-getMemberProjectParticipants :: Word64 -> Cacheable [ProjectParticipant]
+-- | Fetch the 'Project's a 'Member' has participated in.
+getMemberProjectParticipants :: Word64 -- ^ Member ID.
+                             -> Cacheable [ProjectParticipant]
 getMemberProjectParticipants i c = do
     pc <- hitSegment projectParticipantMemberIDCache c
     hitRecordFallback i pc (sneakyGhostM projectParticipantMemberIDCache i db c)
     where db = liftListQ (getProjectParticipantsMemberIDP i) projectParticipantFromRow c
 
-getFreshmanProjectFreshmanProjectParticipants :: Word64 -> Cacheable [FreshmanProjectParticipant]
+-- | Fetch a 'FreshmanProject's 'FreshmanProjectParticipant's.
+getFreshmanProjectFreshmanProjectParticipants :: Word64 -- ^ Freshman project ID.
+                                              -> Cacheable [FreshmanProjectParticipant]
 getFreshmanProjectFreshmanProjectParticipants i c = do
     fc <- hitSegment freshProjParticipantProjectIDCache c
     hitRecordFallback i fc (sneakyGhostM freshProjParticipantProjectIDCache i db c)
     where db = liftListQ (getFreshmanProjectParticipantsFreshmanProjectIDP i) freshmanProjectParticipantFromRow c
 
-getEvaluationFreshmanProjectParticipants :: Word64 -> Cacheable [FreshmanProjectParticipant]
+-- | Fetch the 'FreshmanProjectParticipant'(s) associated with a provided
+--   'Evaluation'.
+getEvaluationFreshmanProjectParticipants :: Word64 -- ^ Evaluation ID.
+                                         -> Cacheable [FreshmanProjectParticipant]
 getEvaluationFreshmanProjectParticipants i c = do
     fc <- hitSegment freshProjParticipantEvaluationIDCache c
     hitRecordFallback i fc (sneakyGhostM freshProjParticipantEvaluationIDCache i db c)
     where db = liftListQ (getFreshmanProjectParticipantsEvaluationIDP i) freshmanProjectParticipantFromRow c
 
-getFreshmanProjectFreshmanProjectEboards :: Word64 -> Cacheable [FreshmanProjectParticipant]
+-- | Fetch a 'FreshmanProject's Eboard.
+getFreshmanProjectFreshmanProjectEboards :: Word64 -- ^ Freshman Project.
+                                         -> Cacheable [FreshmanProjectParticipant]
 getFreshmanProjectFreshmanProjectEboards f c = liftListQ
                                                (getFreshmanProjectParticipantsEboardP f)
                                                freshmanProjectParticipantFromRow
                                                c
 
-getPacketSignatures :: Word64 -> Cacheable [Signature]
+-- | Fetch a 'Packet's 'Signature's.
+getPacketSignatures :: Word64 -- ^ Packet ID.
+                    -> Cacheable [Signature]
 getPacketSignatures i c = do
     sc <- hitSegment signaturePacketIDCache c
     hitRecordFallback i sc (sneakyGhostM signaturePacketIDCache i db c)
     where db = liftListQ (getSignaturesPacketIDP i) signatureFromRow c
 
-getPacketSignaturesSigned :: Word64 -> Cacheable [Signature]
+-- | Fetch a 'Packet's signed 'Signatures'.
+getPacketSignaturesSigned :: Word64 -- ^ Packet ID.
+                          -> Cacheable [Signature]
 getPacketSignaturesSigned p c = liftListQ (getSignaturesSignedP p) signatureFromRow c
 
-getPacketRequiredSignatures :: Word64 -> Cacheable [Signature]
+-- | Fetch a 'Packet's required 'Signature's.
+getPacketRequiredSignatures :: Word64 -- ^ Packet ID.
+                            -> Cacheable [Signature]
 getPacketRequiredSignatures p c = liftListQ (getSignaturesRequiredP p) signatureFromRow c
 
-getMemberSignatures :: Word64 -> Cacheable [Signature]
+-- | Fetch the 'Signature's provided by a particular 'Member'.
+getMemberSignatures :: Word64 -- ^ MemberID.
+                    -> Cacheable [Signature]
 getMemberSignatures i c = do
     sc <- hitSegment signatureMemberIDCache c
     hitRecordFallback i sc (sneakyGhostM signatureMemberIDCache i db c)
     where db = liftListQ (getSignaturesMemberIDP i) signatureFromRow c
 
-getReviewReviewMetrics :: Word64 -> Cacheable [ReviewMetric]
+-- | Fetch a 'Review's 'ReviewMetric's.
+getReviewReviewMetrics :: Word64 -- ^ Review ID.
+                       -> Cacheable [ReviewMetric]
 getReviewReviewMetrics i c = do
     rc <- hitSegment reviewMetricReviewIDCache c
     hitRecordFallback i rc (sneakyGhostM reviewMetricReviewIDCache i db c)
     where db = liftListQ (getReviewMetricsReviewIDP i) reviewMetricFromRow c
 
-getMetricReviewMetrics :: Word64 -> Cacheable [ReviewMetric]
+-- | Fetch a 'Metric's lifetime 'ReviewMetric's.
+getMetricReviewMetrics :: Word64 -- ^ Metric ID.
+                       -> Cacheable [ReviewMetric]
 getMetricReviewMetrics i c = do
     rc <- hitSegment reviewMetricMetricIDCache c
     hitRecordFallback i rc (sneakyGhostM reviewMetricMetricIDCache i db c)
     where db = liftListQ (getReviewMetricsMetricIDP i) reviewMetricFromRow c
 
-getInterviewInterviewMetrics :: Word64 -> Cacheable [InterviewMetric]
+-- | Fetch an 'Interview's 'InterviewMetric's.
+getInterviewInterviewMetrics :: Word64 -- ^ Interview ID.
+                             -> Cacheable [InterviewMetric]
 getInterviewInterviewMetrics i c = do
     ic <- hitSegment interviewMetricInterviewIDCache c
     hitRecordFallback i ic (sneakyGhostM interviewMetricInterviewIDCache i db c)
     where db = liftListQ (getInterviewMetricsInterviewIDP i) interviewMetricFromRow c
 
-getMetricInterviewMetrics :: Word64 -> Cacheable [InterviewMetric]
+-- | Fetch a 'Metric's lifetime 'InterviewMetric's.
+getMetricInterviewMetrics :: Word64 -- ^ Metric ID.
+                          -> Cacheable [InterviewMetric]
 getMetricInterviewMetrics i c = do
     ic <- hitSegment interviewMetricMetricIDCache c
     hitRecordFallback i ic (sneakyGhostM interviewMetricMetricIDCache i db c)
     where db = liftListQ (getInterviewMetricsMetricIDP i) interviewMetricFromRow c
 
-getApplicationAnswers :: Word64 -> Cacheable [Answer]
+-- | Fetch the 'Answer's to an 'Application's 'Question's.
+getApplicationAnswers :: Word64 -- ^ Application ID.
+                      -> Cacheable [Answer]
 getApplicationAnswers i c = do
     ac <- hitSegment answerApplicationIDCache c
     hitRecordFallback i ac (sneakyGhostM answerApplicationIDCache i db c)
     where db = liftListQ (getAnswersApplicationIDP i) answerFromRow c
 
+-- | Fetch a 'Question's lifetime 'Answer's.
 getQuestionAnswers :: Word64 -> Cacheable [Answer]
 getQuestionAnswers i c = do
     ac <- hitSegment answerQuestionIDCache c
     hitRecordFallback i ac (sneakyGhostM answerQuestionIDCache i db c)
     where db = liftListQ (getAnswersQuestionIDP i) answerFromRow c
 
-getMemberDues :: Word64 -> Cacheable [Dues]
+-- | Fetch a 'Member's 'Due's.
+getMemberDues :: Word64 -- ^ Member ID.
+              -> Cacheable [Dues]
 getMemberDues i c = do
     dc <- hitSegment duesMemberIDCache c
     hitRecordFallback i dc (sneakyGhostM duesMemberIDCache i db c)
     where db = liftListQ (getDuesMemberIDP i) duesFromRow c
 
-getTermDues :: Word64 -> Cacheable [Dues]
+-- | Fetch a 'Term's 'Due's.
+getTermDues :: Word64 -- ^ Term ID.
+            -> Cacheable [Dues]
 getTermDues i c = do
     dc <- hitSegment duesTermIDCache c
     hitRecordFallback i dc (sneakyGhostM duesTermIDCache i db c)
@@ -702,7 +829,6 @@ duesFromRow (m, t, s) = Dues
     (getMemberID m)
     (getTermID t)
 
--- | This function is partial! Explain why...
 committeeFromVal :: T.Text -> Committee
 committeeFromVal "evals"     = Evals
 committeeFromVal "rnd"       = RnD
@@ -713,18 +839,15 @@ committeeFromVal "imps"      = Imps
 committeeFromVal "financial" = Financial
 committeeFromVal "chairmam"  = Chairman
 
--- | This function is partial! Explain why...
 evaluationTypeFromVal :: T.Text -> EvaluationType
 evaluationTypeFromVal "introductory" = IntroEval
 evaluationTypeFromVal "membership"   = MembershipEval
 
--- | This function is partial! Explain why...
 evaluationStatusFromVal :: T.Text -> EvaluationStatus
 evaluationStatusFromVal "pending" = Pending
 evaluationStatusFromVal "passed"  = Passed
 evaluationStatusFromVal "failed"  = Failed
 
--- | This function is partial! Explain why...
 memberStatusFromVal :: T.Text -> MemberStatus
 memberStatusFromVal "active"       = Active
 memberStatusFromVal "alumni_good"  = AlumniGood
@@ -734,12 +857,10 @@ memberStatusFromVal "advisory"     = Advisory
 memberStatusFromVal "introductory" = Intro
 memberStatusFromVal "non"          = Non
 
--- This function is partial! Explain why...
 duesStatusFromVal :: T.Text -> DuesStatus
 duesStatusFromVal "paid"   = Paid
 duesStatusFromVal "evempt" = Exempt
 
--- | This function is partial! Explain why...
 eventTypeFromVal :: T.Text -> EventType
 eventTypeFromVal "house"       = HouseMeeting
 eventTypeFromVal "social"      = SocialEvent
@@ -747,7 +868,6 @@ eventTypeFromVal "committee"   = CommitteeMeeting
 eventTypeFromVal "seminar"     = Seminar
 eventTypeFromVal "orientation" = Orientation
 
--- | This function is partial! Explain why...
 projectTypeFromVal :: T.Text -> ProjectType
 projectTypeFromVal "major" = Major
 

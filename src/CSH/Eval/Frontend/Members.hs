@@ -6,6 +6,8 @@ License     : MIT
 Maintainer  : pvals@csh.rit.edu
 Stability   : Provisional
 Portability : POSIX
+
+DOCUMENT THIS!
 -}
 {-# LANGUAGE QuasiQuotes       #-}
 {-# LANGUAGE TypeFamilies      #-}
@@ -14,10 +16,10 @@ Portability : POSIX
 {-# LANGUAGE FlexibleContexts  #-}
 {-# LANGUAGE ViewPatterns      #-}
 
-module CSH.Eval.Frontend.Members
-( getMembersR
-, getMemberR
-) where
+module CSH.Eval.Frontend.Members (
+    getMembersR
+  , getMemberR
+  ) where
 
 import qualified Data.ByteString.Char8 as B
 import CSH.Eval.Config

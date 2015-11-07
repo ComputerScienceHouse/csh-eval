@@ -11,10 +11,10 @@ CSH.Eval.LDAP provides functions for specific interactions with the CSH
 LDAP instance involving the evaluations process.
 -}
 
-module CSH.Eval.LDAP
-( module CSH.LDAP
-, lookup
-) where
+module CSH.Eval.LDAP (
+    module CSH.LDAP
+  , lookup
+  ) where
 import Prelude hiding (lookup)
 import CSH.LDAP
 import Ldap.Client.Search
