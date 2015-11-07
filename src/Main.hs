@@ -72,11 +72,11 @@ main = customExecParser pprefs opts >>= runWithOptions
                         "WARNING: Unimplemented. Run evals for intro members"))
 
 
-cshlogo =  "╔═══════════════════════╗\n\r"
-        ++ "║   ╔═══╗ ╗             ║\n"
-        ++ "║   ║╔═╗╦ ║ Computer    ║\n"
-        ++ "║   ║╚═╗╠═╣ Science     ║\n"
-        ++ "║   ║╚═╝╩ ║ House       ║\n"
-        ++ "║   ╚═══╝ ╝             ║\n"
-        ++ "║ Evaluations Database  ║\n"
-        ++ "╚═══════════════════════╝"
+cshlogo =  "╔════════════════════════╗\n\r"
+        ++ "║  ╔═══╗ ╗   ╔═══╦═══╗   ║\n"
+        ++ "║  ║╔═╗╦ ║   /\\  ║  /\\   ║\n"
+        ++ "║  ║╚═╗╠═╣  /__\\ ║ /__\\  ║\n"
+        ++ "║  ║╚═╝╩ ║  \\__/ ║ \\__/  ║\n"
+        ++ "║  ╚═══╝ ╝      ═╩═      ║\n"
+        ++ "║  Evaluations Database  ║\n"
+        ++ "╚════════════════════════╝"
