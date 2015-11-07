@@ -154,6 +154,15 @@ liftListQ s fr c = do
     case r of (Left e)   -> left $ HasqlError e
               (Right ts) -> right $ map fr ts
 
+-- | Fix this to provide better constraint errors.
+liftInsertSingleQ :: CxRow Postgres t
+                  => Stmt Postgres
+                  -> Cacheable t
+liftInsertSingleQ s c = do
+    r <- session (pool c) (tx defTxMode (singleEx))
+    case r of (Left e)  -> left $ HasqlError e
+              (Right t) -> right t
+
 -- | Report that a record with the given ID in the given table doesn't exist.
 noSuchID :: String -- ^ Table name
          -> Word64 -- ^ ID

@@ -465,7 +465,7 @@ mkIntroMemberP :: UUID         -- ^ Member UUID
                -> B.ByteString -- ^ Password hash
                -> B.ByteString -- ^ Password salt
                -> H.Stmt HP.Postgres
-mkIntroMemberP = [H.stmt|insert into "member" ("uuid", "username", "commonname", "password_hash", "password_salt") values (?, ?, ?, ?, ?)|]
+mkIntroMemberP = [H.stmt|insert into "member" ("uuid", "username", "commonname", "password_hash", "password_salt") values (?, ?, ?, ?, ?) returning "id"|]
 
 -- | Instantiate a member who already exists, i.e. has associated records in a
 --   previous evaluations records system.
@@ -475,7 +475,7 @@ mkExtantMemberP :: UUID   -- ^ Member UUID
                 -> Int    -- ^ Housing points
                 -> Bool   -- ^ On floor status
                 -> H.Stmt HP.Postgres
-mkExtantMemberP = [H.stmt|insert into "member" ("uuid", "username", "commonname", "housing_points", "onfloor_status") values (?, ?, ?, ?, ?)|]
+mkExtantMemberP = [H.stmt|insert into "member" ("uuid", "username", "commonname", "housing_points", "onfloor_status") values (?, ?, ?, ?, ?) returning "id"|]
 
 -- *** Event
 
@@ -486,7 +486,7 @@ mkEventP :: T.Text  -- ^ Title
          -> T.Text  -- ^ Event committee
          -> T.Text  -- ^ Description
          -> H.Stmt HP.Postgres
-mkEventP = [H.stmt|insert into "event" ("title", "held", "category", "committee", "description") values (?, ?, ?, ?, ?)|]
+mkEventP = [H.stmt|insert into "event" ("title", "held", "category", "committee", "description") values (?, ?, ?, ?, ?) returning "id"|]
 
 -- *** Project
 
@@ -497,7 +497,7 @@ mkProjectP :: T.Text  -- ^ Title
            -> T.Text  -- ^ Project committee
            -> T.Text  -- ^ Project type
            -> H.Stmt HP.Postgres
-mkProjectP = [H.stmt|insert into "project" ("title", "description", "submitted", "committee", "project_type") values (?, ?, ?, ?, ?)|]
+mkProjectP = [H.stmt|insert into "project" ("title", "description", "submitted", "committee", "project_type") values (?, ?, ?, ?, ?) returning "id"|]
 
 -- *** Evaluation
 
@@ -506,7 +506,7 @@ mkEvaluationP :: Word64  -- ^ Member ID
               -> UTCTime -- ^ Evaluation time
               -> T.Text  -- ^ Evaluation type
               -> H.Stmt HP.Postgres
-mkEvaluationP = [H.stmt|insert into "evaluation" ("member_id", "deadline", "eval_type") values (?, ?, ?)|]
+mkEvaluationP = [H.stmt|insert into "evaluation" ("member_id", "deadline", "eval_type") values (?, ?, ?) returning "id"|]
 
 -- *** Conditional
 
@@ -515,7 +515,7 @@ mkConditionalP :: Word64  -- ^ Evaluation ID
                -> UTCTime -- ^ Due date
                -> T.Text  -- ^ Description
                -> H.Stmt HP.Postgres
-mkConditionalP = [H.stmt|insert into "conditional" ("evaluation_id", "deadline", "description") values (?, ?, ?)|]
+mkConditionalP = [H.stmt|insert into "conditional" ("evaluation_id", "deadline", "description") values (?, ?, ?) returning "id"|]
 
 -- *** Freshman Project
 
@@ -523,7 +523,7 @@ mkConditionalP = [H.stmt|insert into "conditional" ("evaluation_id", "deadline",
 mkFreshmanProjectP :: T.Text  -- ^ Description
                    -> UTCTime -- ^ Project time
                    -> H.Stmt HP.Postgres
-mkFreshmanProjectP = [H.stmt|insert into "freshman_project" ("description", "project_date") values (?, ?)|]
+mkFreshmanProjectP = [H.stmt|insert into "freshman_project" ("description", "project_date") values (?, ?) returning "id"|]
 
 -- *** Packet
 
@@ -532,15 +532,7 @@ mkPacketP :: Word64  -- ^ Member ID
           -> UTCTime -- ^ Due date
           -> Int     -- ^ Percent required
           -> H.Stmt HP.Postgres
-mkPacketP = [H.stmt|insert into "packet" ("member_id", "due_date", "percent_req") values (?, ?, ?)|]
-
--- *** Queue
-
--- | Instantiate a queue entry.
-mkQueueP :: Word64  -- ^ Member ID
-         -> UTCTime -- ^ Entrance time
-         -> H.Stmt HP.Postgres
-mkQueueP = [H.stmt|insert into "queue" ("member_id", "entered") values (?, ?)|]
+mkPacketP = [H.stmt|insert into "packet" ("member_id", "due_date", "percent_req") values (?, ?, ?) returning "id"|]
 
 -- *** Application
 
@@ -548,14 +540,14 @@ mkQueueP = [H.stmt|insert into "queue" ("member_id", "entered") values (?, ?)|]
 mkApplicationP :: Word64  -- ^ Member ID
                -> UTCTime -- ^ Creation date
                -> H.Stmt HP.Postgres
-mkApplicationP = [H.stmt|insert into "application" ("member_id", "created") values (?, ?)|]
+mkApplicationP = [H.stmt|insert into "application" ("member_id", "created") values (?, ?) returning "id"|]
 
 -- *** Metric
 
 -- | Instantiate a metric.
 mkMetricP :: T.Text -- ^ Name
           -> H.Stmt HP.Postgres
-mkMetricP = [H.stmt|insert into "metric" ("name") values (?)|]
+mkMetricP = [H.stmt|insert into "metric" ("name") values (?) returning "id"|]
 
 -- *** Review
 
@@ -565,7 +557,7 @@ mkReviewP :: Word64  -- ^ Member ID
             -> UTCTime -- ^ Start time
             -> UTCTime -- ^ Submission time
             -> H.Stmt HP.Postgres
-mkReviewP = [H.stmt|inset into "reviewer" ("member_id", "application_id", "review_start", "review_submit") values (?, ?, ?, ?)|]
+mkReviewP = [H.stmt|inset into "reviewer" ("member_id", "application_id", "review_start", "review_submit") values (?, ?, ?, ?) returning "id"|]
 
 -- *** Interview
 
@@ -574,21 +566,21 @@ mkInterviewP :: Word64  -- ^ Member ID
              -> Word64  -- ^ Application ID
              -> UTCTime -- ^ Interview time
              -> H.Stmt HP.Postgres
-mkInterviewP = [H.stmt|insert into "interviewer" ("member_id", "application_id", "interview_date") values (?, ?, ?)|]
+mkInterviewP = [H.stmt|insert into "interviewer" ("member_id", "application_id", "interview_date") values (?, ?, ?) returning "id"|]
 
 -- *** Question
 
 -- | Instantiate a question.
 mkQuestionP :: T.Text -- ^ Query
             -> H.Stmt HP.Postgres
-mkQuestionP = [H.stmt|insert into "question" ("query") values (?)|]
+mkQuestionP = [H.stmt|insert into "question" ("query") values (?) returning "id"|]
 
 -- *** Term
 
 -- | Instantiate a term.
 mkTermP :: UTCTime -- ^ Start date
         -> H.Stmt HP.Postgres
-mkTermP = [H.stmt|insert into "term" ("start_date") values (?)|]
+mkTermP = [H.stmt|insert into "term" ("start_date") values (?) returning "id"|]
 
 -- *** Statement
 
@@ -596,7 +588,7 @@ mkTermP = [H.stmt|insert into "term" ("start_date") values (?)|]
 mkStatementP :: T.Text -- ^ Statement name
              -> Bool   -- ^ Side effects flag
              -> H.Stmt HP.Postgres
-mkStatementP = [H.stmt|insert into "statement" ("sg_record", "side_effects") values (?, ?)|]
+mkStatementP = [H.stmt|insert into "statement" ("sg_record", "side_effects") values (?, ?) returning "id"|]
 
 -- ** Context Initializers
 
@@ -623,6 +615,14 @@ grRoomP :: Word64  -- ^ Member ID
         -> UTCTime -- ^ Residence start date
         -> H.Stmt HP.Postgres
 grRoomP = [H.stmt|insert into "room" ("member_id", "room_number", "start_date") values (?, ?, ?)|]
+
+-- *** Queue
+
+-- | Instantiate a queue entry.
+grQueueP :: Word64  -- ^ Member ID
+         -> UTCTime -- ^ Entrance time
+         -> H.Stmt HP.Postgres
+grQueueP = [H.stmt|insert into "queue" ("member_id", "entered") values (?, ?)|]
 
 -- *** Membership
 
