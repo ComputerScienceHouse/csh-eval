@@ -7,7 +7,7 @@ Maintainer  : pvals@csh.rit.edu
 Stability   : Provisional
 Portability : POSIX
 
-Defines the web application layer of Evals
+Defines the web application layer of Evals.
 -}
 {-# LANGUAGE QuasiQuotes       #-}
 {-# LANGUAGE TypeFamilies      #-}
@@ -16,11 +16,11 @@ Defines the web application layer of Evals
 {-# LANGUAGE FlexibleContexts  #-}
 {-# LANGUAGE ViewPatterns      #-}
 
-module CSH.Eval.Frontend.Widgets
-( widgetPanel
-, widgetPanelOffset
-, widgetPanelText
-) where
+module CSH.Eval.Frontend.Widgets (
+    widgetPanel
+  , widgetPanelOffset
+  , widgetPanelText
+  ) where
 
 import qualified Data.Text as T
 

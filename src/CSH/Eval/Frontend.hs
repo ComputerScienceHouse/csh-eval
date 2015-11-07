@@ -7,7 +7,7 @@ Maintainer  : pvals@csh.rit.edu
 Stability   : Provisional
 Portability : POSIX
 
-Defines the web application layer of Evals
+Defines the web application layer of Evals.
 -}
 {-# LANGUAGE QuasiQuotes       #-}
 {-# LANGUAGE TypeFamilies      #-}
@@ -16,9 +16,9 @@ Defines the web application layer of Evals
 {-# LANGUAGE FlexibleContexts  #-}
 {-# LANGUAGE ViewPatterns      #-}
 
-module CSH.Eval.Frontend 
-( evalFrontend
-) where
+module CSH.Eval.Frontend (
+    evalFrontend
+  ) where
 
 import CSH.Eval.Frontend.Data
 import CSH.Eval.Frontend.Attendance
@@ -35,7 +35,7 @@ import Yesod.Static
 
 mkYesodDispatch "EvalFrontend" resourcesEvalFrontend
 
--- | Defines the WAI Application for the eval Yesod app
+-- | Defines the WAI Application for the eval Yesod app.
 evalFrontend :: ServerCmd -> IO Application
 evalFrontend config = do
     s <- static "frontend/static"

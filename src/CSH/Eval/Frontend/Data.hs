@@ -34,6 +34,7 @@ data EvalFrontend = EvalFrontend
                   , getConfig :: ServerCmd
                   }
 
+-- | DOCUMENT THIS!
 data AccessLvl = Freshman
                | Member
                | Eboard

@@ -6,6 +6,8 @@ License     : MIT
 Maintainer  : pvals@csh.rit.edu
 Stability   : Provisional
 Portability : POSIX
+
+DOCUMENT THIS!
 -}
 {-# LANGUAGE QuasiQuotes       #-}
 {-# LANGUAGE TypeFamilies      #-}
@@ -14,9 +16,9 @@ Portability : POSIX
 {-# LANGUAGE FlexibleContexts  #-}
 {-# LANGUAGE ViewPatterns      #-}
 
-module CSH.Eval.Frontend.Attendance
-( getAttendanceR
-) where
+module CSH.Eval.Frontend.Attendance (
+    getAttendanceR
+  ) where
 
 import qualified Data.Text as T
 import qualified Data.ByteString.Char8 as B

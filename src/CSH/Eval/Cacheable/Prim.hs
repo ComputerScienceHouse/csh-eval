@@ -109,16 +109,22 @@ releaseCache :: Cache -> IO ()
 releaseCache = releasePool . pool
 
 -- | Atomically read a cache segment.
-hitSegment :: (Cache -> MVar s) -> Cacheable s
+hitSegment :: (Cache -> MVar s) -- ^ Cache segment accessor
+           -> Cacheable s
 hitSegment = ((liftIO . readMVar) .)
 
 -- | Atomically read a segment record, passing control to interior transformer
 --   on failure.
-hitRecordFallback :: Ord k => k -> M.Map k (MVar v) -> CacheM v -> CacheM v
+hitRecordFallback :: Ord k
+                  => k                -- ^ The sought out object's ID
+                  -> M.Map k (MVar v) -- ^ Cache segment
+                  -> CacheM v         -- ^ Action to run to retrieve target
+                                      --   value on failure
+                  -> CacheM v
 hitRecordFallback = ((flip fromMaybe . ((liftIO . readMVar) <$>)) .) . M.lookup
 
--- | Create a fallback action in the 'Cacheable' monad around a SQL statement
---   that returns exactly one or zero result(s). This function does not return
+-- | Lift the execution of a SQL query into the 'Cacheable' monad. The query is
+--   expected to return zero or one result(s). This function does not return
 --   into the 'Maybe' monad; it is named for 'maybeEx' and must be called with
 --   a statement obeying the assumptions 'maybeEx' makes.
 liftMaybeQ :: CxRow Postgres t
@@ -137,6 +143,8 @@ liftMaybeQ s dbe fr c = do
               (Right Nothing)  -> left dbe
               (Right (Just v)) -> right $ fr v
 
+-- | Lift the execution of a SQL query into the 'Cacheable' monad. The query may
+--   return a nondeterministic number of results.
 liftListQ :: CxRow Postgres t
              => Stmt Postgres
              -> (t -> r)
@@ -146,11 +154,18 @@ liftListQ s fr c = do
     case r of (Left e)   -> left $ HasqlError e
               (Right ts) -> right $ map fr ts
 
--- | Report that a record with the given id in the given table doesn't exist.
-noSuchID :: String -> Word64 -> CacheError
+-- | Report that a record with the given ID in the given table doesn't exist.
+noSuchID :: String -- ^ Table name
+         -> Word64 -- ^ ID
+         -> CacheError
 noSuchID t i = Nonexistent $ t ++ " with id " ++ (show i) ++ " does not exist."
 
-noSuchThing :: Show t => String -> String -> t -> CacheError
+-- | Report that a record indexed by the given property doesn't exist
+noSuchThing :: Show t
+            => String -- ^ Table name
+            -> String -- ^ Indexing property name
+            -> t      -- ^ Indexing property value
+            -> CacheError
 noSuchThing o n t = Nonexistent $ o ++ " with " ++ n ++ " " ++ (show t) ++ " does not exist."
 
 -- | Clear a cache of all it's records. This ain't no LRU. There's probably a
