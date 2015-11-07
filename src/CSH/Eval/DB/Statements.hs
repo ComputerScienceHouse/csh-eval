@@ -255,13 +255,6 @@ getQuestionsActiveP :: Bool -- ^ Question activity
                     -> H.Stmt HP.Postgres
 getQuestionsActiveP = [H.stmt|select * from "question" where "active" = ?|]
 
--- *** Housing Eval
-
--- | Fetch a housing eval by ID.
-getHousingEvalIDP :: Word64 -- ^ Housing Eval ID
-                  -> H.Stmt HP.Postgres
-getHousingEvalIDP = [H.stmt|select * from "housing_eval" where "id" = ?|]
-
 -- *** Term
 
 -- | Fetch a term by ID.
@@ -431,18 +424,6 @@ getAnswersQuestionIDP :: Word64 -- ^ Question ID
                       -> H.Stmt HP.Postgres
 getAnswersQuestionIDP = [H.stmt|select * from "answers" where "question_id" = ?|]
 
--- *** Housing Evaluator
-
--- | Fetch all housing evaluators associated with a specific housing eval.
-getHousingEvaluatorsHousingEvalIDP :: Word64 -- ^ Housing Eval ID
-                                   -> H.Stmt HP.Postgres
-getHousingEvaluatorsHousingEvalIDP = [H.stmt|select * from "housing_evaluator" where "housing_eval_id" = ?|]
-
--- | Fetch all housing evaluators associated with a specific member.
-getHousingEvaluatorsMemberIDP :: Word64 -- ^ Member ID
-                              -> H.Stmt HP.Postgres
-getHousingEvaluatorsMemberIDP = [H.stmt|select * from "housing_evaluator" where "member_id" = ?|]
-
 -- *** Dues
 
 -- | Fetch all dues records associated with a specific term.
@@ -602,13 +583,6 @@ mkQuestionP :: T.Text -- ^ Query
             -> H.Stmt HP.Postgres
 mkQuestionP = [H.stmt|insert into "question" ("query") values (?)|]
 
--- *** Housing Eval
-
--- | Instantiate a housing evaluation.
-mkHousingEvalP :: UTCTime -- ^ Evaluation date
-               -> H.Stmt HP.Postgres
-mkHousingEvalP = [H.stmt|insert into "housing_eval" ("eval_date") values (?)|]
-
 -- *** Term
 
 -- | Instantiate a term.
@@ -724,16 +698,6 @@ grAnswerP :: Word64 -- ^ Application ID
           -> T.Text -- ^ Response
           -> H.Stmt HP.Postgres
 grAnswerP = [H.stmt|insert into "answer" ("application_id", "question_id", "response") values (?, ?, ?)|]
-
--- *** Housing Evaluator
-
--- | Grant a housing evaluator context to the given member for the given housing
---   evaluation, including the score.
-grHousingEvaluatorP :: Word64 -- ^ Housing Eval ID
-                    -> Word64 -- ^ Member ID
-                    -> Int    -- ^ Score
-                    -> H.Stmt HP.Postgres
-grHousingEvaluatorP = [H.stmt|insert into "housing_evaluator" ("housing_eval_id", "member_id", "score") values (?, ?, ?)|]
 
 -- *** Dues
 
@@ -1028,14 +992,6 @@ upQuestionQueryP :: T.Text -- ^ Query
                  -> H.Stmt HP.Postgres
 upQuestionQueryP = [H.stmt|update "question" set "query" = ? where "id" = ?|]
 
--- *** Housing Eval
-
--- | Update a given housing evaluation's date.
-upHousingEvalDateP :: UTCTime -- ^ Evaluation date
-                   -> Word64  -- ^ Housing Eval ID
-                   -> H.Stmt HP.Postgres
-upHousingEvalDateP = [H.stmt|update "housing_eval" set "eval_date" = ? where "id" = ?|]
-
 -- *** Term
 
 -- | Update a given term's start date.
@@ -1157,24 +1113,6 @@ upAnswerResponseP :: T.Text -- ^ Response
                   -> Word64 -- ^ Question iD
                   -> H.Stmt HP.Postgres
 upAnswerResponseP = [H.stmt|update "answer" set "response" = ? where "application_id" = ? and "question_id" = ?|]
-
--- *** Housing Evaluator
-
--- | Update a given housing evaluator's score received during a given housing
---   evaluation.
-upHousingEvaluatorScoreP :: Int    -- ^ Score
-                         -> Word64 -- ^ Housing Eval ID
-                         -> Word64 -- ^ Member ID
-                         -> H.Stmt HP.Postgres
-upHousingEvaluatorScoreP = [H.stmt|update "housing_evaluator" set "score" = ? where "housing_eval_id" = ? and "member_id" = ?|]
-
--- | Update whether or not a given housing voted during a given housing
---   evaluation.
-upHousingEvaluatorVotedP :: Bool   -- ^ Voted
-                         -> Word64 -- ^ Housing Eval ID
-                         -> Word64 -- ^ Member ID
-                         -> H.Stmt HP.Postgres
-upHousingEvaluatorVotedP = [H.stmt|update "housing_evaluator" set "voted" = ? where "housing_eval_id" = ? and "member_id" = ?|]
 
 -- *** Dues
 
