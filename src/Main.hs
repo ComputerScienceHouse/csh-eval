@@ -3,11 +3,13 @@ import Network.Wai.Handler.Warp (defaultSettings
                                 , Port
                                 , runEnv)
 import Network.Wai.Handler.WarpTLS (runTLS, tlsSettings)
+import CSH.Eval.DB.Init (dbInitParser, runInit)
 import CSH.Eval.Routes (evalAPI)
 import CSH.Eval.Frontend (evalFrontend)
 import CSH.Eval.Config (Command (..), ServerCmd (..))
 import Options.Applicative
 import Text.PrettyPrint.ANSI.Leijen (text)
+
 
 runWithOptions :: Command -> IO ()
 runWithOptions (Members opts) = putStrLn cshlogo
@@ -16,6 +18,8 @@ runWithOptions (Members opts) = putStrLn cshlogo
                                 then runTLS (tlsSettings "server.crt" "server.key")
                                             (setPort (port opts) defaultSettings)
                                 else runEnv (port opts)
+runWithOptions (InitDB opts) = putStrLn cshlogo
+                            >> runInit opts
 runWithOptions _ = undefined
 
 optPort :: Parser Port
@@ -55,6 +59,7 @@ main = customExecParser pprefs opts >>= runWithOptions
            <*> subparser
                (  membersCmd
                <> introCmd
+               <> dbInitCmd
                )
 
      members = Members <$> serverCmd
@@ -66,10 +71,13 @@ main = customExecParser pprefs opts >>= runWithOptions
 
      membersCmd = command "members"
                           (info members (progDesc
-                                "Run evals for current members"))
+                                "Run site for current members."))
      introCmd = command "intro"
                   (info intro (progDesc
-                        "WARNING: Unimplemented. Run evals for intro members"))
+                        "WARNING: Unimplemented. Run site for intro members."))
+     dbInitCmd = command "initdb"
+                (info dbInitParser (progDesc "Initialize the evaluations database."))
+
 
 
 cshlogo =  "╔════════════════════════╗\n\r"
@@ -77,6 +85,6 @@ cshlogo =  "╔═════════════════════�
         ++ "║  ║╔═╗╦ ║   /\\  ║  /\\   ║\n"
         ++ "║  ║╚═╗╠═╣  /__\\ ║ /__\\  ║\n"
         ++ "║  ║╚═╝╩ ║  \\__/ ║ \\__/  ║\n"
-        ++ "║  ╚═══╝ ╝      ═╩═      ║\n"
+        ++ "║  ╚═══╝ ╝      ╚╩╝      ║\n"
         ++ "║  Evaluations Database  ║\n"
         ++ "╚════════════════════════╝"

@@ -1,4 +1,4 @@
-module Main where
+module CSH.Eval.DB.Init where
 
 import qualified Data.ByteString.Char8 as C
 import qualified Data.Text             as T
@@ -14,6 +14,7 @@ import Control.Exception
 import Data.Word (Word16)
 import Options.Applicative
 
+import CSH.Eval.Config
 import CSH.Eval.DB.Schema
 
 initDB :: SchemaInit
@@ -62,13 +63,6 @@ withEcho e a = hGetEcho stdin
                                (hSetEcho stdin o)
                                a)
 
-data DBInitOpts = DBInitOpts
-                { host :: C.ByteString
-                , port :: Word16
-                , user :: C.ByteString
-                , db   :: C.ByteString
-                }
-
 getPassword :: IO C.ByteString
 getPassword = do
     putStr "Password: "
@@ -78,16 +72,15 @@ getPassword = do
     hFlush stdout
     return (C.pack passwd)
 
-main :: IO ()
-main = do
-    opts   <- execParser (info parser mempty)
+runInit :: DBInitCmd -> IO ()
+runInit opts = do
     passwd <- getPassword
     putStr "Initializing evaluations database..."
-    let pgs = HP.ParamSettings (host opts)
-                               (port opts)
-                               (user opts)
+    let pgs = HP.ParamSettings (dbHost opts)
+                               (dbPort opts)
+                               (dbUser opts)
                                (passwd)
-                               (db opts)
+                               (dbName opts)
     poolSettings <- maybe (fail "Malformed settings.") return (H.poolSettings 1 1)
     pool         <- H.acquirePool pgs poolSettings
 
@@ -96,13 +89,14 @@ main = do
     print r
 
     H.releasePool pool
-  where
-    parser = DBInitOpts
-          <$> optHost
-          <*> optPort
-          <*> optUser
-          <*> optDb
 
+dbInitParser = InitDB
+            <$> (DBInitCmd
+            <$> optHost
+            <*> optPort
+            <*> optUser
+            <*> optDb)
+  where
     optHost = argument auto
             (  metavar "<HOST>"
             <> help    "The hostname of the postgres database to connect to"
@@ -115,7 +109,7 @@ main = do
 
     optUser = argument auto
             (  metavar "<USER>"
-            <> help    "The name of the eval user"
+            <> help    "The name of the database user"
             )
 
     optDb = argument auto
