@@ -21,10 +21,11 @@ module CSH.Eval.Cacheable.Prim (
   , hitSegment
   , hitRecordFallback
     -- * Fallback Combinators
-  , maybeFallback
-  , listFallback
+  , liftMaybeQ
+  , liftListQ
     -- * Error Reporting
   , noSuchID
+  , noSuchThing
     -- * Ghosts
   , reaper
   , singletonGhost
@@ -120,27 +121,27 @@ hitRecordFallback = ((flip fromMaybe . ((liftIO . readMVar) <$>)) .) . M.lookup
 --   that returns exactly one or zero result(s). This function does not return
 --   into the 'Maybe' monad; it is named for 'maybeEx' and must be called with
 --   a statement obeying the assumptions 'maybeEx' makes.
-maybeFallback :: CxRow Postgres t
-              -- | SQL Statement to execute. The statement must return exactly
-              --   zero or one record(s).
-              => Stmt Postgres
-              -- | The error to return if the statement provides no results.
-              -> CacheError
-              -- | Function from the record tuple to the thing you actually
-              --   want.
-              -> (t -> r)
-              -> Cacheable r
-maybeFallback s dbe fr c = do
+liftMaybeQ :: CxRow Postgres t
+           -- | SQL Statement to execute. The statement must return exactly
+           --   zero or one record(s).
+           => Stmt Postgres
+           -- | The error to return if the statement provides no results.
+           -> CacheError
+           -- | Function from the record tuple to the thing you actually
+           --   want.
+           -> (t -> r)
+           -> Cacheable r
+liftMaybeQ s dbe fr c = do
     r <- session (pool c) (tx defTxMode (maybeEx s))
     case r of (Left e)         -> left $ HasqlError e
               (Right Nothing)  -> left dbe
               (Right (Just v)) -> right $ fr v
 
-listFallback :: CxRow Postgres t
+liftListQ :: CxRow Postgres t
              => Stmt Postgres
              -> (t -> r)
              -> Cacheable [r]
-listFallback s fr c = do
+liftListQ s fr c = do
     r <- session (pool c) (tx defTxMode (listEx s))
     case r of (Left e)   -> left $ HasqlError e
               (Right ts) -> right $ map fr ts
@@ -148,6 +149,9 @@ listFallback s fr c = do
 -- | Report that a record with the given id in the given table doesn't exist.
 noSuchID :: String -> Word64 -> CacheError
 noSuchID t i = Nonexistent $ t ++ " with id " ++ (show i) ++ " does not exist."
+
+noSuchThing :: Show t => String -> String -> t -> CacheError
+noSuchThing o n t = Nonexistent $ o ++ " with " ++ n ++ " " ++ (show t) ++ " does not exist."
 
 -- | Clear a cache of all it's records. This ain't no LRU. There's probably a
 --   better way to do this. Fix this to be exception safe again.
