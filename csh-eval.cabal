@@ -51,6 +51,7 @@ executable csh-eval
 library
   exposed-modules:      CSH.Eval.Cacheable.Prim
                       , CSH.Eval.Cacheable.Fetch
+                      , CSH.Eval.Cacheable.Make
                       , CSH.Eval.Config
                       , CSH.Eval.DB.Init
                       , CSH.Eval.DB.Schema

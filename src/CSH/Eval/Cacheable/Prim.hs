@@ -20,9 +20,10 @@ module CSH.Eval.Cacheable.Prim (
     -- * Atomic Reads
   , hitSegment
   , hitRecordFallback
-    -- * Fallback Combinators
+    -- * Query Combinators
   , liftMaybeQ
   , liftListQ
+  , liftInsertSingleQ
     -- * Error Reporting
   , noSuchID
   , noSuchThing
@@ -46,6 +47,8 @@ import Control.Monad.Trans.Either
 import Control.Monad.IO.Class (liftIO)
 
 import Data.Maybe (fromMaybe)
+
+import Data.Functor.Identity (Identity, runIdentity)
 
 import qualified Data.Map as M
 
@@ -155,13 +158,13 @@ liftListQ s fr c = do
               (Right ts) -> right $ map fr ts
 
 -- | Fix this to provide better constraint errors.
-liftInsertSingleQ :: CxRow Postgres t
+liftInsertSingleQ :: CxRow Postgres (Identity t)
                   => Stmt Postgres
                   -> Cacheable t
 liftInsertSingleQ s c = do
-    r <- session (pool c) (tx defTxMode (singleEx))
+    r <- session (pool c) (tx defTxMode (singleEx s))
     case r of (Left e)  -> left $ HasqlError e
-              (Right t) -> right t
+              (Right t) -> right (runIdentity t)
 
 -- | Report that a record with the given ID in the given table doesn't exist.
 noSuchID :: String -- ^ Table name
@@ -243,15 +246,15 @@ singletonGhost a k v c = liftIO $ forkFinally insrt1 (\_ -> putStrLn "singletonG
 -- | Create a ghost that replays the effects of an action in the 'Cacheable'
 --   monad immediately before returning control to the exterior transformer.
 sneakyGhostM :: (Cache -> IDCache a)
-            -> Word64
-            -> CacheM a
-            -> Cacheable a
+             -> Word64
+             -> CacheM a
+             -> Cacheable a
 sneakyGhostM a k vM c = vM >>= (\v -> singletonGhost a k v c >> return v)
 
 -- | Create a ghost that replays the effects of an action in the 'Cacheable'
 --   monad immediately before returning control to the exterior transformer.
 sneakyGhostC :: (Cache -> IDCache a)
-            -> Word64
-            -> Cacheable a
-            -> Cacheable a
+             -> Word64
+             -> Cacheable a
+             -> Cacheable a
 sneakyGhostC a k vM c = vM c >>= (\v -> singletonGhost a k v c >> return v)
