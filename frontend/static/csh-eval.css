@@ -61,23 +61,29 @@ td {
     margin-bottom: 0px;
 }
 h2 > a {
-    color: black
+    color: black !important; 
+}
+h2 > a:hover {
+    color: rgb(177, 3, 67) !important;
+    text-decoration: none;
 }
 
 .profile-image {
     border-radius: 8px;
+    margin-right: 15px;
     border: 0px;
 }
 
 .profile-col-fix {
-    width: 10%;
+    width: 110px;
+    height: 100px;
 }
 
 .profile-image {
     height: 100px;
     width: 100px;
+    margin-left: 15px
     margin-bottom: 0px;
-    margin-left: 15px;
 }
 
 .panel-inner-padding {
