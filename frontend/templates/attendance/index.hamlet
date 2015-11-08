@@ -1,0 +1,24 @@
+<div .row>
+    <div .panel .panel-default>
+        <div .panel-heading>
+            <span .panel-title>
+                <strong>Submit Attendance
+        <div .panel-body>
+            <form role="form">
+                <div .col-md-6>
+                    <div .form-group>
+                        <label for="committee">Committee
+                        <select .form-control>
+                            $forall committee <- committees
+                                <option value=#{committee}>#{committee}
+                    <div .form-group>
+                        <input type="text" .form-control placeholder="Name" id="name">
+                <div .form-group .col-md-6>
+                    <label for="description">Notes
+                    <textarea rows="10" .form-control id="description">
+                <div .form-group .col-md-3>
+                    <button type="submit" .btn .btn-primary>Submit
+                    &nbsp;
+                    <label>
+                        <input type="checkbox" name="post_to_webnews" checked>
+                        Post to WebNews

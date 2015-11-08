@@ -282,7 +282,7 @@ member = mapM_ H.unitEx
        , "commonname"      varchar    not null
        , "password_hash"   bytea      default null
        , "password_salt"   bytea      default null
-       , "housing_points"  integer    not null default 0
+       , "housing_points"  int8    not null default 0
        , "onfloor_status"  boolean    not null default false
     )|]
    ]
@@ -498,7 +498,7 @@ freshman_project = mapM_ H.unitEx
        ( "id"            bigserial  primary key
        , "description"   varchar    not null
        , "term_id"       bigint     not null
-       , "event_id"      bigint     default null
+       , "event_id"      bigint     not null
     )|]
    ]
 
@@ -541,7 +541,7 @@ packet = mapM_ H.unitEx
        ( "id"           bigserial  primary key
        , "member_id"    bigint     not null
        , "due_date"     date       not null
-       , "percent_req"  integer    not null
+       , "percent_req"  int8    not null
        , constraint "no_simultaneous_packets" unique ("member_id", "due_date")
     )|]
    ]
@@ -569,7 +569,6 @@ signature = mapM_ H.unitEx
        , constraint "one_signature_per_packet_per_member" unique ("member_id", "packet_id")
     )|]
    ]
-
 
 -- | The Housing Queue.
 --   This represents the queue waiting to move on floor.
@@ -637,8 +636,8 @@ review_metric = mapM_ H.unitEx
    [ [H.stmt|drop table if exists "review_metric" cascade|]
    , [H.stmt|create table "review_metric"
        ( "metric_id"    bigint   not null
-       , "review_id"  bigint   not null
-       , "score"        integer  not null
+       , "review_id"    bigint   not null
+       , "score"        int8  not null
        , constraint "one_score_per_review_per_metric" unique ("metric_id", "review_id")
     )|]
    ]
@@ -653,8 +652,8 @@ interview_metric = mapM_ H.unitEx
    [ [H.stmt|drop table if exists "interview_metric" cascade|]
    , [H.stmt|create table "interview_metric"
        ( "metric_id"       bigint   not null
-       , "interview_id"  bigint   not null
-       , "score"           integer  not null
+       , "interview_id"    bigint   not null
+       , "score"           int8  not null
        , constraint "one_score_per_interview_per_metric" unique ("metric_id", "interview_id")
     )|]
    ]

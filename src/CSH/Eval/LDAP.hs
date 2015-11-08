@@ -11,32 +11,36 @@ CSH.Eval.LDAP provides functions for specific interactions with the CSH
 LDAP instance involving the evaluations process.
 -}
 
-module CSH.Eval.LDAP
-( module CSH.LDAP
-, lookupCN
-, cn
-) where
+module CSH.Eval.LDAP (
+    module CSH.LDAP
+  , lookup
+  ) where
+import Prelude hiding (lookup)
 import CSH.LDAP
+import Ldap.Client.Search
 import qualified CSH.Eval.Config as Cfg
 import qualified Data.ByteString.Char8 as B
 import Data.Text
 import Data.Either
 import Safe
 
-lookupCN uid = do
-            cfg <- Cfg.evalConfig
-            usr <- (fmap (fromJustNote "ldap.user DNE in config.")
-                                       (Cfg.lookup cfg "ldap.user"))
+lookup attr uid = do
+            cfg  <- Cfg.evalConfig
+            usr  <- (fmap (fromJustNote "ldap.user DNE in config.")
+                                        (Cfg.lookup cfg "ldap.user"))
             pass <- (fmap (fromJustNote "ldap.password DNE in config.")
                                         (Cfg.lookup cfg "ldap.password"))
-            cn usr pass uid
+            lookupAttr attr usr pass uid
 
-cn :: Text -> B.ByteString -> AttrValue -> IO B.ByteString
-cn usr pass uid = either (B.pack . show) id <$> val
-   where val = withCSH $ \l -> do
-            bind  l (appDn usr) (Password pass)
-            ((SearchEntry _ ((_,(n:_)):_)):_) <- search l (Dn userBaseTxt)
-                                                          (typesOnly False)
-                                                          (Attr "uid" := uid)
-                                                          [Attr "cn"]
-            return n
+extractValue :: [SearchEntry] -> Maybe B.ByteString
+extractValue ((SearchEntry _ ((_,(n:_)):_)):_) = Just n
+extractValue _                                 = Nothing
+
+lookupAttr :: Text -> Text -> B.ByteString -> AttrValue -> IO (Maybe B.ByteString)
+lookupAttr attr usr pass uid = val >>= \v -> return $ case v of
+            (Right (Right r)) -> extractValue r
+            _                 -> Nothing
+    where val = withCSH $ \l -> do
+                    bind l (appDn usr) (Password pass)
+                    searchEither l (Dn userBaseTxt)    (typesOnly False)
+                                   (Attr "uid" := uid) [Attr attr]

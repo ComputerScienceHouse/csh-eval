@@ -19,9 +19,9 @@ Defines the web application layer of Evals
 module CSH.Eval.Frontend.Data where
 
 import CSH.Eval.Routes (evalAPI)
-import CSH.Eval.Config (ServerCmd (..))
 import Text.Hamlet (hamletFile)
 import Text.Lucius (luciusFile)
+import CSH.Eval.Config (ServerCmd (..))
 import Yesod
 import Yesod.Static
 
@@ -34,6 +34,7 @@ data EvalFrontend = EvalFrontend
                   , getConfig :: ServerCmd
                   }
 
+-- | DOCUMENT THIS!
 data AccessLvl = Freshman
                | Member
                | Eboard
@@ -54,11 +55,13 @@ evalLayout widget = do
     pc <- widgetToPageContent $ do
         widget
         addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
-        addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
         addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"
+        addScriptRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
         addStylesheet $ StaticR csh_bootstrap_min_css
         addStylesheet $ StaticR syntax_css
         addStylesheet EvalCssR
+        addStylesheet $ StaticR csh_eval_css
+        addScript     $ StaticR salvattore_min_js
     withUrlRenderer $(hamletFile "frontend/templates/base.hamlet")
 
 -- | The Yesod instance for the EvalFrontend
@@ -73,3 +76,4 @@ instance Yesod EvalFrontend where
                       (\x -> if x
                       then sslOnlyMiddleware 120 s
                       else s)
+

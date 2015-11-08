@@ -1,65 +1,71 @@
 <div .row>
-  <div .col-md-3 .col-sm-12>
-    <div .panel .panel-default .center>
-      <div .panel-heading>
-        <div .panel-title>
-          <a href="/member/#{B.unpack usr}">
-            <strong>#{name}
-          <span .panel-status>Alumni
-      <div .panel-body>
-        <dl>
-          <dt>Projects
-          <dd>1
-          <dt>Meetings
-          <dd>0
-          <dt>Missed House Meetings
-          <dd>1
-  <div .col-offset-3 .col-md-6 .col-sm-12>
-
-    $if (>=) access Eboard
-      <div .panel .panel-default .center>
-        <div .panel-heading>
-          <div .panel-title>
-            <strong> Submit Attendance
-        <div .panel-body>
-          ^{projectForm}
-
-    $if showIntroF &&  ((==) access Freshman)
-      <div .panel .panel-default .center>
-        <div .panel-heading>
-          <div .panel-title>
-            <strong> Introductory Evaluations Form
-        <div .panel-body>
-          ^{projectForm}
-
-    $if showSpringF
-      <div .panel .panel-default .center>
-        <div .panel-heading>
-          <div .panel-title>
-            <strong> Membership Evaluations Form
-        <div .panel-body>
-          ^{projectForm}
-
-    $if showHousingF
-      <div .panel .panel-default .center>
-        <div .panel-heading>
-          <div .panel-title>
-            <strong> Housing Evaluations Form
-        <div .panel-body>
-          ^{projectForm}
-
-    <div .panel .panel-default .center>
-      <div .panel-heading>
-        <div .panel-title>
-          <strong> Submit a Project
-      <div .panel-body>
-        ^{projectForm}
-
-  $if ((==) access Admin)
-    <div .col-md-3 .col-offset-9>
-      <div .panel .panel-default>
-        <div .panel-heading>
-          <div .panel-title>
-            <strong> Admin Panel
-        <div .panel-body>
-          Admin panel body!
+  <div .panel .panel-default .center>
+    <div .panel-body>
+      <div .page-header .row>
+        <div .col-md-2 .profile-col-fix .col-sm-12>
+            <img .thumbnail .profile-image src="@{ProfilePhotoR (B.unpack usr)}">
+        <div .col-md-10 .col-sm-12>
+          <h2>
+            <a href=@{MemberR $ B.unpack usr}">#{name}
+          <span .label .label-success>Active
+          <span .label .label-success>Eboard
+      $if ((==) access Admin)
+        <div .panel .panel-default>
+          <div .panel-heading>
+            <div .panel-title>
+              <strong> Admin Panel
+          <div .panel-body>
+            Admin panel body!
+      <div #grid data-columns>
+        <div .panel .panel-default>
+          <div .panel-heading>
+            <div .panel-title>
+              <strong>Membership Evaluations
+          <div .panel-body .table-fill>
+            <table .table .table-striped .table-responsive .no-bottom-margin>
+              <tbody>
+                <tr>
+                  <th>Committee Meetings
+                  <td>25
+                <tr>
+                  <th>Major Projects
+                  <td>3
+                <tr>
+                  <th>House Meetings Missed
+                  <td>0
+                <tr>
+                  <th>Social Events
+                  <td>7
+                <tr>
+                  <th>Technical Seminars
+                  <td>13
+          <div .panel-inner-padding>
+            <strong>Notes
+            <br>
+            None
+        <div .panel .panel-default>
+          <div .panel-heading>
+            <div .panel-title>
+              <strong>Projects
+          <div .panel-body>
+            <div .text-center .bottom-padded>
+                <h4 .text-muted>
+                  <strong>No Projects
+                <a .btn .btn-primary href=@{CreateProjectR}>
+                  Create One
+        <div .panel .panel-default>
+          <div .panel-heading>
+            <div .panel-title>
+              <strong>Attendance
+          <div .panel-body .table-fill>
+            <table .table .table-striped .table-responsive .no-bottom-margin>
+              <tbody>
+                <tr>
+                  <th>Name
+                  <th>Type
+                  <th>Date
+                $forall (name, meetingType, date) <- attendance
+                  <tr>
+                    <td>#{B.unpack name}
+                    <td>#{B.unpack meetingType}
+                    <td>#{B.unpack date}

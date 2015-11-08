@@ -2,6 +2,7 @@ $if null projects
     <div .col-md-12>
         <h1>No projects.
 $else
-    $forall (member, name, description, status, id) <- projects
-        <a href="@{ProjectR id}">
-            ^{panel member name description status}
+    <div #grid data-columns>
+        $forall (member, name, description, status, id) <- projects
+            <a href="@{ProjectR id}">
+                ^{panel member name description status}

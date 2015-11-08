@@ -1,0 +1,23 @@
+<div .row>
+    <div .col-md-10 .col-md-offset-1>
+        <div .panel .panel-default>
+            <div .panel-heading>
+                <div .col-md-4 .no-float>
+                    <input .form-control type="text" placeholder="Search">
+            <div .panel-body .table-fill>
+                <table .table .table-responsive .table-striped .table-hover .no-bottom-margin>
+                    <tr>
+                        <th>Name
+                        <th>Housing Points
+                        <th>On Floor
+                        <th>Eboard
+                    $forall (usr, name, points, onfloor, eboard) <- dummyMembers
+                            <tr>
+                                <td>
+                                    <a href=@{MemberR usr}>
+                                        #{name}
+                                        <br>
+                                        <span .text-muted .small>#{usr}
+                                <td>#{points}
+                                <td>#{charFor onfloor}
+                                <td>#{charFor eboard}

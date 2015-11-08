@@ -7,7 +7,7 @@ Maintainer  : pvals@csh.rit.edu
 Stability   : Provisional
 Portability : POSIX
 
-Defines the web application layer of Evals
+Defines the web application layer of Evals.
 -}
 {-# LANGUAGE QuasiQuotes       #-}
 {-# LANGUAGE TypeFamilies      #-}
@@ -16,12 +16,12 @@ Defines the web application layer of Evals
 {-# LANGUAGE FlexibleContexts  #-}
 {-# LANGUAGE ViewPatterns      #-}
 
-module CSH.Eval.Frontend.Projects
-( getProjectR
-, getProjectsR
-, getCreateProjectR
-, projectForm
-) where
+module CSH.Eval.Frontend.Projects (
+    getProjectR
+  , getProjectsR
+  , getCreateProjectR
+  , projectForm
+  ) where
 
 import qualified Data.Text as T
 
@@ -47,7 +47,7 @@ getProjectsR :: Handler Html
 getProjectsR = defaultLayout $ do
     projectsCSS
     $(whamletFile "frontend/templates/projects/index.hamlet")
-    where panel member name description status = widgetPanel 6 (title name member status) (contentPanel description)
+    where panel member name description status = widgetPanel 12 (title name member status) (contentPanel description)
 
 title name member status = [whamlet|
   <strong>
