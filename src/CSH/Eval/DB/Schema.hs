@@ -540,8 +540,8 @@ packet = mapM_ H.unitEx
    , [H.stmt|create table "packet"
        ( "id"           bigserial  primary key
        , "member_id"    bigint     not null
-       , "due_date"     date       not null
-       , "percent_req"  int8    not null
+       , "due_date"     timestamp  not null
+       , "percent_req"  int8       not null
        , constraint "no_simultaneous_packets" unique ("member_id", "due_date")
     )|]
    ]

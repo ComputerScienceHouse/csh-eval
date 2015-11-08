@@ -21,6 +21,7 @@ import Data.Word
 import Data.UUID
 
 import Data.Time.Clock
+import Data.Time.Calendar
 
 import qualified Data.ByteString as B
 
@@ -503,7 +504,7 @@ mkProjectP = [H.stmt|insert into "project" ("title", "description", "submitted",
 
 -- | Instantiate an evaluation.
 mkEvaluationP :: Word64  -- ^ Member ID
-              -> UTCTime -- ^ Evaluation time
+              -> UTCTime -- ^ Evaluation deadline
               -> T.Text  -- ^ Evaluation type
               -> H.Stmt HP.Postgres
 mkEvaluationP = [H.stmt|insert into "evaluation" ("member_id", "deadline", "eval_type") values (?, ?, ?) returning "id"|]
@@ -520,10 +521,11 @@ mkConditionalP = [H.stmt|insert into "conditional" ("evaluation_id", "deadline",
 -- *** Freshman Project
 
 -- | Instantiate a freshman project.
-mkFreshmanProjectP :: T.Text  -- ^ Description
-                   -> UTCTime -- ^ Project time
+mkFreshmanProjectP :: Word64  -- ^ Term ID
+                   -> Word64  -- ^ Event ID
+                   -> T.Text  -- ^ Description
                    -> H.Stmt HP.Postgres
-mkFreshmanProjectP = [H.stmt|insert into "freshman_project" ("description", "project_date") values (?, ?) returning "id"|]
+mkFreshmanProjectP = [H.stmt|insert into "freshman_project" ("term_id", "event_id", "description") values (?, ?, ?) returning "id"|]
 
 -- *** Packet
 
@@ -553,10 +555,10 @@ mkMetricP = [H.stmt|insert into "metric" ("name") values (?) returning "id"|]
 
 -- | Instantiate a reviewer.
 mkReviewP :: Word64  -- ^ Member ID
-            -> Word64  -- ^ Application ID
-            -> UTCTime -- ^ Start time
-            -> UTCTime -- ^ Submission time
-            -> H.Stmt HP.Postgres
+          -> Word64  -- ^ Application ID
+          -> UTCTime -- ^ Start time
+          -> UTCTime -- ^ Submission time
+          -> H.Stmt HP.Postgres
 mkReviewP = [H.stmt|inset into "reviewer" ("member_id", "application_id", "review_start", "review_submit") values (?, ?, ?, ?) returning "id"|]
 
 -- *** Interview
@@ -578,7 +580,7 @@ mkQuestionP = [H.stmt|insert into "question" ("query") values (?) returning "id"
 -- *** Term
 
 -- | Instantiate a term.
-mkTermP :: UTCTime -- ^ Start date
+mkTermP :: Day -- ^ Start date
         -> H.Stmt HP.Postgres
 mkTermP = [H.stmt|insert into "term" ("start_date") values (?) returning "id"|]
 

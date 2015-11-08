@@ -375,7 +375,7 @@ data Packet = Packet {
     -- | Each packet is assigned a unique ID at creation time.
     packetID         :: Word64
     -- | Packet due date.
-  , packetDueDate    :: Day
+  , packetDueDate    :: UTCTime
     -- | Percentage of signatures required.
   , packetPercentReq :: Int
     -- | The member to whom this packet belongs.

@@ -698,7 +698,7 @@ freshmanProjectFromRow (i, d, t, e)= FreshmanProject
     (getEventID e)
     (getFreshmanProjectFreshmanProjectParticipants i)
 
-packetFromRow :: (Word64, Word64, Day, Int) -> Packet
+packetFromRow :: (Word64, Word64, UTCTime, Int) -> Packet
 packetFromRow (i, m, d, f) = Packet
     i
     d
