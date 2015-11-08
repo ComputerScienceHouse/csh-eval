@@ -23,4 +23,3 @@ test:
         - stack test
     post:
         - mkdir $CIRCLE_ARTIFACTS/doc
-        - stack haddock -h -o $CIRCLE_ARTIFACTS/doc `find src -type f`
