@@ -1,0 +1,96 @@
+html, body {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    padding-top: 70px;
+    padding-top: 76px;
+    padding-bottom: 20px;
+    background-color: #eee;
+    background-attachment: fixed;
+}
+
+.logo {
+  width: 48px;
+  height: 46px;
+}
+.navbar-brand .logo {
+  width: 24px;
+  height: 23px;
+  position: relative;
+  top: -2px;
+  display: inline;
+}
+
+/* Decreasing panel-heading padding for mobile devices */
+.panel-heading {
+  padding: 10px;
+}
+
+td {
+    font-style: bold;
+}
+
+.panel-status {
+  float: right;
+  color: #aaa;
+  font-size: 8pt;
+  position: relative;
+  margin-top: 2px;
+}
+
+.page-header {
+    margin-top: 0px;
+    margin-bottom: 10px;
+    padding-bottom: 20px;
+}
+
+#grid[data-columns]::before {
+    content: '2 .col-md-6';
+}
+
+.table-fill {
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.no-bottom-margin {
+    margin-bottom: 0px;
+}
+h2 > a {
+    color: black
+}
+
+.profile-image {
+    border-radius: 8px;
+    border: 0px;
+}
+
+.profile-col-fix {
+    width: 10%;
+}
+
+.profile-image {
+    height: 100px;
+    width: 100px;
+    margin-bottom: 0px;
+    margin-left: 15px;
+}
+
+.panel-inner-padding {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.bottom-padded {
+    padding-bottom: 10px;
+}
+
+.no-float {
+    float: none;
+}

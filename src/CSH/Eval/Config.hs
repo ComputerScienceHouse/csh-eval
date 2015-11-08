@@ -14,20 +14,28 @@ module CSH.Eval.Config (
   , module Data.Configurator
   , Command (..)
   , ServerCmd (..)
+  , DBInitCmd (..)
   ) where
 
 import Data.Configurator
+import Data.Word (Word16)
+import qualified Data.ByteString.Char8 as C
 
 import Network.Wai.Handler.Warp (Port)
 
--- | DOCUMENT THIS.
 data Command = Members ServerCmd
              | Intro ServerCmd
+             | InitDB DBInitCmd
 
--- | DOCUMENT THIS.
 data ServerCmd = ServerCmd { withTLS :: Bool
                            , port    :: Port
                            }
 
--- | DOCUMENT THIS.
+data DBInitCmd = DBInitCmd
+                { dbHost :: C.ByteString
+                , dbPort :: Word16
+                , dbUser :: C.ByteString
+                , dbName :: C.ByteString
+                }
+
 evalConfig = load [Required "config/csh-eval.rc"]

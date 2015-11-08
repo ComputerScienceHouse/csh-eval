@@ -13,14 +13,15 @@ An evaluations platform for the Computer Science House at RIT.
 
 - Add `~/.local/bin` to your `PATH`
 - Install PostgreSQL (we have been using 9.4)
+- Build and install `stack install`
+- Add autocomplete for `csh-eval`: `source <(stack --bash-completion-script $(which stack))`
+- Run tests: `stack test`
+- Build documentation: `stack haddock`
 - Initialize the database:
 	- Create a user called "pvals": `createuser pvals`
 	- Create a database called "pvals" owned by the pvals user: `createdb pvals -O pvals`
-	- Initialize the schema: `csh-eval-db-init`
-- `stack build`
-- `stack test`
-- Try starting the site: `csh-eval`. You should find it running on
-  `localhost:8000`
+	- Initialize the schema: `csh-eval initdb <HOST> <PORT> <USER> <DB>`
+- Try starting the site: `csh-eval members`. You should find it running on `localhost:8000` by default.
 
 ## Contributing
 
