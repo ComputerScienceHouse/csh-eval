@@ -314,7 +314,17 @@ mkTerm s c = do
                  Nothing
     singletonGhost termIDCache tid t c
 
-grEboard = undefined
+grEboard :: Word64    -- ^ Member ID.
+         -> Committee -- ^ Committee.
+         -> Day       -- ^ Service start date.
+         -> Cacheable ()
+grEboard mid cm s c = do
+    liftUnitQ (grEboardP mid (committeeToVal cm) s) c
+    let e = Eboard cm
+                   s
+                   Nothing
+                   (getMemberID mid)
+    appendGhost eboardMemberIDCache mid e c
 
 grRoom = undefined
 

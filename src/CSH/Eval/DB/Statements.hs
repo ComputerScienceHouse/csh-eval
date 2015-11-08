@@ -605,7 +605,7 @@ mkStatementP = [H.stmt|insert into "statement" ("sg_record", "side_effects") val
 -- | Grant an Eboard context to a given member.
 grEboardP :: Word64  -- ^ Member ID
           -> T.Text  -- ^ Committee
-          -> UTCTime -- ^ Service start date
+          -> Day     -- ^ Service start date
           -> H.Stmt HP.Postgres
 grEboardP = [H.stmt|insert into "eboard" ("member_id", "committee", "start_date") values (?, ?, ?)|]
 

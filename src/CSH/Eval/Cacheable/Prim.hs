@@ -24,12 +24,14 @@ module CSH.Eval.Cacheable.Prim (
   , liftMaybeQ
   , liftListQ
   , liftInsertSingleQ
+  , liftUnitQ
     -- * Error Reporting
   , noSuchID
   , noSuchThing
     -- * Ghosts
   , reaper
   , singletonGhost
+  , appendGhost
   , sneakyGhostM
   , sneakyGhostC
   ) where
@@ -166,6 +168,12 @@ liftInsertSingleQ s c = do
     case r of (Left e)  -> left $ HasqlError e
               (Right t) -> right (runIdentity t)
 
+liftUnitQ :: Stmt Postgres -> Cacheable ()
+liftUnitQ s c = do
+    r <- session (pool c) (tx defTxMode (unitEx s))
+    case r of (Left e)   -> left $ HasqlError e
+              (Right ()) -> right ()
+
 -- | Report that a record with the given ID in the given table doesn't exist.
 noSuchID :: String -- ^ Table name
          -> Word64 -- ^ ID
@@ -242,6 +250,18 @@ singletonGhost a k v c = liftIO $ forkFinally insrt1 (\_ -> putStrLn "singletonG
           insrt2 m2 = case M.lookup k m2 of
                         Nothing   -> newMVar v >>= (\v' -> putMVar m1 (M.insert k v' m2))
                         (Just m3) -> swapMVar m3 v >> return ()
+
+appendGhost :: (Cache -> IDCache [a])
+            -> Word64
+            -> a
+            -> Cacheable ()
+appendGhost a k v c = liftIO $ forkFinally insrt1 (\_ -> putStrLn "singletonGhost died!") >> return ()
+    where m1 = a c
+          insrt1 = do
+               bracketOnError (takeMVar m1) (putMVar m1) insrt2
+          insrt2 m2 = case M.lookup k m2 of
+                        Nothing   -> newMVar [v] >>= (\v' -> putMVar m1 (M.insert k v' m2))
+                        (Just m3) -> modifyMVar_ m3 (return . (v:))
 
 -- | Create a ghost that replays the effects of an action in the 'Cacheable'
 --   monad immediately before returning control to the exterior transformer.
