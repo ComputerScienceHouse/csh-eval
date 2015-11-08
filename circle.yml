@@ -16,7 +16,7 @@ dependencies:
         - createdb pvals -O pvals
         - stack build
         - stack test --only-snapshot
-        - echo 'circleci' | stack exec -- csh-eval-db-init localhost 5432 pvals pvals
+        - echo 'circleci' | stack exec -- csh-eval initdb localhost 5432 pvals pvals
 
 test:
     override:
