@@ -7,10 +7,9 @@ dependencies:
     cache_directories:
         - "~/.stack"
     pre:
-        - cd /tmp
-        - wget https://github.com/commercialhaskell/stack/releases/download/v0.1.6.0/stack-0.1.6.0-linux-x86_64.tar.gz -o /tmp/stack.tar.gz
-        - tar -C /tmp -xvf /tmp/stack.tar.gz
-        - sudo cp /tmp/stack-0.1.6.0-linux-x86_64/stack /usr/bin/stack
+        - wget https://github.com/commercialhaskell/stack/releases/download/v0.1.6.0/stack-0.1.6.0-linux-x86_64.tar.gz
+        - tar -xvf stack-0.1.6.0-linux-x86_64.tar.gz
+        - sudo cp stack-0.1.6.0-linux-x86_64/stack /usr/bin/stack
     override:
         - echo "create role pvals with password 'circleci';" | psql -U postgres
         - createdb pvals -O pvals
