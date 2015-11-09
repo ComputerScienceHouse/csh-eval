@@ -764,7 +764,7 @@ eboardFromRow (m, c, s, e) = Eboard
     e
     (getMemberID m)
 
-roomFromRow :: (Word64, T.Text, Day, Day) -> Room
+roomFromRow :: (Word64, T.Text, Day, Maybe Day) -> Room
 roomFromRow (m, r, s, e) = Room
     r
     s

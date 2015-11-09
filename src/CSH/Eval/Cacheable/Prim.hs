@@ -65,49 +65,49 @@ import CSH.Eval.Model
 initCache :: Settings
           -> PoolSettings
           -> IO Cache
-initCache cs ps = let newIDCache = newMVar M.empty
-    in Cache <$>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       acquirePool cs ps
+initCache cs ps = Cache
+             <$>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  acquirePool cs ps
+                  where newIDCache = liftIO newEmptyMVar
 
 -- | Release the 'Pool' enclosed in a 'Cache'.
 releaseCache :: Cache -> IO ()
@@ -133,14 +133,16 @@ hitRecordFallback = ((flip fromMaybe . ((liftIO . readMVar) <$>)) .) . M.lookup
 --   into the 'Maybe' monad; it is named for 'maybeEx' and must be called with
 --   a statement obeying the assumptions 'maybeEx' makes.
 liftMaybeQ :: CxRow Postgres t
-           -- | SQL Statement to execute. The statement must return exactly
+           -- ^ SQL Statement to execute. The statement must return exactly
            --   zero or one record(s).
            => Stmt Postgres
-           -- | The error to return if the statement provides no results.
+           -- ^ SQL Statement to execute. The statement must return exactly
+           --   zero or one record(s).
            -> CacheError
-           -- | Function from the record tuple to the thing you actually
-           --   want.
+           -- ^ The error to return if the statement provides no results.
            -> (t -> r)
+           -- ^ Function from the record tuple to the thing you actually
+           --   want.
            -> Cacheable r
 liftMaybeQ s dbe fr c = do
     r <- session (pool c) (tx defTxMode (maybeEx s))

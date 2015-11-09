@@ -326,24 +326,134 @@ grEboard mid cm s c = do
                    (getMemberID mid)
     appendGhost eboardMemberIDCache mid e c
 
-grRoom = undefined
+grRoom :: Word64 -- ^ Member ID.
+       -> T.Text -- ^ Room number.
+       -> Day    -- ^ Residence start date.
+       -> Cacheable ()
+grRoom mid rn s c = do
+    liftUnitQ (grRoomP mid rn s) c
+    let r = Room rn
+                 s
+                 Nothing
+                 (getMemberID mid)
+    appendGhost roomMemberIDCache mid r c
 
-grQueue = undefined
+grQueue :: Word64  -- ^ Member ID.
+        -> UTCTime -- ^ Entrance time.
+        -> Cacheable ()
+grQueue mid t c = do
+    liftUnitQ (grQueueP mid t) c
+    let q = Queue t
+                  Nothing
+                  (getMemberID mid)
+    appendGhost queueMemberIDCache mid q c
 
-grMembership = undefined
+grMembership :: Word64       -- ^ Member ID.
+             -> MemberStatus -- ^ Membership status.
+             -> Day          -- ^ Effective date.
+             -> Cacheable ()
+grMembership mid ms t c = do
+    liftUnitQ (grMembershipP mid (memberStatusToVal ms) t) c
+    let m = Membership ms
+                       t
+                       Nothing
+                       (getMemberID mid)
+    appendGhost membershipMemberIDCache mid m c
 
-grEventAttendee = undefined
+grEventAttendee :: Word64 -- ^ Member ID.
+                -> Word64 -- ^ Event ID.
+                -> Bool   -- ^ Host status.
+                -> Cacheable ()
+grEventAttendee mid eid h c = do
+    liftUnitQ (grEventAttendeeP mid eid h) c
+    let e = EventAttendee h
+                          (getMemberID mid)
+                          (getEventID eid)
+    appendGhost eventAttendeeMemberIDCache mid e c
+    appendGhost eventAttendeeEventIDCache eid e c
 
-grProjectParticipant = undefined
+grProjectParticipant :: Word64 -- ^ Member ID.
+                     -> Word64 -- ^ Project ID.
+                     -> T.Text -- ^ Description.
+                     -> Cacheable ()
+grProjectParticipant mid pid d c = do
+    liftUnitQ (grProjectParticipantP mid pid d) c
+    let p = ProjectParticipant d
+                               (getMemberID mid)
+                               (getProjectID pid)
+    appendGhost projectParticipantMemberIDCache mid p c
+    appendGhost projectParticipantProjectIDCache pid p c
 
-grFreshmanProjectParticipant = undefined
+grFreshmanProjectParticipant :: Word64 -- ^ Freshman Project ID.
+                             -> Word64 -- ^ Evaluation ID.
+                             -> Cacheable ()
+grFreshmanProjectParticipant pid eid c = do
+    liftUnitQ (grFreshmanProjectParticipantP pid eid) c
+    let f = FreshmanProjectParticipant False
+                                       Pending
+                                       T.empty
+                                       (getFreshmanProjectID pid)
+                                       (getEvaluationID eid)
+    appendGhost freshProjParticipantProjectIDCache pid f c
+    appendGhost freshProjParticipantEvaluationIDCache eid f c
 
-grSignature = undefined
+grSignature :: Word64 -- ^ Member ID.
+            -> Word64 -- ^ Packet ID.
+            -> Bool   -- ^ Required.
+            -> Cacheable ()
+grSignature mid pid r c = do
+    liftUnitQ (grSignatureP mid pid r) c
+    let s = Signature r
+                      Nothing
+                      (getMemberID mid)
+                      (getPacketID pid)
+    appendGhost signatureMemberIDCache mid s c
+    appendGhost signaturePacketIDCache pid s c
 
-grReviewMetric = undefined
+grReviewMetric :: Word64 -- ^ Metric ID.
+               -> Word64 -- ^ Review ID.
+               -> Int    -- ^ Score.
+               -> Cacheable ()
+grReviewMetric mid rid s c = do
+    liftUnitQ (grReviewMetricP mid rid s) c
+    let r = ReviewMetric s
+                         (getMetricID mid)
+                         (getReviewID rid)
+    appendGhost reviewMetricMetricIDCache mid r c
+    appendGhost reviewMetricReviewIDCache rid r c
 
-grInterviewMetric = undefined
+grInterviewMetric :: Word64 -- ^ Metric ID.
+                  -> Word64 -- ^ Interview ID.
+                  -> Int    -- ^ Score.
+                  -> Cacheable ()
+grInterviewMetric mid iid s c = do
+    liftUnitQ (grInterviewMetricP mid iid s) c
+    let i = InterviewMetric s
+                            (getMetricID mid)
+                            (getInterviewID iid)
+    appendGhost interviewMetricMetricIDCache mid i c
+    appendGhost interviewMetricInterviewIDCache iid i c
 
-grAnswer = undefined
+grAnswer :: Word64 -- ^ Application ID
+         -> Word64 -- ^ Question ID
+         -> T.Text -- ^ Response
+         -> Cacheable ()
+grAnswer aid qid r c = do
+    liftUnitQ (grAnswerP aid qid r) c
+    let a = Answer r
+                   (getQuestionID qid)
+                   (getApplicationID aid)
+    appendGhost answerQuestionIDCache qid a c
+    appendGhost answerApplicationIDCache aid a c
 
-grDues = undefined
+grDues :: Word64     -- ^ Term ID.
+       -> Word64     -- ^ Member ID.
+       -> DuesStatus -- ^ Dues status.
+       -> Cacheable ()
+grDues tid mid s c = do
+    liftUnitQ (grDuesP tid mid (duesStatusToVal s)) c
+    let d = Dues s
+                 (getMemberID mid)
+                 (getTermID tid)
+    appendGhost duesMemberIDCache mid d c
+    appendGhost duesTermIDCache tid d c
