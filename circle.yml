@@ -1,23 +1,25 @@
 machine:
     timezone: America/New_York
     ghc:
-        version: 7.10.
+        version: 7.10.1
 
 dependencies:
     cache_directories:
         - "~/.stack"
+    pre:
+        - wget https://github.com/commercialhaskell/stack/releases/download/v0.1.6.0/stack-0.1.6.0-linux-x86_64.tar.gz
+        - tar -xvf stack-0.1.6.0-linux-x86_64.tar.gz
+        - sudo cp stack-0.1.6.0-linux-x86_64/stack /usr/bin/stack
+        - stack setup
     override:
-        - cabal install stack
-    post:
         - echo "create role pvals with password 'circleci';" | psql -U postgres
         - createdb pvals -O pvals
-        - cabal exec -- stack build
-        - cabal exec -- stack test --only-snapshot
-        - echo 'circleci' > cabal exec -- stack exec -- csh-eval-db-init localhost 5432 pvals pvals
+        - stack build
+        - stack test --only-snapshot
+        - echo 'circleci' | stack exec -- csh-eval initdb localhost 5432 pvals pvals
 
 test:
     override:
-        - cabal exec -- stack test
+        - stack test
     post:
         - mkdir $CIRCLE_ARTIFACTS/doc
-        - cabal exec -- stack exec -- haddock -h -o $CIRCLE_ARTIFACTS/doc `find src -type f`

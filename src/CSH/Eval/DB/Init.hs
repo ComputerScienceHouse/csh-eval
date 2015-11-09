@@ -97,7 +97,7 @@ dbInitParser = InitDB
             <*> optUser
             <*> optDb)
   where
-    optHost = argument auto
+    optHost = argument bstr
             (  metavar "<HOST>"
             <> help    "The hostname of the postgres database to connect to"
             )
@@ -107,12 +107,15 @@ dbInitParser = InitDB
             <> help    "The port to connect on"
             )
 
-    optUser = argument auto
+    optUser = argument bstr
             (  metavar "<USER>"
             <> help    "The name of the database user"
             )
 
-    optDb = argument auto
+    optDb = argument bstr
           (  metavar "<DB>"
           <> help    "The name of the eval database"
           )
+
+    bstr :: ReadM C.ByteString
+    bstr = eitherReader (Right . C.pack)
