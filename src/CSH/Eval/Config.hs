@@ -21,14 +21,12 @@ import Data.Configurator
 import Data.Word (Word16)
 import qualified Data.ByteString.Char8 as C
 
-import Network.Wai.Handler.Warp (Port)
-
 data Command = Members ServerCmd
              | Intro ServerCmd
              | InitDB DBInitCmd
 
 data ServerCmd = ServerCmd { withTLS :: Bool
-                           , port    :: Port
+                           , port    :: Int
                            }
 
 data DBInitCmd = DBInitCmd

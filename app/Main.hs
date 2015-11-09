@@ -10,7 +10,6 @@ import CSH.Eval.Config (Command (..), ServerCmd (..))
 import Options.Applicative
 import Text.PrettyPrint.ANSI.Leijen (text)
 
-
 runWithOptions :: Command -> IO ()
 runWithOptions (Members opts) = putStrLn cshlogo
                              >> evalFrontend opts
