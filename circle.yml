@@ -16,11 +16,10 @@ dependencies:
         - createdb pvals -O pvals
         - stack build
         - stack test --only-snapshot
-        - echo 'circleci' | stack exec -- csh-eval-db-init localhost 5432 pvals pvals
+        - echo 'circleci' | stack exec -- csh-eval initdb localhost 5432 pvals pvals
 
 test:
     override:
         - stack test
     post:
         - mkdir $CIRCLE_ARTIFACTS/doc
-        - stack exec -- haddock -h -o $CIRCLE_ARTIFACTS/doc `find src -type f`
