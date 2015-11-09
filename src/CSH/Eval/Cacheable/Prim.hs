@@ -132,18 +132,17 @@ hitRecordFallback = ((flip fromMaybe . ((liftIO . readMVar) <$>)) .) . M.lookup
 --   expected to return zero or one result(s). This function does not return
 --   into the 'Maybe' monad; it is named for 'maybeEx' and must be called with
 --   a statement obeying the assumptions 'maybeEx' makes.
-liftMaybeQ :: CxRow Postgres t
-           -- ^ SQL Statement to execute. The statement must return exactly
-           --   zero or one record(s).
-           => Stmt Postgres
+liftMaybeQ :: CxRow Postgres t => Stmt Postgres
            -- ^ SQL Statement to execute. The statement must return exactly
            --   zero or one record(s).
            -> CacheError
-           -- ^ The error to return if the statement provides no results.
+           -- ^ SQL Statement to execute. The statement must return exactly
+           --   zero or one record(s).
            -> (t -> r)
+           -- ^ The error to return if the statement provides no results.
+           -> Cacheable r
            -- ^ Function from the record tuple to the thing you actually
            --   want.
-           -> Cacheable r
 liftMaybeQ s dbe fr c = do
     r <- session (pool c) (tx defTxMode (maybeEx s))
     case r of (Left e)         -> left $ HasqlError e
