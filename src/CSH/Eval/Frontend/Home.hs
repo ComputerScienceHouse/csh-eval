@@ -16,9 +16,10 @@ DOCUMENT THIS.
 {-# LANGUAGE FlexibleContexts  #-}
 {-# LANGUAGE ViewPatterns      #-}
 
-module CSH.Eval.Frontend.Home (
-    getHomeR
-  ) where
+module CSH.Eval.Frontend.Home
+( getHomeR
+, getEvalCssR
+) where
 
 import qualified Data.Text as T
 import qualified Data.ByteString.Char8 as B
@@ -33,7 +34,7 @@ import Network.Wai
 import Data.Maybe
 import qualified Data.List as L (lookup)
 import Text.Hamlet (hamletFile)
-import Text.Lucius (luciusFile)
+import Text.Lucius (luciusFile, Css)
 import Yesod
 
 -- | The handler for the Evaluations Database index page.
@@ -42,3 +43,6 @@ getHomeR = do
     req <- waiRequest
     let usr = fromMaybe "" (L.lookup "X-WEBAUTH-USER" (requestHeaders req))
     getMemberR $ B.unpack usr
+
+getEvalCssR :: Handler Css
+getEvalCssR = withUrlRenderer $(luciusFile "frontend/templates/csh-eval.lucius")

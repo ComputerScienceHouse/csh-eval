@@ -19,6 +19,9 @@
 /api                        EvalSubsiteR WaiSubsite  getEvalAPI
 /static                     StaticR Static           getStatic
 
+-- stylesheet
+/csh-eval.css               EvalCssR                 GET
+
 -- Home.hs
 /                           HomeR                    GET
 
