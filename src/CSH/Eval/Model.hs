@@ -874,6 +874,7 @@ data CacheError = HasqlError (SessionError Postgres)
                 | CacheError  String
                 | Nonexistent String
                 | Constraint  String
+                deriving (Show)
 
 -- | Enables embedding the interior cache transformer within another
 --   transformer. This is only OK to use if you're embedding something

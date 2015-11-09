@@ -629,7 +629,7 @@ getTermDues i c = do
     hitRecordFallback i dc (sneakyGhostM duesTermIDCache i db c)
     where db = liftListQ (getDuesTermIDP i) duesFromRow c
 
-memberFromRow :: (Word64, UUID, T.Text, T.Text, B.ByteString, B.ByteString, Int, Bool) -> Member
+memberFromRow :: (Word64, UUID, T.Text, T.Text, Maybe B.ByteString, Maybe B.ByteString, Int, Bool) -> Member
 memberFromRow (i, u, un, cn, _, _, hp, os) = Member
     i
     u

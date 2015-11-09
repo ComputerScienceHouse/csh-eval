@@ -107,7 +107,7 @@ initCache cs ps = Cache
              <*>  newIDCache
              <*>  newIDCache
              <*>  acquirePool cs ps
-                  where newIDCache = liftIO newEmptyMVar
+                  where newIDCache = (liftIO . newMVar) M.empty
 
 -- | Release the 'Pool' enclosed in a 'Cache'.
 releaseCache :: Cache -> IO ()
@@ -245,7 +245,7 @@ singletonGhost :: (Cache -> IDCache a)
                -> Word64
                -> a
                -> Cacheable ()
-singletonGhost a k v c = liftIO $ forkFinally insrt1 (\_ -> putStrLn "singletonGhost died!") >> return ()
+singletonGhost a k v c = liftIO $ forkFinally insrt1 (either (const $ putStrLn "singletonGhost died!") (const $ return ())) >> return ()
     where m1  = a c
           insrt1 = do
                bracketOnError (takeMVar m1) (putMVar m1) insrt2
@@ -257,7 +257,7 @@ appendGhost :: (Cache -> IDCache [a])
             -> Word64
             -> a
             -> Cacheable ()
-appendGhost a k v c = liftIO $ forkFinally insrt1 (\_ -> putStrLn "singletonGhost died!") >> return ()
+appendGhost a k v c = liftIO $ forkFinally insrt1 (either (const $ putStrLn "appendGhost died!") (const $ return ())) >> return ()
     where m1 = a c
           insrt1 = do
                bracketOnError (takeMVar m1) (putMVar m1) insrt2
