@@ -20,15 +20,18 @@ module CSH.Eval.Cacheable.Prim (
     -- * Atomic Reads
   , hitSegment
   , hitRecordFallback
-    -- * Fallback Combinators
+    -- * Query Combinators
   , liftMaybeQ
   , liftListQ
+  , liftInsertSingleQ
+  , liftUnitQ
     -- * Error Reporting
   , noSuchID
   , noSuchThing
     -- * Ghosts
   , reaper
   , singletonGhost
+  , appendGhost
   , sneakyGhostM
   , sneakyGhostC
   ) where
@@ -47,6 +50,8 @@ import Control.Monad.IO.Class (liftIO)
 
 import Data.Maybe (fromMaybe)
 
+import Data.Functor.Identity (Identity, runIdentity)
+
 import qualified Data.Map as M
 
 import Data.Word
@@ -60,49 +65,49 @@ import CSH.Eval.Model
 initCache :: Settings
           -> PoolSettings
           -> IO Cache
-initCache cs ps = let newIDCache = newMVar M.empty
-    in Cache <$>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       newIDCache <*>
-       acquirePool cs ps
+initCache cs ps = Cache
+             <$>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  newIDCache
+             <*>  acquirePool cs ps
+                  where newIDCache = (liftIO . newMVar) M.empty
 
 -- | Release the 'Pool' enclosed in a 'Cache'.
 releaseCache :: Cache -> IO ()
@@ -128,14 +133,16 @@ hitRecordFallback = ((flip fromMaybe . ((liftIO . readMVar) <$>)) .) . M.lookup
 --   into the 'Maybe' monad; it is named for 'maybeEx' and must be called with
 --   a statement obeying the assumptions 'maybeEx' makes.
 liftMaybeQ :: CxRow Postgres t
-           -- | SQL Statement to execute. The statement must return exactly
+           -- ^ SQL Statement to execute. The statement must return exactly
            --   zero or one record(s).
            => Stmt Postgres
-           -- | The error to return if the statement provides no results.
+           -- ^ SQL Statement to execute. The statement must return exactly
+           --   zero or one record(s).
            -> CacheError
-           -- | Function from the record tuple to the thing you actually
-           --   want.
+           -- ^ The error to return if the statement provides no results.
            -> (t -> r)
+           -- ^ Function from the record tuple to the thing you actually
+           --   want.
            -> Cacheable r
 liftMaybeQ s dbe fr c = do
     r <- session (pool c) (tx defTxMode (maybeEx s))
@@ -153,6 +160,21 @@ liftListQ s fr c = do
     r <- session (pool c) (tx defTxMode (listEx s))
     case r of (Left e)   -> left $ HasqlError e
               (Right ts) -> right $ map fr ts
+
+-- | Fix this to provide better constraint errors.
+liftInsertSingleQ :: CxRow Postgres (Identity t)
+                  => Stmt Postgres
+                  -> Cacheable t
+liftInsertSingleQ s c = do
+    r <- session (pool c) (tx defTxMode (singleEx s))
+    case r of (Left e)  -> left $ HasqlError e
+              (Right t) -> right (runIdentity t)
+
+liftUnitQ :: Stmt Postgres -> Cacheable ()
+liftUnitQ s c = do
+    r <- session (pool c) (tx defTxMode (unitEx s))
+    case r of (Left e)   -> left $ HasqlError e
+              (Right ()) -> right ()
 
 -- | Report that a record with the given ID in the given table doesn't exist.
 noSuchID :: String -- ^ Table name
@@ -223,7 +245,7 @@ singletonGhost :: (Cache -> IDCache a)
                -> Word64
                -> a
                -> Cacheable ()
-singletonGhost a k v c = liftIO $ forkFinally insrt1 (\_ -> putStrLn "singletonGhost died!") >> return ()
+singletonGhost a k v c = liftIO $ forkFinally insrt1 (either (const $ putStrLn "singletonGhost died!") (const $ return ())) >> return ()
     where m1  = a c
           insrt1 = do
                bracketOnError (takeMVar m1) (putMVar m1) insrt2
@@ -231,18 +253,30 @@ singletonGhost a k v c = liftIO $ forkFinally insrt1 (\_ -> putStrLn "singletonG
                         Nothing   -> newMVar v >>= (\v' -> putMVar m1 (M.insert k v' m2))
                         (Just m3) -> swapMVar m3 v >> return ()
 
+appendGhost :: (Cache -> IDCache [a])
+            -> Word64
+            -> a
+            -> Cacheable ()
+appendGhost a k v c = liftIO $ forkFinally insrt1 (either (const $ putStrLn "appendGhost died!") (const $ return ())) >> return ()
+    where m1 = a c
+          insrt1 = do
+               bracketOnError (takeMVar m1) (putMVar m1) insrt2
+          insrt2 m2 = case M.lookup k m2 of
+                        Nothing   -> newMVar [v] >>= (\v' -> putMVar m1 (M.insert k v' m2))
+                        (Just m3) -> modifyMVar_ m3 (return . (v:))
+
 -- | Create a ghost that replays the effects of an action in the 'Cacheable'
 --   monad immediately before returning control to the exterior transformer.
 sneakyGhostM :: (Cache -> IDCache a)
-            -> Word64
-            -> CacheM a
-            -> Cacheable a
+             -> Word64
+             -> CacheM a
+             -> Cacheable a
 sneakyGhostM a k vM c = vM >>= (\v -> singletonGhost a k v c >> return v)
 
 -- | Create a ghost that replays the effects of an action in the 'Cacheable'
 --   monad immediately before returning control to the exterior transformer.
 sneakyGhostC :: (Cache -> IDCache a)
-            -> Word64
-            -> Cacheable a
-            -> Cacheable a
+             -> Word64
+             -> Cacheable a
+             -> Cacheable a
 sneakyGhostC a k vM c = vM c >>= (\v -> singletonGhost a k v c >> return v)

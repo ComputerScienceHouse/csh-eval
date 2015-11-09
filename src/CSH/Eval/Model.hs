@@ -375,7 +375,7 @@ data Packet = Packet {
     -- | Each packet is assigned a unique ID at creation time.
     packetID         :: Word64
     -- | Packet due date.
-  , packetDueDate    :: Day
+  , packetDueDate    :: UTCTime
     -- | Percentage of signatures required.
   , packetPercentReq :: Int
     -- | The member to whom this packet belongs.
@@ -597,7 +597,7 @@ data Room = Room {
     -- | The day the member moved into the room.
   , roomStartDate :: Day
     -- | The day the member moved out of the room.
-  , roomEndDate   :: Day
+  , roomEndDate   :: Maybe Day
     -- | The resident member.
   , roomMember    :: Cacheable Member
   }
@@ -874,6 +874,7 @@ data CacheError = HasqlError (SessionError Postgres)
                 | CacheError  String
                 | Nonexistent String
                 | Constraint  String
+                deriving (Show)
 
 -- | Enables embedding the interior cache transformer within another
 --   transformer. This is only OK to use if you're embedding something

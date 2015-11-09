@@ -329,7 +329,7 @@ room = mapM_ H.unitEx
        ( "member_id"    bigint   not null
        , "room_number"  varchar  not null
        , "start_date"   date     not null
-       , "end_date"     date     not null
+       , "end_date"     date     default null
        , constraint "no_simultaneous_member_occupation" unique ("member_id", "start_date")
        , constraint "no_simultaneous_room_occupation" unique ("room_number", "start_date")
     )|]
@@ -540,8 +540,8 @@ packet = mapM_ H.unitEx
    , [H.stmt|create table "packet"
        ( "id"           bigserial  primary key
        , "member_id"    bigint     not null
-       , "due_date"     date       not null
-       , "percent_req"  int8    not null
+       , "due_date"     timestamp  not null
+       , "percent_req"  int8       not null
        , constraint "no_simultaneous_packets" unique ("member_id", "due_date")
     )|]
    ]
