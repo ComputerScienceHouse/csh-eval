@@ -597,7 +597,7 @@ data Room = Room {
     -- | The day the member moved into the room.
   , roomStartDate :: Day
     -- | The day the member moved out of the room.
-  , roomEndDate   :: Day
+  , roomEndDate   :: Maybe Day
     -- | The resident member.
   , roomMember    :: Cacheable Member
   }

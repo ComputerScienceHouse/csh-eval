@@ -614,7 +614,7 @@ grEboardP = [H.stmt|insert into "eboard" ("member_id", "committee", "start_date"
 -- | Grant a room occupancy context to a given member.
 grRoomP :: Word64  -- ^ Member ID
         -> T.Text  -- ^ Room number
-        -> UTCTime -- ^ Residence start date
+        -> Day     -- ^ Residence start date
         -> H.Stmt HP.Postgres
 grRoomP = [H.stmt|insert into "room" ("member_id", "room_number", "start_date") values (?, ?, ?)|]
 
@@ -629,9 +629,9 @@ grQueueP = [H.stmt|insert into "queue" ("member_id", "entered") values (?, ?)|]
 -- *** Membership
 
 -- | Grant a membership context to a given member.
-grMembershipP :: Word64  -- ^ Member ID
-              -> T.Text  -- ^ Membership status
-              -> UTCTime -- ^ Initiation time
+grMembershipP :: Word64 -- ^ Member ID
+              -> T.Text -- ^ Membership status
+              -> Day    -- ^ Initiation time
               -> H.Stmt HP.Postgres
 grMembershipP = [H.stmt|insert into "membership" ("member_id", "status", "start_date") values (?, ?, ?)|]
 
@@ -640,8 +640,9 @@ grMembershipP = [H.stmt|insert into "membership" ("member_id", "status", "start_
 -- | Grant an event attendee context to the given member for the given event.
 grEventAttendeeP :: Word64 -- ^ Member ID
                  -> Word64 -- ^ Event ID
+                 -> Bool   -- ^ Host status.
                  -> H.Stmt HP.Postgres
-grEventAttendeeP = [H.stmt|insert into "event_attendee" ("member_id", "event_id") values (?, ?)|]
+grEventAttendeeP = [H.stmt|insert into "event_attendee" ("member_id", "event_id", "host") values (?, ?, ?)|]
 
 -- *** Project Participant
 
