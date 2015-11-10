@@ -11,15 +11,17 @@ dependencies:
         - tar -xvf stack-0.1.6.0-linux-x86_64.tar.gz
         - sudo cp stack-0.1.6.0-linux-x86_64/stack /usr/bin/stack
         - stack setup
+        - stack install hscolour
     override:
         - echo "create role pvals with password 'circleci';" | psql -U postgres
         - createdb pvals -O pvals
-        - stack build
+        - stack build --haddock
         - stack test --only-snapshot
         - echo 'circleci' | stack exec -- csh-eval initdb localhost 5432 pvals pvals
+    post:
+        - mkdir $CIRCLE_ARTIFACTS/doc
+        - cp -r .stack-work/dist/x86_64-linux/Cabal-1.22.4.0/doc $CIRCLE_ARTIFACTS/doc
 
 test:
     override:
         - stack test
-    post:
-        - mkdir $CIRCLE_ARTIFACTS/doc
