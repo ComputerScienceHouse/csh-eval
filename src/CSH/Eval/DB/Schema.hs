@@ -852,6 +852,7 @@ enableIndices = mapM_ H.unitEx
    , [H.stmt|create index "signature_member_id_index" on "signature" ("member_id")|]
    , [H.stmt|create index "signature_packet_id_index" on "signature" ("packet_id")|]
    , [H.stmt|create index "queue_member_id_index" on "queue" ("member_id")|]
+   , [H.stmt|create index "queue_entered_index" on "queue" ("entered")|]
    , [H.stmt|create index "application_id_index" on "application" ("id")|]
    , [H.stmt|create index "application_member_id_index" on "application" ("member_id")|]
    , [H.stmt|create index "metric_id_index" on "metric" ("id")|]

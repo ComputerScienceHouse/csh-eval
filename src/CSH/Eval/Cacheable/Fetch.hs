@@ -72,7 +72,6 @@ module CSH.Eval.Cacheable.Fetch (
   , getRoomsRoomNumber
   , getCurrentRooms
     -- ** Queue
-  , getQueueID
   , getMemberQueues
     -- ** Membership
   , getMemberMemberships
@@ -454,14 +453,6 @@ getRoomsRoomNumber r c = liftListQ (getRoomsRoomNumberP r) roomFromRow c
 -- | Fetch the 'Room' residences of all members currently living on floor.
 getCurrentRooms :: Cacheable [Room]
 getCurrentRooms c = liftListQ getCurrentRoomsP roomFromRow c
-
--- | Fetch a 'Queue' by ID.
-getQueueID :: Word64 -- ^ Queue ID.
-           -> Cacheable Queue
-getQueueID i c = do
-    qc <- hitSegment queueIDCache c
-    hitRecordFallback i qc (sneakyGhostM queueIDCache i db c)
-    where db = liftMaybeQ (getQueueIDP i) (noSuchID "Queue" i) queueFromRow c
 
 -- | Fetch a provided 'Member's 'Queue' instantiations.
 getMemberQueues :: Word64 -- ^ Member ID.
