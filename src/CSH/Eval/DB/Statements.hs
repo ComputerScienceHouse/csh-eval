@@ -148,18 +148,6 @@ getPacketsMemberIDP :: Word64 -- ^ Member ID
                     -> H.Stmt HP.Postgres
 getPacketsMemberIDP = [H.stmt|select * from "packet" where "member_id" = ?|]
 
--- *** Queue
-
--- | Fetch a queue entry by ID.
-getQueueIDP :: Word64 -- ^ Queue ID
-            -> H.Stmt HP.Postgres
-getQueueIDP = [H.stmt|select * "queue" where "id" = ?|]
-
--- | Fetch all queue entries associated with a specific member.
-getQueuesMemberIDP :: Word64 -- ^ Member ID
-                   -> H.Stmt HP.Postgres
-getQueuesMemberIDP = [H.stmt|select * from "queueu" where "member_id" = ?|]
-
 -- *** Application
 
 -- | Fetch an application by ID.
@@ -388,6 +376,13 @@ getSignaturesRequiredP = [H.stmt|select * from "signatures" where "packet_id" = 
 getSignaturesSignedP :: Word64 -- ^ Packet ID
                      -> H.Stmt HP.Postgres
 getSignaturesSignedP = [H.stmt|select * from "signatures" where "packet_id" = ? and "signed" is not null|]
+
+-- *** Queue
+
+-- | Fetch all queue entries associated with a specific member.
+getQueuesMemberIDP :: Word64 -- ^ Member ID
+                   -> H.Stmt HP.Postgres
+getQueuesMemberIDP = [H.stmt|select * from "queue" where "member_id" = ?|]
 
 -- *** Review Metric
 
@@ -897,12 +892,6 @@ upFreshmanProjectDescriptionP :: T.Text -- ^ Description
                               -> H.Stmt HP.Postgres
 upFreshmanProjectDescriptionP = [H.stmt|update "freshman_project" set "description" = ? where "id" = ?|]
 
--- | Update a given freshman project's date.
-upFreshmanProjectDateP :: UTCTime -- ^ Project date
-                       -> Word64  -- ^
-                       -> H.Stmt HP.Postgres
-upFreshmanProjectDateP = [H.stmt|update "freshman_project" set "project_date" = ? where "id" = ?|]
-
 -- *** Packet
 
 -- | Update a given packet's due date.
@@ -916,20 +905,6 @@ upPacketPercentReqP :: Int    -- ^ Percent required
                     -> Word64 -- ^ Packet ID
                     -> H.Stmt HP.Postgres
 upPacketPercentReqP = [H.stmt|update "packet" set "percent_req" = ? where "id" = ?|]
-
--- *** Queue
-
--- | Update a given queue's entry date.
-upQueueEnteredP :: UTCTime -- ^ Queue entrance time
-                -> Word64  -- ^ Queue ID
-                -> H.Stmt HP.Postgres
-upQueueEnteredP = [H.stmt|update "queue" set "entered" = ? where "id" = ?|]
-
--- | Update a given queue's exit date.
-upQueueExitedP :: UTCTime -- ^ Queue exit time
-               -> Word64  -- ^ Queue ID
-               -> H.Stmt HP.Postgres
-upQueueExitedP = [H.stmt|update "queue" set "exited" = ? where "id" = ?|]
 
 -- *** Application
 
@@ -1059,11 +1034,11 @@ upFreshmanProjectParticipantEboardP :: Bool   -- ^ Eboard flag
 upFreshmanProjectParticipantEboardP = [H.stmt|update "freshman_project_participant" set "eboard" = ? where "freshman_project_id" = ? and "evaluation_id" = ?|]
 
 -- | Update whether or not a given member passed a given freshman project.
-upFreshmanProjectParticipantResultP :: T.Text -- ^ Result
+upFreshmanProjectParticipantStatusP :: T.Text -- ^ Evaluation Status
                                     -> Word64 -- ^ Freshman Project ID
                                     -> Word64 -- ^ Evaluation ID
                                     -> H.Stmt HP.Postgres
-upFreshmanProjectParticipantResultP = [H.stmt|update "freshman_project_participant" set "result" = ? where "freshman_project_id" = ? and "evaluation_id" = ?|]
+upFreshmanProjectParticipantStatusP = [H.stmt|update "freshman_project_participant" set "status" = ? where "freshman_project_id" = ? and "evaluation_id" = ?|]
 
 -- | Update comments on a given member's participation in a given freshman
 --   project.
@@ -1072,6 +1047,22 @@ upFreshmanProjectParticipantCommentsP :: T.Text -- ^ Comments
                                       -> Word64 -- ^ Evaluation ID
                                       -> H.Stmt HP.Postgres
 upFreshmanProjectParticipantCommentsP = [H.stmt|update "freshman_project_participant" set "comments" = ? where "freshman_project_id" = ? and "evaluation_id" = ?|]
+
+-- *** Queue
+
+-- | Update the time at which a member enters the housing queue.
+upQueueEnteredP :: UTCTime -- ^ New entrance time.
+                -> Word64  -- ^ Member ID.
+                -> UTCTime -- ^ Old entrance time.
+                -> H.Stmt HP.Postgres
+upQueueEnteredP = [H.stmt|update "queue" set "entered" = ? where "member_id" = ? and "entered" = ?|]
+
+-- | Update the time at which a member exits the housing queue.
+upQueueExited :: UTCTime -- ^ Exit time.
+              -> Word64  -- ^ Member ID.
+              -> UTCTime -- ^ Entrance time.
+              -> H.Stmt HP.Postgres
+upQueueExited = [H.stmt|update "queue" set "exited" = ? where "member_id" = ? and "entered" = ?|]
 
 -- *** Signature
 
