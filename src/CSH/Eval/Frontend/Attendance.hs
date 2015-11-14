@@ -20,25 +20,20 @@ module CSH.Eval.Frontend.Attendance (
     getAttendanceR
   ) where
 
-import qualified Data.Text as T
-import qualified Data.ByteString.Char8 as B
-import CSH.Eval.Model
-import CSH.Eval.Config
 import CSH.Eval.Frontend.Data
-import CSH.Eval.Frontend.Projects
-import CSH.Eval.Frontend.Widgets
-import qualified CSH.Eval.LDAP as LD
-import Network.Wai
-import Data.Maybe
-import qualified Data.List as L (lookup)
-import Text.Hamlet (hamletFile)
-import Text.Lucius (luciusFile)
+-- import qualified Data.List as L (lookup)
 import Yesod
 
 -- | The handler for the Evaluations Database index page
 getAttendanceR :: Handler Html
 getAttendanceR = do
-           req <- waiRequest
-           let usr = fromMaybe "" (L.lookup "X-WEBAUTH-USER" (requestHeaders req))
-           let committees = ["Evaluations", "Research and Development", "House Improvements", "Social", "Financial", "House History", "Operational Communications"] :: [String]
+           -- req <- waiRequest
+           -- let usr = fromMaybe "" (L.lookup "X-WEBAUTH-USER" (requestHeaders req))
+           let committees = ["Evaluations"
+                            , "Research and Development"
+                            , "House Improvements"
+                            , "Social"
+                            , "Financial"
+                            , "House History"
+                            , "Operational Communications"] :: [String]
            defaultLayout $(whamletFile "frontend/templates/attendance/index.hamlet")

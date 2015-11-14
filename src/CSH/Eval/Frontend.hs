@@ -28,8 +28,6 @@ import CSH.Eval.Frontend.Projects
 import CSH.Eval.Frontend.Evals
 import CSH.Eval.Frontend.Home
 import CSH.Eval.Config
-import Text.Hamlet (hamletFile)
-import Text.Lucius (luciusFile)
 import Yesod
 import Yesod.Static
 

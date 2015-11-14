@@ -21,12 +21,7 @@ module CSH.Eval.Frontend.Evals (
     getEvalsMembershipOverviewR
   ) where
 
-import qualified Data.Text as T
-
 import CSH.Eval.Frontend.Data
-import CSH.Eval.Frontend.Widgets
-import Text.Hamlet (hamletFile)
-import Text.Lucius (luciusFile)
 import Yesod
 
 -- | The page for the Overiview of Membership Evaluations

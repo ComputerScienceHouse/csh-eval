@@ -36,14 +36,10 @@ module CSH.Eval.Cacheable.Prim (
   , sneakyGhostC
   ) where
 
-import Control.Applicative ((<$>), (<*>))
-
 import Control.Concurrent
-import Control.Concurrent.MVar
 
 import Control.Exception
 
-import Control.Monad.Trans.Control
 import Control.Monad.Trans.Either
 
 import Control.Monad.IO.Class (liftIO)
