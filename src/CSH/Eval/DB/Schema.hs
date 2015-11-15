@@ -74,12 +74,6 @@ module CSH.Eval.DB.Schema (
    , enableIndices
 ) where
 
-import Control.Monad
-
-import qualified Data.Text as T
-
-import Data.List(zipWith4)
-
 import qualified Hasql as H
 
 import qualified Hasql.Postgres as HP

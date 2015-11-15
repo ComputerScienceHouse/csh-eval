@@ -21,9 +21,11 @@ import Ldap.Client.Search
 import qualified CSH.Eval.Config as Cfg
 import qualified Data.ByteString.Char8 as B
 import Data.Text
-import Data.Either
 import Safe
 
+lookup :: Text
+       -> AttrValue
+       -> IO (Maybe B.ByteString)
 lookup attr uid = do
             cfg  <- Cfg.evalConfig
             usr  <- (fmap (fromJustNote "ldap.user DNE in config.")
@@ -32,11 +34,17 @@ lookup attr uid = do
                                         (Cfg.lookup cfg "ldap.password"))
             lookupAttr attr usr pass uid
 
-extractValue :: [SearchEntry] -> Maybe B.ByteString
-extractValue ((SearchEntry _ ((_,(n:_)):_)):_) = Just n
+
+extractValue :: [SearchEntry]
+             -> Maybe B.ByteString
+extractValue ((SearchEntry _ ((_,(n:_)):_)):_) = Just n -- Listen, I'm sorry
 extractValue _                                 = Nothing
 
-lookupAttr :: Text -> Text -> B.ByteString -> AttrValue -> IO (Maybe B.ByteString)
+lookupAttr :: Text
+           -> Text
+           -> B.ByteString
+           -> AttrValue
+           -> IO (Maybe B.ByteString)
 lookupAttr attr usr pass uid = val >>= \v -> return $ case v of
             (Right (Right r)) -> extractValue r
             _                 -> Nothing

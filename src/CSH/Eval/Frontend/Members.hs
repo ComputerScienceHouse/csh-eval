@@ -22,17 +22,8 @@ module CSH.Eval.Frontend.Members (
   ) where
 
 import qualified Data.ByteString.Char8 as B
-import CSH.Eval.Config
 import CSH.Eval.Frontend.Data
-import CSH.Eval.Frontend.Projects
-import CSH.Eval.Frontend.ProfilePhoto
-import CSH.Eval.Frontend.Widgets
 import qualified CSH.Eval.LDAP as LD
-import Network.Wai
-import Data.Maybe
-import qualified Data.List as L (lookup)
-import Text.Hamlet (hamletFile)
-import Text.Lucius (luciusFile)
 import Yesod
 
 dummyMembers :: [(String, String, Int, Bool, Bool)]
@@ -58,6 +49,7 @@ getMemberR user = do
            let access = Member
            defaultLayout $(whamletFile "frontend/templates/index.hamlet")
 
+-- | The handler for the members listing page
 getMembersR :: Handler Html
 getMembersR = do
            defaultLayout $(whamletFile "frontend/templates/members/index.hamlet")

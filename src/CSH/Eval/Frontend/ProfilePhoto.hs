@@ -24,8 +24,6 @@ import qualified CSH.Eval.LDAP as LD
 import qualified Data.ByteString.Char8 as B
 import Crypto.Hash
 import CSH.Eval.Frontend.Data
-import CSH.Eval.Config
-import Network.Wai
 import Yesod
 
 md5 :: B.ByteString -> Digest MD5

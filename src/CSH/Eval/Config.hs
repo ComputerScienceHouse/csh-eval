@@ -18,6 +18,7 @@ module CSH.Eval.Config (
   ) where
 
 import Data.Configurator
+import Data.Configurator.Types
 import Data.Word (Word16)
 import qualified Data.ByteString.Char8 as C
 
@@ -36,4 +37,5 @@ data DBInitCmd = DBInitCmd
                 , dbName :: C.ByteString
                 }
 
+evalConfig :: IO Config
 evalConfig = load [Required "config/csh-eval.rc"]

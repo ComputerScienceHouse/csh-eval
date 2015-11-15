@@ -27,11 +27,10 @@ import qualified Data.Text as T
 
 import CSH.Eval.Frontend.Data
 import CSH.Eval.Frontend.Widgets
-import Text.Hamlet (hamletFile)
 import Text.Lucius (luciusFile)
 import Yesod
 import Yesod.Markdown
-import Data.List (unfoldr, find)
+import Data.List (find)
 
 projects :: [(T.Text, T.Text, T.Text, T.Text, Int)]
 projects = (take 100 . cycle)
@@ -40,6 +39,7 @@ projects = (take 100 . cycle)
     ,("Matt Gambogi", "tyle", "TYped Language Evaluator", "In Progress", 6)
     ]
 
+projectsCSS :: WidgetT EvalFrontend IO ()
 projectsCSS = toWidget $(luciusFile "frontend/templates/projects/projects.lucius")
 
 -- | The page for a overview of CSH projects.
@@ -68,10 +68,12 @@ contentPanel description = [whamlet|
       ^{either (error . show) id $ markdownToHtml $ Markdown description}
 |]
 
-getProjectR id = defaultLayout $ do
+getProjectR :: Int
+            -> HandlerT EvalFrontend IO Html
+getProjectR ident = defaultLayout $ do
     projectsCSS
     panel
-    where fromID = find (\(_, _, _, _, id') -> id == id') projects
+    where fromID = find (\(_, _, _, _, id') -> ident == id') projects
           panel = case fromID of
                     Nothing -> notFound
                     Just (member, name, description, status, _) -> widgetPanelOffset 8 2 (title name member status) (contentPanel description)
@@ -87,8 +89,10 @@ committees = [ "Evaluations"
              , "Chairman"
              ]
 
+projectForm :: WidgetT EvalFrontend IO ()
 projectForm = $(whamletFile "frontend/templates/projects/create.hamlet")
 
+getCreateProjectR :: HandlerT EvalFrontend IO Html
 getCreateProjectR = defaultLayout $ do
     projectsCSS
     widgetPanelOffset 8 2 [whamlet|New Project|] projectForm

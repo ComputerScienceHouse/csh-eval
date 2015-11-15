@@ -1,17 +1,13 @@
 module CSH.Eval.DB.Init where
 
 import qualified Data.ByteString.Char8 as C
-import qualified Data.Text             as T
 
 import qualified Hasql          as H
-
 import qualified Hasql.Postgres as HP
 
 import System.IO
-import System.Environment
 
 import Control.Exception
-import Data.Word (Word16)
 import Options.Applicative
 
 import CSH.Eval.Config
@@ -90,6 +86,7 @@ runInit opts = do
 
     H.releasePool pool
 
+dbInitParser :: Parser Command
 dbInitParser = InitDB
             <$> (DBInitCmd
             <$> optHost

@@ -24,7 +24,6 @@ module CSH.LDAP (
 , module Ldap.Client
 ) where
 import Ldap.Client
-import Safe
 import Data.Text as T
 
 -- $setup

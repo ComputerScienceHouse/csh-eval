@@ -25,8 +25,6 @@ module CSH.Eval.Frontend.Widgets (
 import qualified Data.Text as T
 
 import CSH.Eval.Frontend.Data
-import Text.Hamlet (hamletFile)
-import Text.Lucius (luciusFile)
 import Text.Blaze  (preEscapedText)
 import Yesod
 

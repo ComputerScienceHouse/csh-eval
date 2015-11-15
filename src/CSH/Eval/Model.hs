@@ -56,8 +56,8 @@ module CSH.Eval.Model (
   , IDCache
   , Cache(..)
   , defTxMode
-  , CacheM(..)
-  , Cacheable(..)
+  , CacheM
+  , Cacheable
   , CacheError(..)
   , runCacheable
   , execCacheable

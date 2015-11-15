@@ -147,18 +147,6 @@ module CSH.Eval.Cacheable.Fetch (
   , projectTypeToVal
   ) where
 
-import Control.Applicative ((<$>))
-
-import Control.Concurrent.MVar
-
-import Control.Monad.Trans.Either
-
-import Control.Monad.IO.Class (liftIO)
-
-import Data.Maybe (fromMaybe)
-
-import qualified Data.Map as M
-
 import Data.Word
 
 import Data.UUID
@@ -168,9 +156,6 @@ import Data.Time
 import qualified Data.ByteString as B
 
 import qualified Data.Text as T
-
-import Hasql
-import Hasql.Postgres
 
 import CSH.Eval.Model
 
