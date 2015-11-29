@@ -20,6 +20,9 @@ module CSH.Eval.Frontend (
     evalFrontend
   ) where
 
+import CSH.Eval.Config
+import CSH.Eval.Cacheable.Prim
+-- import CSH.Eval.Model
 import CSH.Eval.Frontend.Data
 import CSH.Eval.Frontend.Attendance
 import CSH.Eval.Frontend.Members
@@ -27,7 +30,6 @@ import CSH.Eval.Frontend.ProfilePhoto
 import CSH.Eval.Frontend.Projects
 import CSH.Eval.Frontend.Evals
 import CSH.Eval.Frontend.Home
-import CSH.Eval.Config
 import Yesod
 import Yesod.Static
 
@@ -37,4 +39,5 @@ mkYesodDispatch "EvalFrontend" resourcesEvalFrontend
 evalFrontend :: ServerCmd -> IO Application
 evalFrontend config = do
     s <- static "frontend/static"
-    toWaiApp $ EvalFrontend s config
+    cache <- initCacheFromConfig
+    toWaiApp $ EvalFrontend s config cache

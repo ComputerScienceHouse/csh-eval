@@ -22,6 +22,7 @@ import CSH.Eval.Routes (evalAPI)
 import Text.Hamlet (hamletFile)
 import Text.Lucius (luciusFile)
 import CSH.Eval.Config (ServerCmd (..))
+import CSH.Eval.Model
 import Yesod
 import Yesod.Static
 
@@ -32,6 +33,7 @@ staticFiles "frontend/static"
 data EvalFrontend = EvalFrontend
                   { getStatic :: Static
                   , getConfig :: ServerCmd
+                  , getCache :: Cache
                   }
 
 -- | DOCUMENT THIS!
