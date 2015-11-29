@@ -22,7 +22,6 @@ module CSH.Eval.Frontend (
 
 import CSH.Eval.Config
 import CSH.Eval.Cacheable.Prim
--- import CSH.Eval.Model
 import CSH.Eval.Frontend.Data
 import CSH.Eval.Frontend.Attendance
 import CSH.Eval.Frontend.Members

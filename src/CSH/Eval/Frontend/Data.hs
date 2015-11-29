@@ -33,7 +33,7 @@ staticFiles "frontend/static"
 data EvalFrontend = EvalFrontend
                   { getStatic :: Static
                   , getConfig :: ServerCmd
-                  , getCache :: Cache
+                  , getCache  :: Cache
                   }
 
 -- | DOCUMENT THIS!
