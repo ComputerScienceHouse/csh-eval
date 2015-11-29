@@ -54,13 +54,12 @@ evalConfig = lookupEnv "CSH_EVAL_CONFIG"
 
 -- | Derive hasql postgres connection settings from configuration.
 cxCfgSettings :: Config -> IO Settings
-cxCfgSettings cfg = do
-    host     <- (lookupDefault "localhost" cfg "db.host")
-    port     <- (lookupDefault 5432 cfg "db.port")
-    user     <- (lookupDefault "" cfg "db.user")
-    password <- (lookupDefault "" cfg "db.password")
-    dbname   <- (lookupDefault "" cfg "db.dbname")
-    pure (ParamSettings host port user password dbname)
+cxCfgSettings cfg = ParamSettings
+                <$> (lookupDefault "localhost" cfg "db.host")
+                <*> (lookupDefault 5432 cfg "db.port")
+                <*> (lookupDefault "" cfg "db.user")
+                <*> (lookupDefault "" cfg "db.password")
+                <*> (lookupDefault "" cfg "db.dbname")
 
 -- | Derive hasql pool settings from configuration.
 poolCfgSettings :: Config -> IO PoolSettings
