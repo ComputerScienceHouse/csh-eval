@@ -16,6 +16,7 @@ CSH.Eval.Cacheable.Prim defines primitive operations in the 'CacheM' and
 module CSH.Eval.Cacheable.Prim (
     -- * Cache Initialization and Release
     initCache
+  , initCacheFromConfig
   , releaseCache
     -- * Atomic Reads
   , hitSegment
