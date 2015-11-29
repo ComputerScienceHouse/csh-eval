@@ -56,7 +56,8 @@ import Hasql
 import Hasql.Postgres
 
 import CSH.Eval.Model
-
+import CSH.Eval.Config
+--
 -- | Initialize a 'Cache', including the enclosed 'Pool'.
 initCache :: Settings
           -> PoolSettings
@@ -104,6 +105,14 @@ initCache cs ps = Cache
              <*>  newIDCache
              <*>  acquirePool cs ps
                   where newIDCache = (liftIO . newMVar) M.empty
+
+-- | Initialize a 'Cache' with settings derived from the config
+initCacheFromConfig :: IO Cache
+initCacheFromConfig = do
+    cfg <- evalConfig
+    cxSets <- cxCfgSettings cfg
+    poolSets <- poolCfgSettings cfg
+    initCache cxSets poolSets
 
 -- | Release the 'Pool' enclosed in a 'Cache'.
 releaseCache :: Cache -> IO ()

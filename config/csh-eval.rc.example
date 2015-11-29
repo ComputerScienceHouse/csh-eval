@@ -20,6 +20,10 @@ db {
     host     = "localhost"
     port     = "db.port"
     database = "db.name"
+    pool {
+        max_con      = 1
+        idle_timeout = 10
+    }
 }
 
 ldap {
