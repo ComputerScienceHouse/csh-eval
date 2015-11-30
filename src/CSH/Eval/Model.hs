@@ -775,6 +775,7 @@ type IDCache a = MVar (M.Map Word64 (MVar a))
 -- | A cache state, consisting of all cache segments and a database connection
 --   pool for fallbacks (this must be accessible within the 'Cacheable' monad).
 data Cache = Cache {
+    -- | The PostgreSQL connection pool.
     pool                                  :: Pool Postgres
     -- | The Logger
   , logger                                :: Logger
@@ -858,7 +859,6 @@ data Cache = Cache {
   , duesMemberIDCache                     :: IDCache [Dues]
     -- | Map from 'Term' IDs to 'Dues'.
   , duesTermIDCache                       :: IDCache [Dues]
-    -- | The PostgreSQL connection pool.
   }
 
 -- | Default Hasql transaction mode.
