@@ -25,6 +25,7 @@ import CSH.Eval.Config (ServerCmd (..))
 import CSH.Eval.Model
 import Yesod
 import Yesod.Static
+import System.Log.Logger hiding (getLogger)
 
 -- Declaration of location of static files
 staticFiles "frontend/static"
@@ -34,6 +35,7 @@ data EvalFrontend = EvalFrontend
                   { getStatic :: Static
                   , getConfig :: ServerCmd
                   , getCache  :: Cache
+                  , getLogger :: Logger
                   }
 
 -- | DOCUMENT THIS!

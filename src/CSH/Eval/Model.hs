@@ -87,6 +87,8 @@ import qualified Data.Map        as M
 import Hasql
 import Hasql.Postgres
 
+import System.Log.Logger
+
 -- | Committees.
 data Committee = Evals     -- ^ Evaluations
                | RnD       -- ^ Research and Development
@@ -773,8 +775,11 @@ type IDCache a = MVar (M.Map Word64 (MVar a))
 -- | A cache state, consisting of all cache segments and a database connection
 --   pool for fallbacks (this must be accessible within the 'Cacheable' monad).
 data Cache = Cache {
+    pool                                  :: Pool Postgres
+    -- | The Logger
+  , logger                                :: Logger
     -- | Map from IDs to 'Member's.
-    memberIDCache                         :: IDCache Member
+  , memberIDCache                         :: IDCache Member
     -- | Map from IDs to 'Event's.
   , eventIDCache                          :: IDCache Event
     -- | Map from IDs to 'Project's.
@@ -854,7 +859,6 @@ data Cache = Cache {
     -- | Map from 'Term' IDs to 'Dues'.
   , duesTermIDCache                       :: IDCache [Dues]
     -- | The PostgreSQL connection pool.
-  , pool                                  :: Pool Postgres
   }
 
 -- | Default Hasql transaction mode.

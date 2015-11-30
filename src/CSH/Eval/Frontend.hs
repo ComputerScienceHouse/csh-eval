@@ -22,7 +22,7 @@ module CSH.Eval.Frontend (
 
 import CSH.Eval.Config
 import CSH.Eval.Cacheable.Prim
-import CSH.Eval.Frontend.Data
+import CSH.Eval.Frontend.Data hiding (getLogger)
 import CSH.Eval.Frontend.Attendance
 import CSH.Eval.Frontend.Members
 import CSH.Eval.Frontend.ProfilePhoto
@@ -31,6 +31,9 @@ import CSH.Eval.Frontend.Evals
 import CSH.Eval.Frontend.Home
 import Yesod
 import Yesod.Static
+import System.Log.Logger
+import System.Log.Handler.Simple
+import System.Log.Formatter (simpleLogFormatter)
 
 mkYesodDispatch "EvalFrontend" resourcesEvalFrontend
 
@@ -38,5 +41,18 @@ mkYesodDispatch "EvalFrontend" resourcesEvalFrontend
 evalFrontend :: ServerCmd -> IO Application
 evalFrontend config = do
     s <- static "frontend/static"
-    cache <- initCacheFromConfig
-    toWaiApp $ EvalFrontend s config cache
+    updateGlobalLogger rootLoggerName ( setLevel DEBUG
+                                      . addHandler stdout
+                                      . removeHandler
+                                      )
+    cacheLogger <- getLogger "csh-eval-cache"
+    frontendLogger <-getLogger "csh-eval-frontend"
+    cache <- initCacheFromConfig cacheLogger
+    toWaiApp $ EvalFrontend s config cache frontendLogger
+  where
+    stdout = GenericHandler
+               DEBUG
+               (simpleLogFormatter "$time [$prio#$loggername] $msg")
+               ()
+               (\_ -> putStrLn)
+               (\_ -> pure ())

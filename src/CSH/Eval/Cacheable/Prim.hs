@@ -58,62 +58,67 @@ import Hasql.Postgres
 
 import CSH.Eval.Model
 import CSH.Eval.Config
---
+
+import System.Log.Logger
+
 -- | Initialize a 'Cache', including the enclosed 'Pool'.
 initCache :: Settings
           -> PoolSettings
+          -> Logger
           -> IO Cache
-initCache cs ps = Cache
-             <$>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  newIDCache
-             <*>  acquirePool cs ps
-                  where newIDCache = (liftIO . newMVar) M.empty
+initCache cs ps logger = Cache
+                     <$> acquirePool cs ps
+                     <*> pure logger
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*> newIDCache
+                     <*  logL logger INFO "Initialized Cache"
+                       where newIDCache = (liftIO . newMVar) M.empty
 
 -- | Initialize a 'Cache' with settings derived from the config
-initCacheFromConfig :: IO Cache
-initCacheFromConfig = do
+initCacheFromConfig :: Logger -> IO Cache
+initCacheFromConfig logger = do
     cfg <- evalConfig
     cxSets <- cxCfgSettings cfg
     poolSets <- poolCfgSettings cfg
-    initCache cxSets poolSets
+    initCache cxSets poolSets logger
 
 -- | Release the 'Pool' enclosed in a 'Cache'.
 releaseCache :: Cache -> IO ()
