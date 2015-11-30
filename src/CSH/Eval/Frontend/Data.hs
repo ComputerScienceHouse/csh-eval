@@ -35,7 +35,7 @@ data EvalFrontend = EvalFrontend
                   { getStatic :: Static
                   , getConfig :: ServerCmd
                   , getCache  :: Cache
-                  , getLogger :: Logger
+                  , getFrontendLogger :: Logger
                   }
 
 -- | DOCUMENT THIS!

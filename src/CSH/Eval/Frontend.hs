@@ -22,7 +22,7 @@ module CSH.Eval.Frontend (
 
 import CSH.Eval.Config
 import CSH.Eval.Cacheable.Prim
-import CSH.Eval.Frontend.Data hiding (getLogger)
+import CSH.Eval.Frontend.Data
 import CSH.Eval.Frontend.Attendance
 import CSH.Eval.Frontend.Members
 import CSH.Eval.Frontend.ProfilePhoto
