@@ -1,0 +1,58 @@
+<div .row .panel>
+    <div .panel-body>
+          <div .col-md-2>
+              <h3> ####-#### Evaluation
+          <div .col-md-3>
+              <div .panel .panel-default>
+                <div .panel-heading>
+                  <div .panel-title>
+                    <strong> Summary
+                <div .panel-body .table-fill>
+                  <table .table .table-striped .table-responsive .no-bottom-margin>
+                    <tbody>
+                      <tr>
+                        <th>Committee Meetings
+                        <td> ##
+                      <tr>
+                        <th>Major Projects
+                        <td> ##
+                      <tr>
+                        <th>House Meetings Missed
+                        <td> ##
+                      <tr>
+                        <th>Social Events
+                        <td> ##
+                      <tr>
+                        <th>Technical Seminars
+                        <td> ##
+                <div .panel-inner-padding>
+                  <strong>Notes
+                  <br>
+                  Lorem Ipsum dolset quis es canis a via adipiscum valor
+      <div .col-md-7>
+          <div .panel .panel-default>
+            <div .panel-heading>
+              <div .panel-title>
+                <strong>Projects
+            <div .panel-body>
+              <div .text-center .bottom-padded>
+                  <h4 .text-muted>
+                    <strong>No Projects
+                  <a .btn .btn-primary href=@{CreateProjectR}>
+                    Create One
+          <div .panel .panel-default>
+            <div .panel-heading>
+              <div .panel-title>
+                <strong>Attendance
+            <div .panel-body .table-fill>
+              <table .table .table-striped .table-responsive .no-bottom-margin>
+                <tbody>
+                  <tr>
+                    <th>Name
+                    <th>Type
+                    <th>Date
+                  $#$forall (name, meetingType, date) <- attendance
+                  $#  <tr>
+                  $#    <td>#{name}
+                  $#    <td>#{meetingType}
+                  $#    <td>#{date}

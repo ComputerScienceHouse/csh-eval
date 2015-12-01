@@ -9,63 +9,137 @@
             <a href=@{MemberR $ B.unpack usr}">#{name}
           <span .label .label-success>Active
           <span .label .label-success>Eboard
-      $if ((==) access Admin)
-        <div .panel .panel-default>
-          <div .panel-heading>
-            <div .panel-title>
-              <strong> Admin Panel
-          <div .panel-body>
-            Admin panel body!
-      <div #grid data-columns>
-        <div .panel .panel-default>
-          <div .panel-heading>
-            <div .panel-title>
-              <strong>Membership Evaluations
-          <div .panel-body .table-fill>
-            <table .table .table-striped .table-responsive .no-bottom-margin>
-              <tbody>
-                <tr>
-                  <th>Committee Meetings
-                  <td>25
-                <tr>
-                  <th>Major Projects
-                  <td>3
-                <tr>
-                  <th>House Meetings Missed
-                  <td>0
-                <tr>
-                  <th>Social Events
-                  <td>7
-                <tr>
-                  <th>Technical Seminars
-                  <td>13
-          <div .panel-inner-padding>
-            <strong>Notes
-            <br>
-            None
-        <div .panel .panel-default>
-          <div .panel-heading>
-            <div .panel-title>
-              <strong>Projects
-          <div .panel-body>
-            <div .text-center .bottom-padded>
-                <h4 .text-muted>
-                  <strong>No Projects
-                <a .btn .btn-primary href=@{CreateProjectR}>
-                  Create One
-        <div .panel .panel-default>
-          <div .panel-heading>
-            <div .panel-title>
-              <strong>Attendance
-          <div .panel-body .table-fill>
-            <table .table .table-striped .table-responsive .no-bottom-margin>
-              <tbody>
-                <tr>
-                  <th>Name
-                  <th>Type
-                  <th>Date
-                $forall (name, meetingType, date) <- attendance
-                  <tr>
-                    <td>#{B.unpack name}
-                    <td>#{B.unpack meetingType}
-                    <td>#{B.unpack date}
+      $#$if ((==) access AdminAccess)
+      $#  <div .panel .panel-default>
+      $#    <div .panel-heading>
+      $#      <div .panel-title>
+      $#        <strong> Admin Panel
+      $#    <div .panel-body>
+      $#      Admin panel body!
+      <div .row>
+          <div .panel>
+              <div .panel-header>
+                  <div .col-md-2>
+                      <h3> 2015-2016 Evaluation
+              <div .panel-body>
+                  <!--div #grid data-columns-->
+                    <div .col-md-3>
+                        <div .panel .panel-default>
+                          <div .panel-heading>
+                            <div .panel-title>
+                              <strong> Summary
+                          <div .panel-body .table-fill>
+                            <table .table .table-striped .table-responsive .no-bottom-margin>
+                              <tbody>
+                                <tr>
+                                  <th>Points
+                                  <td>41
+                                <tr>
+                                  <th>Committee Meetings
+                                  <td>25
+                                <tr>
+                                  <th>Major Projects
+                                  <td>0
+                                <tr>
+                                  <th>House Meetings Missed
+                                  <td>0
+                                <tr>
+                                  <th>Social Events
+                                  <td>7
+                                <tr>
+                                  <th>Technical Seminars
+                                  <td>13
+                          <div .panel-inner-padding>
+                            <strong>Notes
+                            <br>
+                            None
+                <div .col-md-7>
+                    <div .panel .panel-default>
+                      <div .panel-heading>
+                        <div .panel-title>
+                          <strong>Projects
+                      <div .panel-body>
+                        <div .text-center .bottom-padded>
+                            <h4 .text-muted>
+                              <strong>No Projects
+                            <a .btn .btn-primary href=@{CreateProjectR}>
+                              Create One
+                    <div .panel .panel-default>
+                      <div .panel-heading>
+                        <div .panel-title>
+                          <strong>Attendance
+                      <div .panel-body .table-fill>
+                        <table .table .table-striped .table-responsive .no-bottom-margin>
+                          <tbody>
+                            <tr>
+                              <th>Name
+                              <th>Type
+                              <th>Date
+                            $forall (name, meetingType, date) <- attendance
+                              <tr>
+                                <td>#{B.unpack name}
+                                <td>#{B.unpack meetingType}
+                                <td>#{B.unpack date}
+      <div .row>
+          <div .panel>
+              <div .panel-body>
+                  <!--div #grid data-columns-->
+                    <div .col-md-2>
+                        <h3> 2014-2015 Evaluation
+                    <div .col-md-3>
+                        <div .panel .panel-default>
+                          <div .panel-heading>
+                            <div .panel-title>
+                              <strong> Summary
+                          <div .panel-body .table-fill>
+                            <table .table .table-striped .table-responsive .no-bottom-margin>
+                              <tbody>
+                                <tr>
+                                  <th>Points
+                                  <td>41
+                                <tr>
+                                  <th>Committee Meetings
+                                  <td>25
+                                <tr>
+                                  <th>Major Projects
+                                  <td>0
+                                <tr>
+                                  <th>House Meetings Missed
+                                  <td>0
+                                <tr>
+                                  <th>Social Events
+                                  <td>7
+                                <tr>
+                                  <th>Technical Seminars
+                                  <td>13
+                          <div .panel-inner-padding>
+                            <strong>Notes
+                            <br>
+                            None
+                <div .col-md-7>
+                    <div .panel .panel-default>
+                      <div .panel-heading>
+                        <div .panel-title>
+                          <strong>Projects
+                      <div .panel-body>
+                        <div .text-center .bottom-padded>
+                            <h4 .text-muted>
+                              <strong>No Projects
+                            <a .btn .btn-primary href=@{CreateProjectR}>
+                              Create One
+                    <div .panel .panel-default>
+                      <div .panel-heading>
+                        <div .panel-title>
+                          <strong>Attendance
+                      <div .panel-body .table-fill>
+                        <table .table .table-striped .table-responsive .no-bottom-margin>
+                          <tbody>
+                            <tr>
+                              <th>Name
+                              <th>Type
+                              <th>Date
+                            $forall (name, meetingType, date) <- attendance
+                              <tr>
+                                <td>#{B.unpack name}
+                                <td>#{B.unpack meetingType}
+                                <td>#{B.unpack date}
