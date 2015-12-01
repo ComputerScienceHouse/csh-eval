@@ -39,10 +39,10 @@ data EvalFrontend = EvalFrontend
                   }
 
 -- | DOCUMENT THIS!
-data AccessLvl = Freshman
-               | Member
-               | Eboard
-               | Admin
+data AccessLvl = FreshmanAccess
+               | MemberAccess
+               | EboardAccess
+               | AdminAccess
                deriving (Eq, Ord)
 
 -- This makes the datatypes for the evaluations frontend, for use by
