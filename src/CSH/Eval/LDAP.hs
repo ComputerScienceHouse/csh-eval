@@ -17,36 +17,27 @@ module CSH.Eval.LDAP (
   ) where
 import Prelude hiding (lookup)
 import CSH.LDAP
+import CSH.Eval.Model
+import CSH.Eval.Cacheable.Prim
+import CSH.Eval.Cacheable.Fetch
 import Ldap.Client.Search
 import qualified CSH.Eval.Config as Cfg
 import qualified Data.ByteString.Char8 as B
-import Data.Text
+import qualified Data.Text as T
 import Safe
+import System.Log.Logger
 
-lookup :: Text
-       -> AttrValue
-       -> IO (Maybe B.ByteString)
-lookup attr uid = do
-            cfg  <- Cfg.evalConfig
-            usr  <- (fmap (fromJustNote "ldap.user DNE in config.")
-                                        (Cfg.lookup cfg "ldap.user"))
-            pass <- (fmap (fromJustNote "ldap.password DNE in config.")
-                                        (Cfg.lookup cfg "ldap.password"))
-            lookupAttr attr usr pass uid
-
-
-extractValue :: [SearchEntry]
-             -> Maybe B.ByteString
-extractValue ((SearchEntry _ ((_,(n:_)):_)):_) = Just n -- Listen, I'm sorry
-extractValue _                                 = Nothing
-
-lookupAttr :: Text
-           -> Text
-           -> B.ByteString
-           -> AttrValue
+lookupAttr :: T.Text                  -- ^ Attribute
+           -> AttrValue               -- ^ Uid
            -> IO (Maybe B.ByteString)
-lookupAttr attr usr pass uid = val >>= \v -> return $ case v of
-            (Right (Right r)) -> extractValue r
+lookupAttr attr = head . lookupAttrs
+
+lookupAttrs :: [T.Text]                -- ^ Attributes
+            -> AttrValue               -- ^ Uid
+            -> IO (Maybe [(T.Text, B.ByteString)]
+lookupAttrs attrs usr pass uid = val
+                             >>= \v -> pure $ case v of
+            (Right (Right r)) -> unSearchEntries r
             _                 -> Nothing
     where val = withConfig $ \l -> do
                     searchEither l (Dn userBaseTxt)    (typesOnly False)

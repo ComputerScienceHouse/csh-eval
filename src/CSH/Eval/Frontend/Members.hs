@@ -48,12 +48,11 @@ charFor False = "❌"
 
 -- | The handler for a single member's page
 getMemberR :: String -> Handler Html
-getMemberR user = do
+getMemberR username = do
            y <- getYesod
            let cache = getCache y
            let logger = getFrontendLogger y
-           liftIO (execCacheable cache (getMemberUsername (T.pack user)) >>= logL logger EMERGENCY . show)
-           let usr = B.pack user
+           let usr = B.pack username
            nameEither <- liftIO $ LD.lookup "cn" usr
            let name = B.unpack $ case nameEither of
                        (Just n) -> n
