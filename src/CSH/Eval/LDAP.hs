@@ -48,7 +48,6 @@ lookupAttr :: Text
 lookupAttr attr usr pass uid = val >>= \v -> return $ case v of
             (Right (Right r)) -> extractValue r
             _                 -> Nothing
-    where val = withCSH $ \l -> do
-                    bind l (appDn usr) (Password pass)
+    where val = withConfig $ \l -> do
                     searchEither l (Dn userBaseTxt)    (typesOnly False)
                                    (Attr "uid" := uid) [Attr attr]

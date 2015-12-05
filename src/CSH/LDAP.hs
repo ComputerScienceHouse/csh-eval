@@ -20,10 +20,12 @@ module CSH.LDAP (
 , committeeBaseTxt
 , appDn
 , userDn
-, withCSH
+, withConfig
 , module Ldap.Client
 ) where
 import Ldap.Client
+import CSH.Eval.Config
+import Data.Map
 import Data.Text as T
 
 -- $setup
@@ -82,6 +84,13 @@ userDn :: Text -- ^ uid of user
        -> Dn
 userDn user = Dn $ T.concat ["uid=", user, ",", userBaseTxt]
 
+-- | Provides a dn based on the config. Assumes an app dn base.
+configDn :: IO Dn
+configDn = do
+    cfg <- evalConfig
+    usr <- lookupDefault "" cfg "ldap.user"
+    pure (appDn usr)
+
 {- | Wraps LDAP transactions.
 For example, here is a function that will retrieve a user from LDAP, given
 a username/password pair and a user to search for:
@@ -89,15 +98,44 @@ a username/password pair and a user to search for:
 @
 import CSH.LDAP
 import Ldap.Client
-   let fetchUser usr pass searchuser = withCSH $ \l -> do
-                bind  l (userDn usr) (Password pass);
-                user <- search l (Dn userBaseTxt)
-                                 (typesOnly False)
-                                 (Attr "uid" := searchuser)
-                                 []
-                return user
+   let fetchUser user = withCSH
+        (\l -> pure (search l
+                            (Dn userBaseTxt)
+                            (typesOnly False)
+                            (Attr "uid" := user)
+                            []))
 @
 -}
-withCSH :: (Ldap -> IO a) -> IO (Either LdapError a)
-withCSH = with (Secure "ldap.csh.rit.edu") 636
+withConfig :: (Ldap -> IO a) -> IO (Either LdapError a)
+withConfig act = do
+    cfg <- evalConfig
+    host <- lookupDefault "ldap.csh.rit.edu" cfg "ldap.host"
+    user <- lookupDefault "" cfg "ldap.user"
+    pass <- lookupDefault "" cfg "ldap.password"
+    with (Secure host) 636 $ \l -> do
+        bind l (appDn user) (Password pass)
+        act l
+
+-- | Fetch a map of attribute/value tuples given a user and a
+-- list of attributes to include. Yields the empty map on failure.
+-- Possibly other issues regarding some pattern match assumptions.
+userAttrs :: AttrValue -- ^ (Bytestring) uid
+          -> [Text]    -- ^ List of user fields to fetch
+          -> IO (Map Text AttrValue)
+userAttrs user attrLabels = (withConfig $ \l -> do
+    let attrs = fmap Attr attrLabels
+    entries <- (search l
+           (Dn userBaseTxt)      -- Start at the user tree root
+           (scope WholeSubtree)  -- Search the whole tree
+           (Attr "uid" := user) -- Match the given uid
+           attrs)
+    let attrlist = Prelude.head (fmap (\(SearchEntry _ x) -> x) entries)
+    pure (fromList (fmap (\(Attr k, (v:_)) -> (k, v))  attrlist)))
+    >>= \x -> pure (either (\_-> Data.Map.empty) id x) -- Treat failed queries as empty map
+
+
+
+
+
+
 
