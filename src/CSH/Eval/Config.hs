@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 {-|
 Module      : CSH.Eval.Config
 Description : Configuration utilities
