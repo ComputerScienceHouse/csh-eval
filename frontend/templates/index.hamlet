@@ -3,10 +3,10 @@
     <div .panel-body>
       <div .page-header .row>
         <div .col-md-2 .profile-col-fix .col-sm-12>
-            <img .thumbnail .profile-image src="@{ProfilePhotoR (B.unpack usr)}">
+            <img .thumbnail .profile-image src="@{ProfilePhotoR (T.unpack (memberUsername usr))}">
         <div .col-md-10 .col-sm-12>
           <h2>
-            <a href=@{MemberR $ B.unpack usr}">#{name}
+            <a href=@{MemberR $ T.unpack (memberUsername usr)}">#{memberCommonname usr}
           <span .label .label-success>Active
           <span .label .label-success>Eboard
       $#$if ((==) access AdminAccess)

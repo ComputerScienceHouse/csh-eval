@@ -54,5 +54,5 @@ evalFrontend config = do
                DEBUG
                (simpleLogFormatter "$time [$prio#$loggername] $msg")
                ()
-               (\_ -> putStrLn)
-               (\_ -> pure ())
+               (const putStrLn)
+               ((const . pure) ())

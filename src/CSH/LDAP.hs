@@ -20,13 +20,16 @@ module CSH.LDAP (
 , committeeBaseTxt
 , appDn
 , userDn
+, userAttr
+, userAttrs
 , withConfig
 , module Ldap.Client
 ) where
 import Ldap.Client
 import CSH.Eval.Config
-import Data.Map
-import Data.Text as T
+import qualified Data.Map.Strict as Map
+import qualified Data.Text as T
+import Safe
 
 -- $setup
 -- >>> :set -XOverloadedStrings
@@ -72,7 +75,7 @@ committeeBaseTxt = cshBaseTxt "committees"
 --
 -- >>> appDn "pval"
 -- Dn "cn=pval,ou=apps,dc=csh,dc=rit,dc=edu"
-appDn :: Text -- ^ Common name of app
+appDn :: T.Text -- ^ Common name of app
       -> Dn
 appDn app = Dn $ T.concat ["cn=", app, ",", appBaseTxt]
 
@@ -80,7 +83,7 @@ appDn app = Dn $ T.concat ["cn=", app, ",", appBaseTxt]
 --
 -- >>> userDn "worr"
 -- Dn "uid=worr,ou=users,dc=csh,dc=rit,dc=edu"
-userDn :: Text -- ^ uid of user
+userDn :: T.Text -- ^ uid of user
        -> Dn
 userDn user = Dn $ T.concat ["uid=", user, ",", userBaseTxt]
 
@@ -120,22 +123,23 @@ withConfig act = do
 -- list of attributes to include. Yields the empty map on failure.
 -- Possibly other issues regarding some pattern match assumptions.
 userAttrs :: AttrValue -- ^ (Bytestring) uid
-          -> [Text]    -- ^ List of user fields to fetch
-          -> IO (Map Text AttrValue)
-userAttrs user attrLabels = (withConfig $ \l -> do
+          -> [T.Text]    -- ^ List of user fields to fetch
+          -> IO (Map.Map T.Text AttrValue)
+userAttrs uid attrLabels = (withConfig $ \l -> do
     let attrs = fmap Attr attrLabels
     entries <- (search l
            (Dn userBaseTxt)      -- Start at the user tree root
            (scope WholeSubtree)  -- Search the whole tree
-           (Attr "uid" := user) -- Match the given uid
+           (Attr "uid" := uid) -- Match the given uid
            attrs)
     let attrlist = Prelude.head (fmap (\(SearchEntry _ x) -> x) entries)
-    pure (fromList (fmap (\(Attr k, (v:_)) -> (k, v))  attrlist)))
-    >>= \x -> pure (either (\_-> Data.Map.empty) id x) -- Treat failed queries as empty map
+    pure (Map.fromList (fmap (\(Attr k, (v:_)) -> (k, v))  attrlist)))
+    >>= \x -> pure (either (const Map.empty) id x) -- Treat failed queries as empty map
 
 
-
-
-
-
-
+-- | (Possibly) fetch the value of an attribute from a member
+userAttr :: AttrValue            -- ^ (Bytestring) uid
+         -> T.Text                 -- ^ Attribute to fetch
+         -> IO (Maybe AttrValue) -- ^ Attribute value
+userAttr user attr = userAttrs user [attr]
+                 >>= (pure . Map.lookup attr)

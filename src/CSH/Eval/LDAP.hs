@@ -13,7 +13,6 @@ LDAP instance involving the evaluations process.
 
 module CSH.Eval.LDAP (
     module CSH.LDAP
-  , lookup
   ) where
 import Prelude hiding (lookup)
 import CSH.LDAP
@@ -26,19 +25,3 @@ import qualified Data.ByteString.Char8 as B
 import qualified Data.Text as T
 import Safe
 import System.Log.Logger
-
-lookupAttr :: T.Text                  -- ^ Attribute
-           -> AttrValue               -- ^ Uid
-           -> IO (Maybe B.ByteString)
-lookupAttr attr = head . lookupAttrs
-
-lookupAttrs :: [T.Text]                -- ^ Attributes
-            -> AttrValue               -- ^ Uid
-            -> IO (Maybe [(T.Text, B.ByteString)]
-lookupAttrs attrs usr pass uid = val
-                             >>= \v -> pure $ case v of
-            (Right (Right r)) -> unSearchEntries r
-            _                 -> Nothing
-    where val = withConfig $ \l -> do
-                    searchEither l (Dn userBaseTxt)    (typesOnly False)
-                                   (Attr "uid" := uid) [Attr attr]
