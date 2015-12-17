@@ -25,7 +25,6 @@ import qualified Data.ByteString.Char8 as B
 import CSH.Eval.Cacheable.Fetch
 import CSH.Eval.Model
 import CSH.Eval.Frontend.Data
-import qualified CSH.Eval.LDAP as LD
 import qualified Data.Text as T
 import System.Log.Logger
 import Yesod
