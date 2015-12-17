@@ -44,7 +44,6 @@ library
                       , CSH.Eval.Frontend.Projects
                       , CSH.Eval.Frontend.Attendance
                       , CSH.Eval.Frontend.Widgets
-                      , CSH.Eval.LDAP
                       , CSH.Eval.Routes
                       , CSH.Eval.Model
                       , CSH.LDAP
