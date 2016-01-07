@@ -66,6 +66,7 @@ module CSH.Eval.Model (
 import Control.Concurrent.MVar
 
 import Control.Monad.Trans.Either
+import Control.Monad.IO.Class
 
 import Data.Maybe
 
@@ -863,7 +864,7 @@ data Cache = Cache {
 
 -- | Default Hasql transaction mode.
 defTxMode :: TxMode
-defTxMode = Just (Serializable, (Just True))
+defTxMode = Just (Serializable, Just True)
 
 -- | Interior transformer for operations directly on the cache state. Cache
 --   users should never be able to bind out of this.
@@ -887,6 +888,9 @@ data CacheError = HasqlError (SessionError Postgres)
 runCacheable :: Cache -> Cacheable a -> CacheM a
 runCacheable c m = m c
 
--- | Hoist 'Cacheable' into IO.
-execCacheable :: Cache -> Cacheable a -> IO (Either CacheError a)
-execCacheable c m = runEitherT (m c)
+-- | Hoist 'Cacheable' into an IO capable monad.
+execCacheable :: MonadIO m
+              => Cache                   -- ^ Cache instance to execute with
+              -> Cacheable a             -- ^ Cache hitting function
+              -> m (Either CacheError a) -- ^ Cache error or the function result
+execCacheable c m = liftIO $ runEitherT (m c)

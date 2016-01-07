@@ -24,6 +24,7 @@ import qualified Data.ByteString.Char8 as B
 import CSH.Eval.Frontend.Data
 import CSH.Eval.Frontend.Members
 import Network.Wai
+import qualified Data.Text as T
 import Data.Maybe
 import qualified Data.List as L (lookup)
 import Yesod
